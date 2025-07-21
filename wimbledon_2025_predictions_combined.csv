@@ -1,0 +1,128 @@
+predicted_winner,predicted_loser,confidence_percent,delta_elo,delta_surface,delta_form,expected_sets_played,surface,best_of_5,explanation,player_1,player_2,used_mock_profile,correct_prediction,round
+Jannik Sinner,Luca Nardi,85.5,723.5,0.55,1.0,3.5,Grass,True,"Jannik Sinner predicted to win (85.5%) — delta_elo (+723.5, edge), delta_surface (+0.55, edge), delta_form (+1.0, edge).",Jannik Sinner,Luca Nardi,False,1.0,R128
+Aleksandar Vukic,Chun-Hsin Tseng,65.5,89.6,0.1,0.1,3.8,Grass,True,"Aleksandar Vukic predicted to win (65.5%) — delta_elo (+89.6, edge), delta_surface (+0.1, edge), delta_form (+0.1, edge).",Chun-Hsin Tseng,Aleksandar Vukic,False,1.0,R128
+George Loffhagen,Pedro Martinez,50.1,12.6,-0.2,-0.2,4.2,Grass,True,"George Loffhagen predicted to win (50.1%) — delta_elo (+12.6, edge), delta_surface (-0.2, disadvantage), delta_form (-0.2, disadvantage).",Pedro Martinez,George Loffhagen,False,0.0,R128
+Denis Shapovalov,Mariano Navone,74.6,193.4,0.6,0.6,3.8,Grass,True,"Denis Shapovalov predicted to win (74.6%) — delta_elo (+193.4, edge), delta_surface (+0.6, edge), delta_form (+0.6, edge).",Mariano Navone,Denis Shapovalov,False,0.0,R128
+Grigor Dimitrov,Yoshihito Nishioka,94.3,214.5,0.2,0.2,3.25,Grass,True,"Grigor Dimitrov predicted to win (94.3%) — delta_elo (+214.5, edge), delta_surface (+0.2, edge), delta_form (+0.2, edge).",Grigor Dimitrov,Yoshihito Nishioka,False,1.0,R128
+Francisco Comesana,Corentin Moutet,50.5,-22.1,0.067,-0.2,4.2,Grass,True,"Francisco Comesana predicted to win (50.5%) — delta_elo (-22.1, disadvantage), delta_surface (+0.067, edge), delta_form (-0.2, disadvantage).",Francisco Comesana,Corentin Moutet,False,0.0,R128
+Hamad Medjedovic,Sebastian Ofner,61.2,94.6,-0.267,0.6,3.8,Grass,True,"Hamad Medjedovic predicted to win (61.2%) — delta_elo (+94.6, edge), delta_surface (-0.267, disadvantage), delta_form (+0.6, edge).",Sebastian Ofner,Hamad Medjedovic,False,0.0,R128
+Tommy Paul,Jack Monday,76.3,263.8,0.3,0.1,3.5,Grass,True,"Tommy Paul predicted to win (76.3%) — delta_elo (+263.8, edge), delta_surface (+0.3, edge), delta_form (+0.1, edge).",Jack Monday,Tommy Paul,False,1.0,R128
+Ben Shelton,Alex Bolt,80.8,212.2,0.2,0.0,3.5,Grass,True,"Ben Shelton predicted to win (80.8%) — delta_elo (+212.2, edge), delta_surface (+0.2, edge), delta_form (-0.0, disadvantage).",Ben Shelton,Alex Bolt,False,1.0,R128
+David Goffin,Rinky Hijikata,93.0,110.0,0.0,0.2,3.25,Grass,True,"David Goffin predicted to win (93.0%) — delta_elo (+110.0, edge), delta_surface (+0.0, disadvantage), delta_form (+0.2, edge).",Rinky Hijikata,David Goffin,False,0.0,R128
+Marton Fucsovics,Aleksandar Kovacevic,65.6,121.8,0.2,0.0,3.8,Grass,True,"Marton Fucsovics predicted to win (65.6%) — delta_elo (+121.8, edge), delta_surface (+0.2, edge), delta_form (-0.0, disadvantage).",Aleksandar Kovacevic,Marton Fucsovics,False,1.0,R128
+Ugo Humbert,Gael Monfils,62.7,64.1,0.0,0.2,3.8,Grass,True,"Ugo Humbert predicted to win (62.7%) — delta_elo (+64.1, edge), delta_surface (-0.0, disadvantage), delta_form (+0.2, edge).",Gael Monfils,Ugo Humbert,False,0.0,R128
+Brandon Nakashima,Bu Yunchaokete,56.6,37.7,0.1,-0.4,4.2,Grass,True,"Brandon Nakashima predicted to win (56.6%) — delta_elo (+37.7, edge), delta_surface (+0.1, edge), delta_form (-0.4, disadvantage).",Brandon Nakashima,Bu Yunchaokete,False,1.0,R128
+Reilly Opelka,Alexander Shevchenko,52.4,14.0,0.35,0.0,4.2,Grass,True,"Reilly Opelka predicted to win (52.4%) — delta_elo (+14.0, edge), delta_surface (+0.35, edge), delta_form (-0.0, disadvantage).",Alexander Shevchenko,Reilly Opelka,False,1.0,R128
+Lorenzo Sonego,Joao Faria,62.6,49.7,-0.1,-0.3,3.8,Grass,True,"Lorenzo Sonego predicted to win (62.6%) — delta_elo (+49.7, edge), delta_surface (-0.1, disadvantage), delta_form (-0.3, disadvantage).",Joao Faria,Lorenzo Sonego,False,1.0,R128
+Lorenzo Musetti,Nikoloz Basilashvili,79.8,307.5,0.4,0.2,3.5,Grass,True,"Lorenzo Musetti predicted to win (79.8%) — delta_elo (+307.5, edge), delta_surface (+0.4, edge), delta_form (+0.2, edge).",Nikoloz Basilashvili,Lorenzo Musetti,False,0.0,R128
+Jack Draper,Sebastian Baez,100.0,268.5,0.6,0.8,3.25,Grass,True,"Jack Draper predicted to win (100.0%) — delta_elo (+268.5, edge), delta_surface (+0.6, edge), delta_form (+0.8, edge).",Jack Draper,Sebastian Baez,False,1.0,R128
+Marin Cilic,Raphael Collignon,59.2,115.2,0.1,0.2,4.2,Grass,True,"Marin Cilic predicted to win (59.2%) — delta_elo (+115.2, edge), delta_surface (+0.1, edge), delta_form (+0.2, edge).",Raphael Collignon,Marin Cilic,False,1.0,R128
+Fabian Marozsan,James McCabe,53.8,60.5,-0.3,-0.1,4.2,Grass,True,"Fabian Marozsan predicted to win (53.8%) — delta_elo (+60.5, edge), delta_surface (-0.3, disadvantage), delta_form (-0.1, disadvantage).",James McCabe,Fabian Marozsan,False,1.0,R128
+Alexander Bublik,Jaume Munar,59.5,88.0,0.2,0.0,4.2,Grass,True,"Alexander Bublik predicted to win (59.5%) — delta_elo (+88.0, edge), delta_surface (+0.2, edge), delta_form (+0.0, disadvantage).",Jaume Munar,Alexander Bublik,False,0.0,R128
+Flavio Cobolli,Beibit Zhukayev,75.5,162.0,0.1,-0.2,3.5,Grass,True,"Flavio Cobolli predicted to win (75.5%) — delta_elo (+162.0, edge), delta_surface (+0.1, edge), delta_form (-0.2, disadvantage).",Flavio Cobolli,Beibit Zhukayev,False,1.0,R128
+Tomas Martin Etcheverry,Jack Pinnington Jones,65.8,101.0,-0.3,-0.1,3.8,Grass,True,"Tomas Martin Etcheverry predicted to win (65.8%) — delta_elo (+101.0, edge), delta_surface (-0.3, disadvantage), delta_form (-0.1, disadvantage).",Tomas Martin Etcheverry,Jack Pinnington Jones,False,0.0,R128
+Marcos Giron,Camilo Ugo Carabelli,69.1,168.1,0.5,0.2,3.8,Grass,True,"Marcos Giron predicted to win (69.1%) — delta_elo (+168.1, edge), delta_surface (+0.5, edge), delta_form (+0.2, edge).",Marcos Giron,Camilo Ugo Carabelli,False,1.0,R128
+Jakub Mensik,Hugo Gaston,68.4,116.7,0.0,-0.4,3.8,Grass,True,"Jakub Mensik predicted to win (68.4%) — delta_elo (+116.7, edge), delta_surface (-0.0, disadvantage), delta_form (-0.4, disadvantage).",Hugo Gaston,Jakub Mensik,False,1.0,R128
+Roberto Carballes Baena,Alex de Minaur,66.2,74.9,-0.1,-0.1,3.8,Grass,True,"Roberto Carballes Baena predicted to win (66.2%) — delta_elo (+74.9, edge), delta_surface (-0.1, disadvantage), delta_form (-0.1, disadvantage).",Alex de Minaur,Roberto Carballes Baena,False,0.0,R128
+Arthur Cazaux,Adam Walton,63.2,115.7,-0.167,0.4,3.8,Grass,True,"Arthur Cazaux predicted to win (63.2%) — delta_elo (+115.7, edge), delta_surface (-0.167, disadvantage), delta_form (+0.4, edge).",Arthur Cazaux,Adam Walton,False,1.0,R128
+Quentin Halys,August Holmgren,60.8,52.0,0.1,0.0,3.8,Grass,True,"Quentin Halys predicted to win (60.8%) — delta_elo (+52.0, edge), delta_surface (+0.1, edge), delta_form (-0.0, disadvantage).",Quentin Halys,August Holmgren,False,0.0,R128
+Tomas Machac,Damir Dzumhur,65.0,273.4,-0.25,0.4,3.8,Grass,True,"Tomas Machac predicted to win (65.0%) — delta_elo (+273.4, edge), delta_surface (-0.25, disadvantage), delta_form (+0.4, edge).",Damir Dzumhur,Tomas Machac,False,1.0,R128
+Alex Michelsen,Miomir Kecmanovic,59.7,61.2,0.0,0.2,4.2,Grass,True,"Alex Michelsen predicted to win (59.7%) — delta_elo (+61.2, edge), delta_surface (+0.0, disadvantage), delta_form (+0.2, edge).",Alex Michelsen,Miomir Kecmanovic,False,0.0,R128
+Jesper De Jong,Christopher Eubanks,51.9,-27.8,-0.4,-0.4,4.2,Grass,True,"Jesper De Jong predicted to win (51.9%) — delta_elo (-27.8, disadvantage), delta_surface (-0.4, disadvantage), delta_form (-0.4, disadvantage).",Jesper De Jong,Christopher Eubanks,False,1.0,R128
+Daniel Evans,Jay Clarke,51.0,37.1,0.0,0.2,4.2,Grass,True,"Daniel Evans predicted to win (51.0%) — delta_elo (+37.1, edge), delta_surface (+0.0, disadvantage), delta_form (+0.2, edge).",Daniel Evans,Jay Clarke,False,1.0,R128
+Novak Djokovic,Alexandre Muller,95.7,477.8,0.5,0.4,3.25,Grass,True,"Novak Djokovic predicted to win (95.7%) — delta_elo (+477.8, edge), delta_surface (+0.5, edge), delta_form (+0.4, edge).",Alexandre Muller,Novak Djokovic,False,1.0,R128
+Taylor Fritz,Giovanni Mpetshi Perricard,81.3,237.5,0.0,0.0,3.5,Grass,True,"Taylor Fritz predicted to win (81.3%) — delta_elo (+237.5, edge), delta_surface (-0.0, disadvantage), delta_form (-0.0, disadvantage).",Taylor Fritz,Giovanni Mpetshi Perricard,False,1.0,R128
+Daniel Altmaier,Gabriel Diallo,67.9,-58.8,0.2,-0.4,3.8,Grass,True,"Daniel Altmaier predicted to win (67.9%) — delta_elo (-58.8, disadvantage), delta_surface (+0.2, edge), delta_form (-0.4, disadvantage).",Gabriel Diallo,Daniel Altmaier,False,0.0,R128
+Matteo Arnaldi,Botic van de Zandschulp,77.1,121.9,-0.25,-0.3,3.5,Grass,True,"Matteo Arnaldi predicted to win (77.1%) — delta_elo (+121.9, edge), delta_surface (-0.25, disadvantage), delta_form (-0.3, disadvantage).",Matteo Arnaldi,Botic van de Zandschulp,False,0.0,R128
+Alejandro Davidovich Fokina,Brandon Holt,65.0,137.4,-0.1,0.2,3.8,Grass,True,"Alejandro Davidovich Fokina predicted to win (65.0%) — delta_elo (+137.4, edge), delta_surface (-0.1, disadvantage), delta_form (+0.2, edge).",Brandon Holt,Alejandro Davidovich Fokina,False,1.0,R128
+Alexei Popyrin,Arthur Fery,75.9,227.2,0.4,0.4,3.5,Grass,True,"Alexei Popyrin predicted to win (75.9%) — delta_elo (+227.2, edge), delta_surface (+0.4, edge), delta_form (+0.4, edge).",Alexei Popyrin,Arthur Fery,False,0.0,R128
+Roman Safiullin,Luciano Darderi,68.6,116.6,0.0,0.2,3.8,Grass,True,"Roman Safiullin predicted to win (68.6%) — delta_elo (+116.6, edge), delta_surface (-0.0, disadvantage), delta_form (+0.2, edge).",Luciano Darderi,Roman Safiullin,False,0.0,R128
+Jordan Thompson,Vit Kopriva,82.4,256.7,0.8,0.6,3.5,Grass,True,"Jordan Thompson predicted to win (82.4%) — delta_elo (+256.7, edge), delta_surface (+0.8, edge), delta_form (+0.6, edge).",Vit Kopriva,Jordan Thompson,False,1.0,R128
+Daniil Medvedev,Benjamin Bonzi,77.4,291.3,0.6,-0.6,3.5,Grass,True,"Daniil Medvedev predicted to win (77.4%) — delta_elo (+291.3, edge), delta_surface (+0.6, edge), delta_form (-0.6, disadvantage).",Benjamin Bonzi,Daniil Medvedev,False,0.0,R128
+Francisco Cerundolo,Nuno Borges,92.9,90.6,0.2,0.4,3.25,Grass,True,"Francisco Cerundolo predicted to win (92.9%) — delta_elo (+90.6, edge), delta_surface (+0.2, edge), delta_form (+0.4, edge).",Francisco Cerundolo,Nuno Borges,False,0.0,R128
+Dusan Lajovic,Billy Harris,55.1,46.9,-0.2,-0.2,4.2,Grass,True,"Dusan Lajovic predicted to win (55.1%) — delta_elo (+46.9, edge), delta_surface (-0.2, disadvantage), delta_form (-0.2, disadvantage).",Billy Harris,Dusan Lajovic,False,0.0,R128
+Giulio Zeppieri,Shintaro Mochizuki,52.3,79.0,0.5,0.2,4.2,Grass,True,"Giulio Zeppieri predicted to win (52.3%) — delta_elo (+79.0, edge), delta_surface (+0.5, edge), delta_form (+0.2, edge).",Shintaro Mochizuki,Giulio Zeppieri,False,0.0,R128
+Karen Khachanov,Mackenzie McDonald,79.0,259.8,-0.1,0.3,3.5,Grass,True,"Karen Khachanov predicted to win (79.0%) — delta_elo (+259.8, edge), delta_surface (-0.1, disadvantage), delta_form (+0.3, edge).",Mackenzie McDonald,Karen Khachanov,False,1.0,R128
+Matteo Berrettini,Kamil Majchrzak,74.2,214.9,0.267,0.0,3.8,Grass,True,"Matteo Berrettini predicted to win (74.2%) — delta_elo (+214.9, edge), delta_surface (+0.267, edge), delta_form (-0.0, disadvantage).",Matteo Berrettini,Kamil Majchrzak,False,0.0,R128
+Henry Searle,Ethan Quinn,54.4,28.9,-0.5,-0.2,4.2,Grass,True,"Henry Searle predicted to win (54.4%) — delta_elo (+28.9, edge), delta_surface (-0.5, disadvantage), delta_form (-0.2, disadvantage).",Ethan Quinn,Henry Searle,False,0.0,R128
+Cristian Garin,Chris Rodesch,62.0,56.9,0.1,-0.2,3.8,Grass,True,"Cristian Garin predicted to win (62.0%) — delta_elo (+56.9, edge), delta_surface (+0.1, edge), delta_form (-0.2, disadvantage).",Cristian Garin,Chris Rodesch,False,1.0,R128
+Alexander Zverev,Arthur Rinderknech,85.9,327.0,0.4,0.2,3.5,Grass,True,"Alexander Zverev predicted to win (85.9%) — delta_elo (+327.0, edge), delta_surface (+0.4, edge), delta_form (+0.2, edge).",Arthur Rinderknech,Alexander Zverev,False,0.0,R128
+Holger Rune,Nicolas Jarry,93.8,235.9,0.2,0.4,3.25,Grass,True,"Holger Rune predicted to win (93.8%) — delta_elo (+235.9, edge), delta_surface (+0.2, edge), delta_form (+0.4, edge).",Holger Rune,Nicolas Jarry,False,0.0,R128
+Learner Tien,Nishesh Basavareddy,60.7,57.7,0.0,0.267,3.8,Grass,True,"Learner Tien predicted to win (60.7%) — delta_elo (+57.7, edge), delta_surface (+0.0, disadvantage), delta_form (+0.267, edge).",Learner Tien,Nishesh Basavareddy,False,1.0,R128
+Joao Fonseca,Jacob Fearnley,62.2,101.4,-0.333,0.6,3.8,Grass,True,"Joao Fonseca predicted to win (62.2%) — delta_elo (+101.4, edge), delta_surface (-0.333, disadvantage), delta_form (+0.6, edge).",Jacob Fearnley,Joao Fonseca,False,1.0,R128
+Tallon Griekspoor,Jenson Brooksby,62.7,53.1,0.2,-0.4,3.8,Grass,True,"Tallon Griekspoor predicted to win (62.7%) — delta_elo (+53.1, edge), delta_surface (+0.2, edge), delta_form (-0.4, disadvantage).",Jenson Brooksby,Tallon Griekspoor,False,0.0,R128
+Jiri Lehecka,Hugo Dellien,76.8,306.0,0.6,0.0,3.5,Grass,True,"Jiri Lehecka predicted to win (76.8%) — delta_elo (+306.0, edge), delta_surface (+0.6, edge), delta_form (-0.0, disadvantage).",Jiri Lehecka,Hugo Dellien,False,1.0,R128
+Matteo Bellucci,Oliver Crawford,50.0,0.0,0.0,0.0,4.2,Grass,True,"Matteo Bellucci predicted to win (50.0%) — delta_elo (+0.0, disadvantage), delta_surface (+0.0, disadvantage), delta_form (+0.0, disadvantage).",Matteo Bellucci,Oliver Crawford,False,1.0,R128
+Cameron Norrie,Roberto Bautista Agut,96.0,-36.6,-0.4,0.2,3.25,Grass,True,"Cameron Norrie predicted to win (96.0%) — delta_elo (-36.6, disadvantage), delta_surface (-0.4, disadvantage), delta_form (+0.2, edge).",Cameron Norrie,Roberto Bautista Agut,False,1.0,R128
+Frances Tiafoe,Elmer Moller,74.4,154.4,0.1,-0.4,3.8,Grass,True,"Frances Tiafoe predicted to win (74.4%) — delta_elo (+154.4, edge), delta_surface (+0.1, edge), delta_form (-0.4, disadvantage).",Elmer Moller,Frances Tiafoe,False,1.0,R128
+Andrey Rublev,Laslo Djere,69.6,120.3,0.2,-0.6,3.8,Grass,True,"Andrey Rublev predicted to win (69.6%) — delta_elo (+120.3, edge), delta_surface (+0.2, edge), delta_form (-0.6, disadvantage).",Andrey Rublev,Laslo Djere,False,1.0,R128
+Lloyd Harris,Zizou Bergs,71.1,-94.5,0.15,-0.2,3.8,Grass,True,"Lloyd Harris predicted to win (71.1%) — delta_elo (-94.5, disadvantage), delta_surface (+0.15, edge), delta_form (-0.2, disadvantage).",Zizou Bergs,Lloyd Harris,False,1.0,R128
+Adrian Mannarino,Christopher O'Connell,54.2,8.7,-0.3,-0.1,4.2,Grass,True,"Adrian Mannarino predicted to win (54.2%) — delta_elo (+8.7, edge), delta_surface (-0.3, disadvantage), delta_form (-0.1, disadvantage).",Adrian Mannarino,Christopher O'Connell,False,1.0,R128
+Stefanos Tsitsipas,Valentin Royer,82.3,253.8,0.1,0.1,3.5,Grass,True,"Stefanos Tsitsipas predicted to win (82.3%) — delta_elo (+253.8, edge), delta_surface (+0.1, edge), delta_form (+0.1, edge).",Valentin Royer,Stefanos Tsitsipas,False,0.0,R128
+Felix Auger-Aliassime,James Duckworth,64.0,47.5,-0.1,0.5,3.8,Grass,True,"Felix Auger-Aliassime predicted to win (64.0%) — delta_elo (+47.5, edge), delta_surface (-0.1, disadvantage), delta_form (+0.5, edge).",Felix Auger-Aliassime,James Duckworth,False,1.0,R128
+Filip Misolic,Jan-Lennard Struff,57.7,14.7,0.0,-0.1,4.2,Grass,True,"Filip Misolic predicted to win (57.7%) — delta_elo (+14.7, edge), delta_surface (+0.0, disadvantage), delta_form (-0.1, disadvantage).",Jan-Lennard Struff,Filip Misolic,False,0.0,R128
+Oliver Tarvet,Leandro Riedi,50.9,16.2,0.0,0.1,4.2,Grass,True,"Oliver Tarvet predicted to win (50.9%) — delta_elo (+16.2, edge), delta_surface (-0.0, disadvantage), delta_form (+0.1, edge).",Oliver Tarvet,Leandro Riedi,False,1.0,R128
+Carlos Alcaraz,Fabio Fognini,93.7,437.5,0.4,0.2,3.25,Grass,True,"Carlos Alcaraz predicted to win (93.7%) — delta_elo (+437.5, edge), delta_surface (+0.4, edge), delta_form (+0.2, edge).",Fabio Fognini,Carlos Alcaraz,False,1.0,R128
+Jannik Sinner,Aleksandar Vukic,99.7,518.6,0.2,0.4,3.25,,,,Jannik Sinner,Aleksandar Vukic,,,R64
+George Loffhagen,Mariano Navone,56.3,23.2,0.0,-0.2,4.2,,,,George Loffhagen,Mariano Navone,,,R64
+Grigor Dimitrov,Corentin Moutet,96.0,288.9,0.2,-0.0,3.25,,,,Grigor Dimitrov,Corentin Moutet,,,R64
+Tommy Paul,Sebastian Ofner,95.9,285.2,0.2,0.4,3.25,,,,Sebastian Ofner,Tommy Paul,,,R64
+Ben Shelton,Rinky Hijikata,91.1,210.9,0.2,0.2,3.25,,,,Ben Shelton,Rinky Hijikata,,,R64
+Gael Monfils,Marton Fucsovics,76.8,108.8,0.0,0.4,3.5,,,,Marton Fucsovics,Gael Monfils,,,R64
+Brandon Nakashima,Reilly Opelka,76.6,108.0,0.0,-0.2,3.5,,,,Brandon Nakashima,Reilly Opelka,,,R64
+Lorenzo Sonego,Nikoloz Basilashvili,86.6,169.9,-0.2,0.0,3.5,,,,Lorenzo Sonego,Nikoloz Basilashvili,,,R64
+Jack Draper,Marin Cilic,92.4,226.4,0.0,0.6,3.25,,,,Jack Draper,Marin Cilic,,,R64
+Fabian Marozsan,Jaume Munar,86.7,170.6,-0.2,0.2,3.5,,,,Fabian Marozsan,Jaume Munar,,,R64
+Flavio Cobolli,Jack Pinnington Jones,93.4,241.1,0.1,-0.1,3.25,,,,Flavio Cobolli,Jack Pinnington Jones,,,R64
+Jakub Mensik,Marcos Giron,58.9,33.0,-0.6,-0.2,4.2,,,,Marcos Giron,Jakub Mensik,,,R64
+Arthur Cazaux,Alex de Minaur,75.4,101.6,-0.167,0.1,3.5,,,,Alex de Minaur,Arthur Cazaux,,,R64
+Tomas Machac,August Holmgren,93.7,245.3,-0.25,0.2,3.25,,,,August Holmgren,Tomas Machac,,,R64
+Miomir Kecmanovic,Jesper De Jong,75.0,99.7,0.6,0.2,3.5,,,,Miomir Kecmanovic,Jesper De Jong,,,R64
+Novak Djokovic,Daniel Evans,99.7,513.4,1.0,0.6,3.25,,,,Daniel Evans,Novak Djokovic,,,R64
+Taylor Fritz,Gabriel Diallo,98.5,377.7,0.8,-0.0,3.25,,,,Taylor Fritz,Gabriel Diallo,,,R64
+Alejandro Davidovich Fokina,Botic van de Zandschulp,81.1,132.6,-0.1,-0.1,3.5,,,,Botic van de Zandschulp,Alejandro Davidovich Fokina,,,R64
+Arthur Fery,Luciano Darderi,60.9,40.7,-0.4,-0.2,3.8,,,,Arthur Fery,Luciano Darderi,,,R64
+Jordan Thompson,Benjamin Bonzi,87.6,177.7,0.4,-0.4,3.5,,,,Jordan Thompson,Benjamin Bonzi,,,R64
+Nuno Borges,Billy Harris,72.0,86.3,-0.4,-0.2,3.8,,,,Nuno Borges,Billy Harris,,,R64
+Karen Khachanov,Shintaro Mochizuki,98.9,407.9,0.4,0.8,3.25,,,,Shintaro Mochizuki,Karen Khachanov,,,R64
+Kamil Majchrzak,Ethan Quinn,76.0,104.7,-0.167,0.4,3.5,,,,Kamil Majchrzak,Ethan Quinn,,,R64
+Cristian Garin,Arthur Rinderknech,58.5,31.2,0.2,-0.2,4.2,,,,Cristian Garin,Arthur Rinderknech,,,R64
+Learner Tien,Nicolas Jarry,69.1,73.2,0.1,0.2,3.8,,,,Nicolas Jarry,Learner Tien,,,R64
+Joao Fonseca,Jenson Brooksby,69.3,73.9,-0.4,0.2,3.8,,,,Joao Fonseca,Jenson Brooksby,,,R64
+Jiri Lehecka,Matteo Bellucci,87.9,180.2,0.1,-0.1,3.5,,,,Jiri Lehecka,Matteo Bellucci,,,R64
+Frances Tiafoe,Cameron Norrie,76.2,106.1,0.2,-0.4,3.5,,,,Cameron Norrie,Frances Tiafoe,,,R64
+Andrey Rublev,Lloyd Harris,92.4,227.2,0.2,-0.2,3.25,,,,Andrey Rublev,Lloyd Harris,,,R64
+Adrian Mannarino,Valentin Royer,67.7,67.4,-0.3,-0.1,3.8,,,,Adrian Mannarino,Valentin Royer,,,R64
+Felix Auger-Aliassime,Jan-Lennard Struff,70.5,79.4,0.0,0.0,3.8,,,,Felix Auger-Aliassime,Jan-Lennard Struff,,,R64
+Carlos Alcaraz,Oliver Tarvet,99.0,419.1,0.5,-0.1,3.25,,,,Oliver Tarvet,Carlos Alcaraz,,,R64
+Jannik Sinner,Pedro Martinez,100.0,733.1,0.6,0.8,3.25,,,,Jannik Sinner,Pedro Martinez,,,R32
+Grigor Dimitrov,Sebastian Ofner,97.4,327.6,0.2,0.4,3.25,,,,Grigor Dimitrov,Sebastian Ofner,,,R32
+Ben Shelton,Marton Fucsovics,88.7,187.0,0.0,0.4,3.5,,,,Ben Shelton,Marton Fucsovics,,,R32
+Brandon Nakashima,Lorenzo Sonego,78.9,119.9,0.2,0.0,3.5,,,,Brandon Nakashima,Lorenzo Sonego,,,R32
+Marin Cilic,Jaume Munar,87.5,176.8,0.2,-0.0,3.5,,,,Marin Cilic,Jaume Munar,,,R32
+Flavio Cobolli,Jakub Mensik,60.8,39.6,0.2,0.2,3.8,,,,Flavio Cobolli,Jakub Mensik,,,R32
+August Holmgren,Alex de Minaur,64.7,55.3,-0.0,-0.1,3.8,,,,Alex de Minaur,August Holmgren,,,R32
+Novak Djokovic,Miomir Kecmanovic,99.1,422.9,0.4,0.4,3.25,,,,Miomir Kecmanovic,Novak Djokovic,,,R32
+Taylor Fritz,Alejandro Davidovich Fokina,95.5,278.3,0.4,0.4,3.25,,,,Taylor Fritz,Alejandro Davidovich Fokina,,,R32
+Jordan Thompson,Luciano Darderi,96.4,298.7,0.4,0.4,3.25,,,,Luciano Darderi,Jordan Thompson,,,R32
+Karen Khachanov,Nuno Borges,87.3,174.6,0.4,0.6,3.5,,,,Nuno Borges,Karen Khachanov,,,R32
+Arthur Rinderknech,Kamil Majchrzak,52.5,8.9,0.067,0.0,4.2,,,,Kamil Majchrzak,Arthur Rinderknech,,,R32
+Joao Fonseca,Nicolas Jarry,89.5,194.4,-0.4,0.6,3.5,,,,Nicolas Jarry,Joao Fonseca,,,R32
+Cameron Norrie,Matteo Bellucci,69.3,74.1,-0.1,0.3,3.8,,,,Matteo Bellucci,Cameron Norrie,,,R32
+Andrey Rublev,Adrian Mannarino,78.9,119.8,0.4,-0.2,3.5,,,,Andrey Rublev,Adrian Mannarino,,,R32
+Carlos Alcaraz,Jan-Lennard Struff,99.7,519.5,0.5,-0.1,3.25,,,,Jan-Lennard Struff,Carlos Alcaraz,,,R32
+Jannik Sinner,Grigor Dimitrov,96.9,313.1,-0.0,0.4,3.25,,,,Jannik Sinner,Grigor Dimitrov,,,R16
+Ben Shelton,Lorenzo Sonego,87.9,180.0,0.2,0.4,3.5,,,,Ben Shelton,Lorenzo Sonego,,,R16
+Flavio Cobolli,Marin Cilic,83.4,146.6,0.0,0.2,3.5,,,,Marin Cilic,Flavio Cobolli,,,R16
+Novak Djokovic,Alex de Minaur,99.9,595.7,0.5,0.3,3.25,,,,Alex de Minaur,Novak Djokovic,,,R16
+Taylor Fritz,Jordan Thompson,89.2,192.1,-0.0,0.2,3.5,,,,Taylor Fritz,Jordan Thompson,,,R16
+Karen Khachanov,Kamil Majchrzak,93.8,246.8,0.067,0.2,3.25,,,,Karen Khachanov,Kamil Majchrzak,,,R16
+Cameron Norrie,Nicolas Jarry,78.4,117.2,0.0,0.4,3.5,,,,Nicolas Jarry,Cameron Norrie,,,R16
+Carlos Alcaraz,Andrey Rublev,94.1,250.9,0.4,0.2,3.25,,,,Andrey Rublev,Carlos Alcaraz,,,R16
+Jannik Sinner,Ben Shelton,98.5,379.2,0.2,0.4,3.25,,,,Jannik Sinner,Ben Shelton,,,QF
+Novak Djokovic,Flavio Cobolli,94.8,262.9,0.4,0.4,3.25,,,,Flavio Cobolli,Novak Djokovic,,,QF
+Taylor Fritz,Karen Khachanov,83.0,143.8,0.4,-0.0,3.5,,,,Taylor Fritz,Karen Khachanov,,,QF
+Carlos Alcaraz,Cameron Norrie,97.9,348.0,0.6,-0.4,3.25,,,,Cameron Norrie,Carlos Alcaraz,,,QF
+Jannik Sinner,Novak Djokovic,78.8,119.4,-0.2,0.2,3.5,,,,Jannik Sinner,Novak Djokovic,,,SF
+Carlos Alcaraz,Taylor Fritz,57.9,29.2,0.2,-0.4,4.2,,,,Taylor Fritz,Carlos Alcaraz,,,SF
+Jannik Sinner,Carlos Alcaraz,86.7,170.0,-0.2,0.6,3.5,,,,Jannik Sinner,Carlos Alcaraz,,,Final

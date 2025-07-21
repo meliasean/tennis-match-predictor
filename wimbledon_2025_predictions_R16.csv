@@ -1,0 +1,9 @@
+player_1,player_2,predicted_winner,predicted_loser,confidence_percent,delta_elo,delta_surface,delta_form,expected_sets_played
+Jannik Sinner,Grigor Dimitrov,Jannik Sinner,Grigor Dimitrov,96.9,313.1,-0.0,0.4,3.25
+Ben Shelton,Lorenzo Sonego,Ben Shelton,Lorenzo Sonego,87.9,180.0,0.2,0.4,3.5
+Marin Cilic,Flavio Cobolli,Flavio Cobolli,Marin Cilic,83.4,146.6,0.0,0.2,3.5
+Alex de Minaur,Novak Djokovic,Novak Djokovic,Alex de Minaur,99.9,595.7,0.5,0.3,3.25
+Taylor Fritz,Jordan Thompson,Taylor Fritz,Jordan Thompson,89.2,192.1,-0.0,0.2,3.5
+Karen Khachanov,Kamil Majchrzak,Karen Khachanov,Kamil Majchrzak,93.8,246.8,0.067,0.2,3.25
+Nicolas Jarry,Cameron Norrie,Cameron Norrie,Nicolas Jarry,78.4,117.2,0.0,0.4,3.5
+Andrey Rublev,Carlos Alcaraz,Carlos Alcaraz,Andrey Rublev,94.1,250.9,0.4,0.2,3.25
