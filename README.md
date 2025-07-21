@@ -15,7 +15,7 @@ A machine learning-based tennis match outcome predictor using ATP match data (20
 - Tournament level and round
 
 ### 🧠 Model:
-- **Random Forest Classifier** (83.9% test accuracy)
+- **Random Forest Classifier** (68.3% test accuracy)
 - Trained on feature-engineered, chronologically-sorted ATP match data
 - Symmetrical data for each match to balance training labels
 
@@ -69,9 +69,45 @@ Copy
   "expected_game_win_pct": 0.48
 }
 
-🧑‍💻 Author
-Sean Melia
-https://github.com/meliasean
 
 ⚠️ Disclaimer
 This model is for research and entertainment purposes only. It is not intended for gambling or commercial exploitation.
+
+---
+
+### Wimbledon 2025 Tennis Match Predictor 🏆
+
+This project uses a custom ensemble model to predict outcomes for every match in the 2025 Wimbledon Men's Singles tournament. Predictions are based on player profiles updated dynamically after each round.
+
+## Features
+
+- ✅ Predicts each match from R128 through Final
+- 🎾 Considers player Elo, surface-specific form, recent match momentum, and head-to-head record
+- 📊 Outputs include win probability, expected sets played, and feature deltas with directionality
+- 📈 Accuracy Score metrics available for evaluation
+
+## Files
+
+- `*.csv`: Prediction output per round (`R128` → `F`) + final combined file
+- `wimbledon_2025_predictions_combined.csv`: All matches, labeled by round
+- `ensemble_predict_match()`: Main function for prediction logic
+- `update_player_profiles_from_results()`: Updates Elo, form, and surface scores
+
+## Accuracy
+
+📌 **Overall Prediction Accuracy**: ~65.3%  
+📌 **Correct Matches**: 83 / 127  
+Model is trained on data up to late 2024, and still performs strongly into mid-2025.
+
+## How to Run
+
+1. Ensure `player_profiles`, `model_B`, and `feature_cols` are defined
+2. Use round-wise scripts to:
+   - Load previous round results
+   - Update player profiles
+   - Generate and save predictions for the next round
+
+
+🧑‍💻 Author
+Sean Melia
+https://github.com/meliasean
