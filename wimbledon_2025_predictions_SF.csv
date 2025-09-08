@@ -1,3 +1,3 @@
 player_1,player_2,predicted_winner,predicted_loser,confidence_percent,delta_elo,delta_surface,delta_form,expected_sets_played
-Jannik Sinner,Novak Djokovic,Jannik Sinner,Novak Djokovic,78.8,119.4,-0.2,0.2,3.5
-Taylor Fritz,Carlos Alcaraz,Carlos Alcaraz,Taylor Fritz,57.9,29.2,0.2,-0.4,4.2
+Jannik Sinner,Novak Djokovic,Jannik Sinner,Novak Djokovic,77.8,114.1,-0.2,0.2,3.5
+Taylor Fritz,Carlos Alcaraz,Carlos Alcaraz,Taylor Fritz,61.3,42.1,0.2,-0.4,3.8

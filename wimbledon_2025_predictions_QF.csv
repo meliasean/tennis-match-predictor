@@ -1,5 +1,5 @@
 player_1,player_2,predicted_winner,predicted_loser,confidence_percent,delta_elo,delta_surface,delta_form,expected_sets_played
-Jannik Sinner,Ben Shelton,Jannik Sinner,Ben Shelton,98.5,379.2,0.2,0.4,3.25
-Flavio Cobolli,Novak Djokovic,Novak Djokovic,Flavio Cobolli,94.8,262.9,0.4,0.4,3.25
-Taylor Fritz,Karen Khachanov,Taylor Fritz,Karen Khachanov,83.0,143.8,0.4,-0.0,3.5
-Cameron Norrie,Carlos Alcaraz,Carlos Alcaraz,Cameron Norrie,97.9,348.0,0.6,-0.4,3.25
+Jannik Sinner,Ben Shelton,Jannik Sinner,Ben Shelton,98.3,370.6,0.2,0.4,3.25
+Flavio Cobolli,Novak Djokovic,Novak Djokovic,Flavio Cobolli,94.4,256.4,0.4,0.4,3.25
+Taylor Fritz,Karen Khachanov,Taylor Fritz,Karen Khachanov,79.5,123.2,0.4,-0.0,3.5
+Matteo Bellucci,Carlos Alcaraz,Carlos Alcaraz,Matteo Bellucci,96.6,304.4,0.6,0.0,3.25

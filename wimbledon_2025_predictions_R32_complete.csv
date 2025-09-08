@@ -1,17 +1,17 @@
 player_1,player_2,predicted_winner,predicted_loser,confidence_percent,delta_elo,delta_surface,delta_form,expected_sets_played,correct_prediction
-Jannik Sinner,Pedro Martinez,Jannik Sinner,Pedro Martinez,99.9,688.7,0.6,0.8,3.25,1
-Grigor Dimitrov,Sebastian Ofner,Grigor Dimitrov,Sebastian Ofner,96.8,310.1,0.2,0.4,3.25,1
-Ben Shelton,Marton Fucsovics,Ben Shelton,Marton Fucsovics,84.6,154.9,0,0.4,3.5,1
-Brandon Nakashima,Lorenzo Sonego,Brandon Nakashima,Lorenzo Sonego,72.5,88,0.2,0,3.8,0
-Marin Cilic,Jaume Munar,Marin Cilic,Jaume Munar,84,150.6,0.2,0,3.5,1
-Flavio Cobolli,Jakub Mensik,Flavio Cobolli,Jakub Mensik,59.7,35.5,0.2,0.2,4.2,1
-Alex de Minaur,August Holmgren,August Holmgren,Alex de Minaur,51.6,6,0,-0.1,4.2,0
-Miomir Kecmanovic,Novak Djokovic,Novak Djokovic,Miomir Kecmanovic,99.1,427.5,0.4,0.4,3.25,1
-Taylor Fritz,Alejandro Davidovich Fokina,Taylor Fritz,Alejandro Davidovich Fokina,95.4,274.8,0.4,0.4,3.25,1
-Luciano Darderi,Jordan Thompson,Jordan Thompson,Luciano Darderi,94,249.8,0.4,0.4,3.25,1
-Nuno Borges,Karen Khachanov,Karen Khachanov,Nuno Borges,89,189.8,0.4,0.6,3.5,1
-Kamil Majchrzak,Arthur Rinderknech,Arthur Rinderknech,Kamil Majchrzak,57.3,26.6,0.067,0,4.2,0
-Nicolas Jarry,Joao Fonseca,Joao Fonseca,Nicolas Jarry,75.2,100.7,-0.4,0.6,3.5,0
-Matteo Bellucci,Cameron Norrie,Cameron Norrie,Matteo Bellucci,72.4,87.7,-0.1,0.3,3.8,1
-Andrey Rublev,Adrian Mannarino,Andrey Rublev,Adrian Mannarino,82.2,139.3,0.4,-0.2,3.5,1
-Jan-Lennard Struff,Carlos Alcaraz,Carlos Alcaraz,Jan-Lennard Struff,99.5,472.7,0.5,-0.1,3.25,1
+Jannik Sinner,Mariano Navone,Jannik Sinner,Mariano Navone,99.9,677.1,0.8,1,3.25,1
+Grigor Dimitrov,Sebastian Ofner,Grigor Dimitrov,Sebastian Ofner,98.8,403,0.2,0.6,3.25,1
+Ben Shelton,Gael Monfils,Ben Shelton,Gael Monfils,84.7,155.4,0,0,3.5,1
+Brandon Nakashima,Lorenzo Sonego,Brandon Nakashima,Lorenzo Sonego,74.9,99.1,0.2,0,3.8,0
+Marin Cilic,Jaume Munar,Marin Cilic,Jaume Munar,94.7,261.2,0.2,0,3.25,1
+Flavio Cobolli,Jakub Mensik,Flavio Cobolli,Jakub Mensik,54.7,16.9,0.2,0.2,4.2,1
+Alex De Minaur,August Holmgren,Alex De Minaur,August Holmgren,98.9,405.9,0.3,-0.4,3.25,1
+Miomir Kecmanovic,Novak Djokovic,Novak Djokovic,Miomir Kecmanovic,99.7,515.6,0.4,0.4,3.25,1
+Taylor Fritz,Alejandro Davidovich Fokina,Taylor Fritz,Alejandro Davidovich Fokina,94.2,252.9,0.4,0.4,3.25,1
+Luciano Darderi,Jordan Thompson,Jordan Thompson,Luciano Darderi,96.8,308.9,0.4,0.4,3.25,1
+Nuno Borges,Karen Khachanov,Karen Khachanov,Nuno Borges,95.4,275,0.4,0.6,3.25,1
+Kamil Majchrzak,Arthur Rinderknech,Arthur Rinderknech,Kamil Majchrzak,63.9,52,0.067,0,3.8,0
+Nicolas Jarry,Joao Fonseca,Joao Fonseca,Nicolas Jarry,85.3,159.6,-0.4,0.6,3.5,0
+Matteo Bellucci,Cameron Norrie,Matteo Bellucci,Cameron Norrie,82.8,142.8,0,-0.4,3.5,1
+Andrey Rublev,Adrian Mannarino,Andrey Rublev,Adrian Mannarino,69.4,74.2,0.4,-0.2,3.8,1
+Jan-Lennard Struff,Carlos Alcaraz,Carlos Alcaraz,Jan-Lennard Struff,99.8,580.9,0.6,0,3.25,1

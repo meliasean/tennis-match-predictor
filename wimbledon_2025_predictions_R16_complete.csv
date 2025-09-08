@@ -1,9 +1,9 @@
 player_1,player_2,predicted_winner,predicted_loser,confidence_percent,delta_elo,delta_surface,delta_form,expected_sets_played,correct_prediction
-Jannik Sinner,Grigor Dimitrov,Jannik Sinner,Grigor Dimitrov,97,316.2,0,0.4,3.25,1
-Ben Shelton,Lorenzo Sonego,Ben Shelton,Lorenzo Sonego,86.6,169.4,0.2,0.4,3.5,1
-Marin Cilic,Flavio Cobolli,Flavio Cobolli,Marin Cilic,78.8,119.2,0,0.2,3.5,1
-Alex de Minaur,Novak Djokovic,Novak Djokovic,Alex de Minaur,99.7,542.9,0.5,0.3,3.25,1
-Taylor Fritz,Jordan Thompson,Taylor Fritz,Jordan Thompson,87.6,177.6,0,0.2,3.5,1
-Karen Khachanov,Kamil Majchrzak,Karen Khachanov,Kamil Majchrzak,94.1,251.8,0.067,0.2,3.25,1
-Nicolas Jarry,Cameron Norrie,Cameron Norrie,Nicolas Jarry,71.3,82.5,0,0.4,3.8,1
-Andrey Rublev,Carlos Alcaraz,Carlos Alcaraz,Andrey Rublev,94.8,263.7,0.4,0.2,3.25,1
+Jannik Sinner,Grigor Dimitrov,Jannik Sinner,Grigor Dimitrov,95.7,281.3,0,0.2,3.25,1
+Ben Shelton,Lorenzo Sonego,Ben Shelton,Lorenzo Sonego,74,94.8,0.2,0.4,3.8,1
+Marin Cilic,Flavio Cobolli,Flavio Cobolli,Marin Cilic,76.5,107,0,0.2,3.5,1
+Alex De Minaur,Novak Djokovic,Novak Djokovic,Alex De Minaur,90.6,205.4,0.2,0.8,3.25,1
+Taylor Fritz,Jordan Thompson,Taylor Fritz,Jordan Thompson,88.3,183.6,0,0.2,3.5,1
+Karen Khachanov,Kamil Majchrzak,Karen Khachanov,Kamil Majchrzak,95.5,277.5,0.067,0.2,3.25,1
+Nicolas Jarry,Matteo Bellucci,Matteo Bellucci,Nicolas Jarry,78.7,118.7,0,0,3.5,1
+Andrey Rublev,Carlos Alcaraz,Carlos Alcaraz,Andrey Rublev,91.1,211.7,0.4,0.2,3.25,1

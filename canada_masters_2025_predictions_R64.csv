@@ -1,0 +1,33 @@
+player_1,player_2,predicted_winner,predicted_loser,confidence_percent,delta_elo,delta_surface,delta_form,expected_sets_played
+Alexander Zverev,Adam Walton,Alexander Zverev,Adam Walton,99.7,513.4,0.6,0.6,2.2
+Tristan Schoolkate,Matteo Arnaldi,Matteo Arnaldi,Tristan Schoolkate,86.1,165.7,-0.05,0.0,2.35
+Tallon Griekspoor,Tomas Martin Etcheverry,Tallon Griekspoor,Tomas Martin Etcheverry,66.6,62.6,0.0,0.0,2.45
+Jaume Munar,Francisco Cerundolo,Francisco Cerundolo,Jaume Munar,93.5,242.5,0.4,0.4,2.2
+Daniil Medvedev,Dalibor Svrcina,Daniil Medvedev,Dalibor Svrcina,97.6,336.1,-0.0,-0.0,2.2
+Nicolas Arseneault,Alexei Popyrin,Alexei Popyrin,Nicolas Arseneault,89.5,194.5,-0.1,-0.1,2.35
+Alexandre Muller,Miomir Kecmanovic,Miomir Kecmanovic,Alexandre Muller,67.6,66.9,-0.0,-0.0,2.45
+Giovanni Mpetshi Perricard,Holger Rune,Holger Rune,Giovanni Mpetshi Perricard,84.2,152.1,-0.0,-0.0,2.35
+Lorenzo Musetti,James Duckworth,Lorenzo Musetti,James Duckworth,95.7,282.2,0.4,0.4,2.2
+Tomas Barrios Vera,Alex Michelsen,Alex Michelsen,Tomas Barrios Vera,92.9,232.8,0.6,0.2,2.2
+Denis Shapovalov,Learner Tien,Denis Shapovalov,Learner Tien,75.3,101.4,0.2,0.2,2.35
+Reilly Opelka,Tomas Machac,Tomas Machac,Reilly Opelka,84.7,155.2,0.2,0.2,2.35
+Karen Khachanov,Juan Pablo Ficovich,Karen Khachanov,Juan Pablo Ficovich,93.3,239.3,0.3,0.3,2.2
+Emilio Nava,Ugo Humbert,Ugo Humbert,Emilio Nava,98.2,364.9,0.6,0.6,2.2
+Nuno Borges,Facundo Bagnis,Nuno Borges,Facundo Bagnis,80.6,129.7,-0.0,-0.2,2.35
+Roman Safiullin,Casper Ruud,Casper Ruud,Roman Safiullin,68.0,68.6,0.0,0.0,2.45
+Frances Tiafoe,Yosuke Watanuki,Frances Tiafoe,Yosuke Watanuki,86.4,168.3,0.0,0.0,2.35
+Aleksandar Vukic,Cameron Norrie,Cameron Norrie,Aleksandar Vukic,50.2,0.6,0.2,0.2,2.55
+Stefanos Tsitsipas,Christopher O'Connell,Stefanos Tsitsipas,Christopher O'Connell,95.9,286.3,0.1,0.1,2.2
+Francisco Comesana,Alex de Minaur,Francisco Comesana,Alex de Minaur,59.4,34.7,-0.0,-0.1,2.55
+Flavio Cobolli,Alexis Galarneau,Flavio Cobolli,Alexis Galarneau,91.2,212.7,-0.1,-0.0,2.2
+Fabian Marozsan,Felix Auger-Aliassime,Fabian Marozsan,Felix Auger-Aliassime,65.3,57.6,-0.1,-0.1,2.45
+Brandon Nakashima,Ethan Quinn,Brandon Nakashima,Ethan Quinn,93.4,240.1,0.2,0.0,2.2
+Adrian Mannarino,Ben Shelton,Ben Shelton,Adrian Mannarino,90.7,206.9,0.2,0.2,2.2
+Andrey Rublev,Hugo Gaston,Andrey Rublev,Hugo Gaston,83.5,147.6,-0.4,-0.4,2.35
+Bu Yunchaokete,Lorenzo Sonego,Bu Yunchaokete,Lorenzo Sonego,59.2,33.5,0.4,0.4,2.55
+Alejandro Davidovich Fokina,Corentin Moutet,Alejandro Davidovich Fokina,Corentin Moutet,68.6,71.1,-0.2,-0.2,2.45
+Tristan Boyer,Jakub Mensik,Jakub Mensik,Tristan Boyer,81.3,133.6,-0.3,-0.3,2.35
+Arthur Fils,Pablo Carreno Busta,Arthur Fils,Pablo Carreno Busta,71.2,82.3,0.0,0.0,2.45
+Mackenzie McDonald,Jiri Lehecka,Jiri Lehecka,Mackenzie McDonald,89.9,198.6,-0.1,-0.1,2.35
+Gabriel Diallo,Matteo Gigante,Gabriel Diallo,Matteo Gigante,66.5,61.9,0.3,0.467,2.45
+Roberto Carballes Baena,Taylor Fritz,Taylor Fritz,Roberto Carballes Baena,95.9,286.0,0.4,0.4,2.2

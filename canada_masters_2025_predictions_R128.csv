@@ -1,0 +1,65 @@
+predicted_winner,predicted_loser,confidence_percent,delta_elo,delta_surface,delta_form,expected_sets_played,surface,best_of_5,explanation,player_1,player_2,used_mock_profile
+Alexander Zverev,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Alexander Zverev,Bye,False
+Benjamin Bonzi,Adam Walton,81.4,133.4,0.8,0.8,2.35,Hard,False,"Benjamin Bonzi predicted to win (81.4%) — delta_elo (+133.4, edge), delta_surface (+0.8, edge), delta_form (+0.8, edge).",Adam Walton,Benjamin Bonzi,False
+Joao Fonseca,Tristan Schoolkate,86.3,166.6,0.75,0.8,2.35,Hard,False,"Joao Fonseca predicted to win (86.3%) — delta_elo (+166.6, edge), delta_surface (+0.75, edge), delta_form (+0.8, edge).",Tristan Schoolkate,Joao Fonseca,False
+Matteo Arnaldi,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Matteo Arnaldi,False
+Tallon Griekspoor,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Tallon Griekspoor,Bye,False
+Tomas Martin Etcheverry,Pierre-Hugues Herbert,76.8,108.9,-0.1,-0.1,2.35,Hard,False,"Tomas Martin Etcheverry predicted to win (76.8%) — delta_elo (+108.9, edge), delta_surface (-0.1, disadvantage), delta_form (-0.1, disadvantage).",Pierre-Hugues Herbert,Tomas Martin Etcheverry,False
+Dan Martin,Jaume Munar,66.9,63.8,0.3,0.3,2.45,Hard,False,"Dan Martin predicted to win (66.9%) — delta_elo (+63.8, edge), delta_surface (+0.3, edge), delta_form (+0.3, edge).",Dan Martin,Jaume Munar,False
+Francisco Cerundolo,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Francisco Cerundolo,False
+Daniil Medvedev,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Daniil Medvedev,Bye,False
+Dalibor Svrcina,Alexander Blockx,53.7,13.0,0.4,0.4,2.55,Hard,False,"Dalibor Svrcina predicted to win (53.7%) — delta_elo (+13.0, edge), delta_surface (+0.4, edge), delta_form (+0.4, edge).",Alexander Blockx,Dalibor Svrcina,False
+Nicolas Arseneault,Valentin Royer,53.3,12.2,0.0,0.0,2.55,Hard,False,"Nicolas Arseneault predicted to win (53.3%) — delta_elo (+12.2, edge), delta_surface (+0.0, disadvantage), delta_form (+0.0, disadvantage).",Nicolas Arseneault,Valentin Royer,False
+Alexei Popyrin,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Alexei Popyrin,False
+Alexandre Muller,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Alexandre Muller,Bye,False
+Miomir Kecmanovic,Quentin Halys,54.4,15.9,0.0,0.0,2.55,Hard,False,"Miomir Kecmanovic predicted to win (54.4%) — delta_elo (+15.9, edge), delta_surface (+0.0, disadvantage), delta_form (+0.0, disadvantage).",Miomir Kecmanovic,Quentin Halys,False
+Giovanni Mpetshi Perricard,Shintaro Mochizuki,95.1,268.0,0.8,0.8,2.2,Hard,False,"Giovanni Mpetshi Perricard predicted to win (95.1%) — delta_elo (+268.0, edge), delta_surface (+0.8, edge), delta_form (+0.8, edge).",Shintaro Mochizuki,Giovanni Mpetshi Perricard,False
+Holger Rune,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Holger Rune,False
+Lorenzo Musetti,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Lorenzo Musetti,Bye,False
+Juncheng Shang,James Duckworth,78.6,118.2,-0.0,-0.0,2.35,Hard,False,"Juncheng Shang predicted to win (78.6%) — delta_elo (+118.2, edge), delta_surface (-0.0, disadvantage), delta_form (-0.0, disadvantage).",Juncheng Shang,James Duckworth,False
+Gael Monfils,Tomas Barrios Vera,95.1,268.4,0.6,0.2,2.2,Hard,False,"Gael Monfils predicted to win (95.1%) — delta_elo (+268.4, edge), delta_surface (+0.6, edge), delta_form (+0.2, edge).",Gael Monfils,Tomas Barrios Vera,False
+Alex Michelsen,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Alex Michelsen,False
+Denis Shapovalov,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Denis Shapovalov,Bye,False
+Learner Tien,Colton Smith,68.5,70.4,0.1,0.1,2.45,Hard,False,"Learner Tien predicted to win (68.5%) — delta_elo (+70.4, edge), delta_surface (+0.1, edge), delta_form (+0.1, edge).",Colton Smith,Learner Tien,False
+Reilly Opelka,Sebastian Ofner,64.0,52.3,0.2,0.2,2.45,Hard,False,"Reilly Opelka predicted to win (64.0%) — delta_elo (+52.3, edge), delta_surface (+0.2, edge), delta_form (+0.2, edge).",Sebastian Ofner,Reilly Opelka,False
+Tomas Machac,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Tomas Machac,False
+Karen Khachanov,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Karen Khachanov,Bye,False
+Juan Pablo Ficovich,Jacob Fearnley,51.9,6.7,-0.0,0.1,2.55,Hard,False,"Juan Pablo Ficovich predicted to win (51.9%) — delta_elo (+6.7, edge), delta_surface (-0.0, disadvantage), delta_form (+0.1, edge).",Jacob Fearnley,Juan Pablo Ficovich,False
+Zizou Bergs,Emilio Nava,85.1,157.9,0.4,0.4,2.35,Hard,False,"Zizou Bergs predicted to win (85.1%) — delta_elo (+157.9, edge), delta_surface (+0.4, edge), delta_form (+0.4, edge).",Emilio Nava,Zizou Bergs,False
+Ugo Humbert,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Ugo Humbert,False
+Nuno Borges,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Nuno Borges,Bye,False
+Vasek Pospisil,Facundo Bagnis,63.2,49.1,0.2,-0.0,2.45,Hard,False,"Vasek Pospisil predicted to win (63.2%) — delta_elo (+49.1, edge), delta_surface (+0.2, edge), delta_form (-0.0, disadvantage).",Facundo Bagnis,Vasek Pospisil,False
+Roman Safiullin,Ugo Blanchet,77.5,112.5,0.4,0.067,2.35,Hard,False,"Roman Safiullin predicted to win (77.5%) — delta_elo (+112.5, edge), delta_surface (+0.4, edge), delta_form (+0.067, edge).",Roman Safiullin,Ugo Blanchet,False
+Casper Ruud,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Casper Ruud,False
+Frances Tiafoe,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Frances Tiafoe,Bye,False
+Yosuke Watanuki,Daniel Altmaier,67.3,65.5,-0.0,-0.0,2.45,Hard,False,"Yosuke Watanuki predicted to win (67.3%) — delta_elo (+65.5, edge), delta_surface (-0.0, disadvantage), delta_form (-0.0, disadvantage).",Yosuke Watanuki,Daniel Altmaier,False
+Aleksandar Vukic,Pedro Martinez,83.3,146.0,0.4,0.4,2.35,Hard,False,"Aleksandar Vukic predicted to win (83.3%) — delta_elo (+146.0, edge), delta_surface (+0.4, edge), delta_form (+0.4, edge).",Aleksandar Vukic,Pedro Martinez,False
+Cameron Norrie,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Cameron Norrie,False
+Stefanos Tsitsipas,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Stefanos Tsitsipas,Bye,False
+Chun-Hsin Tseng,Christopher O'Connell,51.8,6.6,-0.0,-0.0,2.55,Hard,False,"Chun-Hsin Tseng predicted to win (51.8%) — delta_elo (+6.6, edge), delta_surface (-0.0, disadvantage), delta_form (-0.0, disadvantage).",Christopher O'Connell,Chun-Hsin Tseng,False
+Francisco Comesana,Damir Dzumhur,62.7,46.9,0.3,0.2,2.45,Hard,False,"Francisco Comesana predicted to win (62.7%) — delta_elo (+46.9, edge), delta_surface (+0.3, edge), delta_form (+0.2, edge).",Francisco Comesana,Damir Dzumhur,False
+Alex de Minaur,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Alex de Minaur,False
+Flavio Cobolli,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Flavio Cobolli,Bye,False
+Arthur Rinderknech,Alexis Galarneau,68.3,69.7,0.1,0.2,2.45,Hard,False,"Arthur Rinderknech predicted to win (68.3%) — delta_elo (+69.7, edge), delta_surface (+0.1, edge), delta_form (+0.2, edge).",Arthur Rinderknech,Alexis Galarneau,False
+Fabian Marozsan,Hugo Dellien,89.6,195.7,0.4,0.0,2.35,Hard,False,"Fabian Marozsan predicted to win (89.6%) — delta_elo (+195.7, edge), delta_surface (+0.4, edge), delta_form (+0.0, disadvantage).",Fabian Marozsan,Hugo Dellien,False
+Felix Auger-Aliassime,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Felix Auger-Aliassime,False
+Brandon Nakashima,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Brandon Nakashima,Bye,False
+Yoshihito Nishioka,Ethan Quinn,85.9,163.9,0.4,0.2,2.35,Hard,False,"Yoshihito Nishioka predicted to win (85.9%) — delta_elo (+163.9, edge), delta_surface (+0.4, edge), delta_form (+0.2, edge).",Ethan Quinn,Yoshihito Nishioka,False
+Marcos Giron,Adrian Mannarino,72.1,86.1,-0.0,-0.0,2.45,Hard,False,"Marcos Giron predicted to win (72.1%) — delta_elo (+86.1, edge), delta_surface (-0.0, disadvantage), delta_form (-0.0, disadvantage).",Marcos Giron,Adrian Mannarino,False
+Ben Shelton,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Ben Shelton,False
+Andrey Rublev,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Andrey Rublev,Bye,False
+Hugo Gaston,Mattia Bellucci,51.3,4.7,0.2,0.2,2.55,Hard,False,"Hugo Gaston predicted to win (51.3%) — delta_elo (+4.7, edge), delta_surface (+0.2, edge), delta_form (+0.2, edge).",Mattia Bellucci,Hugo Gaston,False
+Bu Yunchaokete,Vit Kopriva,83.3,145.9,0.4,0.6,2.35,Hard,False,"Bu Yunchaokete predicted to win (83.3%) — delta_elo (+145.9, edge), delta_surface (+0.4, edge), delta_form (+0.6, edge).",Vit Kopriva,Bu Yunchaokete,False
+Lorenzo Sonego,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Lorenzo Sonego,False
+Alejandro Davidovich Fokina,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Alejandro Davidovich Fokina,Bye,False
+Jenson Brooksby,Corentin Moutet,64.6,54.7,0.2,0.2,2.45,Hard,False,"Jenson Brooksby predicted to win (64.6%) — delta_elo (+54.7, edge), delta_surface (+0.2, edge), delta_form (+0.2, edge).",Corentin Moutet,Jenson Brooksby,False
+Tristan Boyer,Aleksandar Kovacevic,67.1,64.7,0.3,0.3,2.45,Hard,False,"Tristan Boyer predicted to win (67.1%) — delta_elo (+64.7, edge), delta_surface (+0.3, edge), delta_form (+0.3, edge).",Tristan Boyer,Aleksandar Kovacevic,False
+Jakub Mensik,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Jakub Mensik,False
+Arthur Fils,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Arthur Fils,Bye,False
+Pablo Carreno Busta,Liam Draxl,77.3,111.5,-0.1,-0.1,2.35,Hard,False,"Pablo Carreno Busta predicted to win (77.3%) — delta_elo (+111.5, edge), delta_surface (-0.1, disadvantage), delta_form (-0.1, disadvantage).",Liam Draxl,Pablo Carreno Busta,False
+David Goffin,Mackenzie McDonald,84.6,154.7,0.1,0.1,2.35,Hard,False,"David Goffin predicted to win (84.6%) — delta_elo (+154.7, edge), delta_surface (+0.1, edge), delta_form (+0.1, edge).",Mackenzie McDonald,David Goffin,False
+Jiri Lehecka,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Jiri Lehecka,False
+Gabriel Diallo,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Gabriel Diallo,Bye,False
+Borna Coric,Matteo Gigante,56.0,22.1,-0.3,-0.133,2.55,Hard,False,"Borna Coric predicted to win (56.0%) — delta_elo (+22.1, edge), delta_surface (-0.3, disadvantage), delta_form (-0.133, disadvantage).",Borna Coric,Matteo Gigante,False
+Roberto Carballes Baena,Camilo Ugo Carabelli,81.3,133.6,0.4,0.2,2.35,Hard,False,"Roberto Carballes Baena predicted to win (81.3%) — delta_elo (+133.6, edge), delta_surface (+0.4, edge), delta_form (+0.2, edge).",Roberto Carballes Baena,Camilo Ugo Carabelli,False
+Taylor Fritz,Bye,100.0,0.0,0.0,0.0,0.0,Hard,False,Seed receives a bye; opponent auto-advances.,Bye,Taylor Fritz,False

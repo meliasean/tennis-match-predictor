@@ -1,0 +1,65 @@
+player_1,player_2,predicted_winner,predicted_loser,confidence_percent,delta_elo,delta_surface,delta_form,expected_sets_played
+Alexander Zverev,Bye,Alexander Zverev,Bye,100.0,0.0,0.0,0.0,0.0
+Adam Walton,Benjamin Bonzi,Benjamin Bonzi,Adam Walton,81.4,133.4,0.8,0.8,2.35
+Tristan Schoolkate,Joao Fonseca,Joao Fonseca,Tristan Schoolkate,86.3,166.6,0.75,0.8,2.35
+Bye,Matteo Arnaldi,Matteo Arnaldi,Bye,100.0,0.0,0.0,0.0,0.0
+Tallon Griekspoor,Bye,Tallon Griekspoor,Bye,100.0,0.0,0.0,0.0,0.0
+Pierre-Hugues Herbert,Tomas Martin Etcheverry,Tomas Martin Etcheverry,Pierre-Hugues Herbert,76.8,108.9,-0.1,-0.1,2.35
+Dan Martin,Jaume Munar,Dan Martin,Jaume Munar,66.9,63.8,0.3,0.3,2.45
+Bye,Francisco Cerundolo,Francisco Cerundolo,Bye,100.0,0.0,0.0,0.0,0.0
+Daniil Medvedev,Bye,Daniil Medvedev,Bye,100.0,0.0,0.0,0.0,0.0
+Alexander Blockx,Dalibor Svrcina,Dalibor Svrcina,Alexander Blockx,53.7,13.0,0.4,0.4,2.55
+Nicolas Arseneault,Valentin Royer,Nicolas Arseneault,Valentin Royer,53.3,12.2,0.0,0.0,2.55
+Bye,Alexei Popyrin,Alexei Popyrin,Bye,100.0,0.0,0.0,0.0,0.0
+Alexandre Muller,Bye,Alexandre Muller,Bye,100.0,0.0,0.0,0.0,0.0
+Miomir Kecmanovic,Quentin Halys,Miomir Kecmanovic,Quentin Halys,54.4,15.9,0.0,0.0,2.55
+Shintaro Mochizuki,Giovanni Mpetshi Perricard,Giovanni Mpetshi Perricard,Shintaro Mochizuki,95.1,268.0,0.8,0.8,2.2
+Bye,Holger Rune,Holger Rune,Bye,100.0,0.0,0.0,0.0,0.0
+Lorenzo Musetti,Bye,Lorenzo Musetti,Bye,100.0,0.0,0.0,0.0,0.0
+Juncheng Shang,James Duckworth,Juncheng Shang,James Duckworth,78.6,118.2,-0.0,-0.0,2.35
+Gael Monfils,Tomas Barrios Vera,Gael Monfils,Tomas Barrios Vera,95.1,268.4,0.6,0.2,2.2
+Bye,Alex Michelsen,Alex Michelsen,Bye,100.0,0.0,0.0,0.0,0.0
+Denis Shapovalov,Bye,Denis Shapovalov,Bye,100.0,0.0,0.0,0.0,0.0
+Colton Smith,Learner Tien,Learner Tien,Colton Smith,68.5,70.4,0.1,0.1,2.45
+Sebastian Ofner,Reilly Opelka,Reilly Opelka,Sebastian Ofner,64.0,52.3,0.2,0.2,2.45
+Bye,Tomas Machac,Tomas Machac,Bye,100.0,0.0,0.0,0.0,0.0
+Karen Khachanov,Bye,Karen Khachanov,Bye,100.0,0.0,0.0,0.0,0.0
+Jacob Fearnley,Juan Pablo Ficovich,Juan Pablo Ficovich,Jacob Fearnley,51.9,6.7,-0.0,0.1,2.55
+Emilio Nava,Zizou Bergs,Zizou Bergs,Emilio Nava,85.1,157.9,0.4,0.4,2.35
+Bye,Ugo Humbert,Ugo Humbert,Bye,100.0,0.0,0.0,0.0,0.0
+Nuno Borges,Bye,Nuno Borges,Bye,100.0,0.0,0.0,0.0,0.0
+Facundo Bagnis,Vasek Pospisil,Vasek Pospisil,Facundo Bagnis,63.2,49.1,0.2,-0.0,2.45
+Roman Safiullin,Ugo Blanchet,Roman Safiullin,Ugo Blanchet,77.5,112.5,0.4,0.067,2.35
+Bye,Casper Ruud,Casper Ruud,Bye,100.0,0.0,0.0,0.0,0.0
+Frances Tiafoe,Bye,Frances Tiafoe,Bye,100.0,0.0,0.0,0.0,0.0
+Yosuke Watanuki,Daniel Altmaier,Yosuke Watanuki,Daniel Altmaier,67.3,65.5,-0.0,-0.0,2.45
+Aleksandar Vukic,Pedro Martinez,Aleksandar Vukic,Pedro Martinez,83.3,146.0,0.4,0.4,2.35
+Bye,Cameron Norrie,Cameron Norrie,Bye,100.0,0.0,0.0,0.0,0.0
+Stefanos Tsitsipas,Bye,Stefanos Tsitsipas,Bye,100.0,0.0,0.0,0.0,0.0
+Christopher O'Connell,Chun-Hsin Tseng,Chun-Hsin Tseng,Christopher O'Connell,51.8,6.6,-0.0,-0.0,2.55
+Francisco Comesana,Damir Dzumhur,Francisco Comesana,Damir Dzumhur,62.7,46.9,0.3,0.2,2.45
+Bye,Alex de Minaur,Alex de Minaur,Bye,100.0,0.0,0.0,0.0,0.0
+Flavio Cobolli,Bye,Flavio Cobolli,Bye,100.0,0.0,0.0,0.0,0.0
+Arthur Rinderknech,Alexis Galarneau,Arthur Rinderknech,Alexis Galarneau,68.3,69.7,0.1,0.2,2.45
+Fabian Marozsan,Hugo Dellien,Fabian Marozsan,Hugo Dellien,89.6,195.7,0.4,0.0,2.35
+Bye,Felix Auger-Aliassime,Felix Auger-Aliassime,Bye,100.0,0.0,0.0,0.0,0.0
+Brandon Nakashima,Bye,Brandon Nakashima,Bye,100.0,0.0,0.0,0.0,0.0
+Ethan Quinn,Yoshihito Nishioka,Yoshihito Nishioka,Ethan Quinn,85.9,163.9,0.4,0.2,2.35
+Marcos Giron,Adrian Mannarino,Marcos Giron,Adrian Mannarino,72.1,86.1,-0.0,-0.0,2.45
+Bye,Ben Shelton,Ben Shelton,Bye,100.0,0.0,0.0,0.0,0.0
+Andrey Rublev,Bye,Andrey Rublev,Bye,100.0,0.0,0.0,0.0,0.0
+Mattia Bellucci,Hugo Gaston,Hugo Gaston,Mattia Bellucci,51.3,4.7,0.2,0.2,2.55
+Vit Kopriva,Bu Yunchaokete,Bu Yunchaokete,Vit Kopriva,83.3,145.9,0.4,0.6,2.35
+Bye,Lorenzo Sonego,Lorenzo Sonego,Bye,100.0,0.0,0.0,0.0,0.0
+Alejandro Davidovich Fokina,Bye,Alejandro Davidovich Fokina,Bye,100.0,0.0,0.0,0.0,0.0
+Corentin Moutet,Jenson Brooksby,Jenson Brooksby,Corentin Moutet,64.6,54.7,0.2,0.2,2.45
+Tristan Boyer,Aleksandar Kovacevic,Tristan Boyer,Aleksandar Kovacevic,67.1,64.7,0.3,0.3,2.45
+Bye,Jakub Mensik,Jakub Mensik,Bye,100.0,0.0,0.0,0.0,0.0
+Arthur Fils,Bye,Arthur Fils,Bye,100.0,0.0,0.0,0.0,0.0
+Liam Draxl,Pablo Carreno Busta,Pablo Carreno Busta,Liam Draxl,77.3,111.5,-0.1,-0.1,2.35
+Mackenzie McDonald,David Goffin,David Goffin,Mackenzie McDonald,84.6,154.7,0.1,0.1,2.35
+Bye,Jiri Lehecka,Jiri Lehecka,Bye,100.0,0.0,0.0,0.0,0.0
+Gabriel Diallo,Bye,Gabriel Diallo,Bye,100.0,0.0,0.0,0.0,0.0
+Borna Coric,Matteo Gigante,Borna Coric,Matteo Gigante,56.0,22.1,-0.3,-0.133,2.55
+Roberto Carballes Baena,Camilo Ugo Carabelli,Roberto Carballes Baena,Camilo Ugo Carabelli,81.3,133.6,0.4,0.2,2.35
+Bye,Taylor Fritz,Taylor Fritz,Bye,100.0,0.0,0.0,0.0,0.0
