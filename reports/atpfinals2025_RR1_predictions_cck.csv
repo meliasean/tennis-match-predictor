@@ -1,5 +1,0 @@
-﻿match_no,date,round,player_a,odds_player_a,player_b,odds_player_b,pred_winner,correct_prediction,correct_prediction_book,confidence,prob_player_a_win,prob_player_b_win,tourney_level,surface
-1,2025-11-10,RR1,Carlos Alcaraz,-500,Alex De Minaur,371,Carlos Alcaraz,,,0.7914127116000975,0.7914127116000975,0.20858728839990248,YEC,Hard
-2,2025-11-10,RR1,Alexander Zverev,-183,Ben Shelton,149,Alexander Zverev,,,0.6019431232440459,0.6019431232440459,0.39805687675595414,YEC,Hard
-3,2025-11-10,RR1,Lorenzo Musetti,156,Taylor Fritz,-192,Taylor Fritz,,,0.6132337692457054,0.3867662307542946,0.6132337692457054,YEC,Hard
-4,2025-11-10,RR1,Jannik Sinner,-1380,Felix Auger Aliassime,940,Jannik Sinner,,,0.8974299867113198,0.8974299867113198,0.1025700132886802,YEC,Hard

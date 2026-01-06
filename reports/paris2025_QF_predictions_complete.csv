@@ -1,5 +1,0 @@
-﻿match_no,date,round,player_a,odds_player_a,player_b,odds_player_b,pred_winner,correct_prediction,correct_prediction_book,confidence,prob_player_a_win,prob_player_b_win,tourney_level,surface
-1,10/31/2025,QF,Valentin Vacherot,117,Felix Auger Aliassime,-144,Felix Auger Aliassime,1,1,0.595133251,0.404866749,0.595133251,M,Hard
-2,10/31/2025,QF,Alexander Bublik,106,Alex De Minaur,-130,Alex De Minaur,0,0,0.581511009,0.418488991,0.581511009,M,Hard
-3,10/31/2025,QF,Ben Shelton,374,Jannik Sinner,-486,Jannik Sinner,1,1,0.686384946,0.313615054,0.686384946,M,Hard
-4,10/31/2025,QF,Daniil Medvedev,-115,Alexander Zverev,-107,Alexander Zverev,1,0,0.530615933,0.469384067,0.530615933,M,Hard

@@ -1,3 +1,0 @@
-﻿match_no,date,round,player_a,odds_player_a,player_b,odds_player_b,pred_winner,correct_prediction,correct_prediction_book,confidence,prob_player_a_win,prob_player_b_win,tourney_level,surface
-1,11/1/2025,SF,Felix Auger Aliassime,-108,Alexander Bublik,-112,Felix Auger Aliassime,1,0,0.586176904,0.586176904,0.413823096,M,Hard
-2,11/1/2025,SF,Alexander Zverev,473,Jannik Sinner,-667,Jannik Sinner,1,1,0.687932136,0.312067864,0.687932136,M,Hard
