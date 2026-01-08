@@ -1,0 +1,3 @@
+﻿match_no,date,round,player_a,odds_player_a,player_b,odds_player_b,pred_winner,correct_prediction,correct_prediction_book,confidence,prob_player_a_win,prob_player_b_win,tourney_level,surface
+1,2025-11-16,SF,Carlos Alcaraz,-500,Felix Auger Aliassime,369,Carlos Alcaraz,,,0.7920218594484245,0.7920218594484245,0.20797814055157549,YEC,Hard
+2,2025-11-16,SF,Jannik Sinner,-1667,Alex De Minaur,900,Jannik Sinner,,,0.8973602524817743,0.8973602524817743,0.10263974751822569,YEC,Hard

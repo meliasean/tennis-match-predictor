@@ -1,0 +1,9 @@
+﻿match_no,date,round,player_a,odds_player_a,player_b,odds_player_b,pred_winner,correct_prediction,correct_prediction_book,confidence,prob_player_a_win,prob_player_b_win,tourney_level,surface
+1,2025-10-30,R16,Cameron Norrie,117,Valentin Vacherot,-143,Cameron Norrie,,,0.5028098159654953,0.5028098159654953,0.49719018403450466,M,Hard
+2,2025-10-30,R16,Felix Auger Aliassime,-195,Daniel Altmaier,158,Felix Auger Aliassime,,,0.6414531253320073,0.6414531253320073,0.35854687466799273,M,Hard
+3,2025-10-30,R16,Taylor Fritz,-151,Alexander Bublik,123,Taylor Fritz,,,0.6473462219976075,0.6473462219976075,0.3526537780023925,M,Hard
+4,2025-10-30,R16,Karen Khachanov,135,Alex De Minaur,-166,Alex De Minaur,,,0.5362076508628789,0.4637923491371211,0.5362076508628789,M,Hard
+5,2025-10-30,R16,Lorenzo Sonego,319,Daniil Medvedev,-408,Daniil Medvedev,,,0.5864099316956682,0.41359006830433176,0.5864099316956682,M,Hard
+6,2025-10-30,R16,Alejandro Davidovich Fokina,183,Alexander Zverev,-228,Alexander Zverev,,,0.6229375218079576,0.37706247819204236,0.6229375218079576,M,Hard
+7,2025-10-30,R16,Ben Shelton,-140,Andrey Rublev,114,Ben Shelton,,,0.5394521194323503,0.5394521194323503,0.4605478805676497,M,Hard
+8,2025-10-30,R16,Francisco Cerundolo,1300,Jannik Sinner,-2100,Jannik Sinner,,,0.7676727731280473,0.23232722687195276,0.7676727731280473,M,Hard
