@@ -54,4 +54,30 @@ CCK takes the Standard model probability and adjusts it via:
 ---
 
 ## Repo Structure (typical)
+/data
+match_dataset_post_.csv # feature dataset snapshots (chronological)
+/models
+rf_model.joblib # trained model bundle (pipeline + feature cols)
+/reports
+player_profiles_.csv # player profile snapshots
+ao2026_R32_predictions.csv # round predictions (Standard)
+ao2026_R32_predictions_cck.csv # round predictions (CCK)
+ao2026_ALL_predictions*.csv # combined predictions per tournament
+/scripts
+predict_.py # round-specific predictors
+update__profiles_and_dataset.py # continuity-safe profile/dataset updates
 
+---
+
+## Getting Started
+
+### Requirements
+- Python 3.10+
+- pandas, numpy, scikit-learn, joblib
+
+---
+
+## Disclaimer
+
+This project is for research and entertainment purposes only.
+No guarantees are made about performance or profitability, and nothing here is financial or gambling advice.
