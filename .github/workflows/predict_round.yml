@@ -1,0 +1,85 @@
+name: Generate Round Predictions
+
+on:
+  workflow_dispatch:
+    inputs:
+      tournament:
+        description: 'Tournament slug (e.g. madrid2026)'
+        required: true
+      round:
+        description: 'Round (R128, R64, R32, R16, QF, SF, F)'
+        required: true
+      date:
+        description: 'As-of date YYYY-MM-DD (default: today)'
+        required: false
+      draw_data:
+        description: 'Matches as JSON e.g. [["Alcaraz",-500,"Rune",+380],["Sinner",-450,"Baez",+320]]'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Write draw CSV
+        env:
+          DRAW_JSON: ${{ github.event.inputs.draw_data }}
+          TOURNAMENT: ${{ github.event.inputs.tournament }}
+          ROUND: ${{ github.event.inputs.round }}
+        run: |
+          python3 - << 'PYEOF'
+          import json, csv, os, sys
+          raw = os.environ["DRAW_JSON"]
+          try:
+              matches = json.loads(raw)
+          except json.JSONDecodeError as e:
+              print(f"ERROR parsing draw_data: {e}"); sys.exit(1)
+          os.makedirs("draws", exist_ok=True)
+          out = f"draws/{os.environ['TOURNAMENT']}_{os.environ['ROUND']}.csv"
+          with open(out, "w", newline="") as f:
+              w = csv.writer(f)
+              w.writerow(["player_a","odds_a","player_b","odds_b"])
+              for m in matches:
+                  w.writerow(m if len(m)==4 else [m[0],"",m[1],""])
+          print(f"Wrote {len(matches)} matches to {out}")
+          PYEOF
+
+      - name: Run predictions
+        run: |
+          python courtiq_engine.py predict \
+            --tournament ${{ github.event.inputs.tournament }} \
+            --round ${{ github.event.inputs.round }} \
+            --draw-csv draws/${{ github.event.inputs.tournament }}_${{ github.event.inputs.round }}.csv \
+            ${{ github.event.inputs.date && format('--date {0}', github.event.inputs.date) || '' }}
+
+      - name: Rebuild site
+        run: python courtiq_engine.py site --output docs/index.html
+
+      - name: Commit
+        run: |
+          git config user.name  "CourtIQ Bot"
+          git config user.email "courtiq-bot@users.noreply.github.com"
+          git add reports/ draws/ docs/index.html -f
+          git diff --staged --quiet || git commit -m "predictions: ${{ github.event.inputs.tournament }} ${{ github.event.inputs.round }}"
+          git push

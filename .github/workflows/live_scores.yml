@@ -1,0 +1,58 @@
+name: Live Scores & Auto-Score Predictions
+
+on:
+  schedule:
+    - cron: '*/10 6-23 * * *'
+  workflow_dispatch:
+    inputs:
+      tournament:
+        description: 'Tournament slug (e.g. madrid2026)'
+        required: false
+      round:
+        description: 'Round (e.g. R32)'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  live-scores:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fetch live scores and auto-score predictions
+        env:
+          SPORTRADAR_API_KEY: ${{ secrets.SPORTRADAR_API_KEY }}
+        run: |
+          python courtiq_engine.py live \
+            ${{ github.event.inputs.tournament && format('--tournament {0}', github.event.inputs.tournament) || '' }} \
+            ${{ github.event.inputs.round && format('--round {0}', github.event.inputs.round) || '' }}
+
+      - name: Rebuild CourtIQ site
+        run: python courtiq_engine.py site --output docs/index.html
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "CourtIQ Bot"
+          git config user.email "courtiq-bot@users.noreply.github.com"
+          git add docs/index.html reports/ data/ -f
+          git diff --staged --quiet || git commit -m "auto: live scores $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
