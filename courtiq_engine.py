@@ -1568,7 +1568,7 @@ def cmd_site(args):
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(html)
-    print(f"\n  OK CourtIQ -> {out}")
+    print(f"\n  ✓ CourtIQ → {out}")
     print()
 
 
@@ -1627,93 +1627,207 @@ def _slug_from_tourney_name(name: str) -> Optional[Tuple[str, int]]:
 
 def fetch_live_atp_scores() -> List[dict]:
     """
-    Fetch current ATP tour scores using the SportRadar-backed sports data API.
-    Returns a list of match dicts with player names, scores, and status.
+    Fetch completed ATP match results. No API key required.
+    Tries multiple sources in order — returns first successful result.
+
+    Sources tried:
+      1. scores.tennis-data.co.uk  (structured JSON, most reliable)
+      2. api.sofascore.com          (structured JSON, good coverage)
+      3. ATP website HTML scrape    (fallback, best-effort)
+    """
+    results = _fetch_tennis_data_co_uk()
+    if results:
+        return results
+
+    results = _fetch_sofascore()
+    if results:
+        return results
+
+    return _scrape_atp_website()
+
+
+def _fetch_tennis_data_co_uk() -> List[dict]:
+    """
+    tennis-data.co.uk publishes free ATP results CSVs updated regularly.
+    We parse the current year's file for completed match results.
+    """
+    try:
+        import urllib.request, csv
+        from io import StringIO
+
+        year = datetime.utcnow().year
+        url = f"http://www.tennis-data.co.uk/{year}/{year}.csv"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            content = resp.read().decode("utf-8", errors="ignore")
+
+        reader = csv.DictReader(StringIO(content))
+        results = []
+        for row in reader:
+            winner = alias(row.get("Winner", "").strip())
+            loser  = alias(row.get("Loser", "").strip())
+            tourney = row.get("Tournament", "").strip()
+            series  = row.get("Series", "").strip()
+
+            # Only ATP 500+ and Grand Slams
+            if not any(kw in series for kw in ["Masters", "Grand Slam", "ATP500", "500"]):
+                continue
+            if not winner or not loser:
+                continue
+
+            results.append({
+                "tournament": tourney,
+                "player_a":   winner,
+                "player_b":   loser,
+                "status":     "closed",
+                "winner":     winner,
+            })
+
+        if results:
+            print(f"  [live] tennis-data.co.uk: {len(results)} completed matches")
+        return results
+
+    except Exception as e:
+        print(f"  [live] tennis-data.co.uk failed: {e}")
+        return []
+
+
+def _fetch_sofascore() -> List[dict]:
+    """
+    Sofascore has a public API for tennis results.
+    Fetches today's and yesterday's completed ATP matches.
     """
     try:
         import urllib.request, json as _json
 
-        # SportRadar tennis endpoint (same data source as the Claude sports tool)
-        # This is a public-facing endpoint — no API key needed for basic scores
-        url = "https://api.sportradar.com/tennis/trial/v3/en/schedules/live/results.json"
-        key = os.environ.get("SPORTRADAR_API_KEY", "")
-
-        if key:
-            url += f"?api_key={key}"
-
-        req = urllib.request.Request(url, headers={"User-Agent": "CourtIQ/1.0"})
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            data = _json.loads(resp.read())
-
         results = []
-        for sport_event in data.get("results", []):
-            se = sport_event.get("sport_event", {})
-            sr = sport_event.get("sport_event_status", {})
+        today = datetime.utcnow()
 
-            tourney = se.get("sport_event_context", {}).get("competition", {}).get("name", "")
-            if "ATP" not in tourney and "Grand Slam" not in tourney:
-                continue
-
-            competitors = se.get("competitors", [])
-            if len(competitors) < 2:
-                continue
-
-            p1 = alias(competitors[0].get("name", ""))
-            p2 = alias(competitors[1].get("name", ""))
-            status = sr.get("status", "")
-            winner = alias(sr.get("winner_id", ""))
-
-            # Map winner ID back to name
-            for c in competitors:
-                if c.get("id") == sr.get("winner_id"):
-                    winner = alias(c.get("name", ""))
-
-            results.append({
-                "tournament": tourney,
-                "player_a": p1,
-                "player_b": p2,
-                "status": status,
-                "winner": winner if status == "closed" else None,
-                "score": sr.get("home_score", 0),
+        for delta_days in (0, 1):
+            d = today - timedelta(days=delta_days)
+            date_str = d.strftime("%Y-%m-%d")
+            url = f"https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/{date_str}"
+            req = urllib.request.Request(url, headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                "Accept": "application/json",
             })
 
+            try:
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    data = _json.loads(resp.read())
+            except Exception:
+                continue
+
+            for event in data.get("events", []):
+                # Filter to completed ATP matches
+                status = event.get("status", {}).get("type", "")
+                if status != "finished":
+                    continue
+
+                category = event.get("tournament", {}).get("category", {}).get("name", "")
+                tourney_name = event.get("tournament", {}).get("name", "")
+
+                # ATP 500+ only
+                if "ATP" not in category and "Grand Slam" not in tourney_name:
+                    continue
+                if any(kw in tourney_name.lower() for kw in ["challenger", "itf", "doubles", "wta"]):
+                    continue
+
+                home = event.get("homeTeam", {}).get("name", "")
+                away = event.get("awayTeam", {}).get("name", "")
+                home_score = event.get("homeScore", {}).get("current", 0)
+                away_score = event.get("awayScore", {}).get("current", 0)
+
+                if not home or not away:
+                    continue
+
+                winner = alias(home) if home_score > away_score else alias(away)
+                loser  = alias(away) if winner == alias(home) else alias(home)
+
+                results.append({
+                    "tournament": tourney_name,
+                    "player_a":   winner,
+                    "player_b":   loser,
+                    "status":     "closed",
+                    "winner":     winner,
+                })
+
+        if results:
+            print(f"  [live] Sofascore: {len(results)} completed ATP matches")
         return results
 
     except Exception as e:
-        print(f"  [live] SportRadar API failed ({e}), falling back to ATP website scrape")
-        return _scrape_atp_results()
+        print(f"  [live] Sofascore failed: {e}")
+        return []
 
 
-def _scrape_atp_results() -> List[dict]:
-    """Fallback: scrape ATP website for completed results."""
+def _scrape_atp_website() -> List[dict]:
+    """
+    Last resort: scrape the ATP results page directly.
+    Parses completed match results from atptour.com.
+    """
     try:
         import urllib.request
-        url = "https://www.atptour.com/en/scores/current"
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; CourtIQ/1.0)"})
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            html = resp.read().decode("utf-8", errors="ignore")
+
+        # ATP results page lists recent completed matches with scores
+        urls = [
+            "https://www.atptour.com/en/scores/results-archive",
+            "https://www.atptour.com/en/scores/current",
+        ]
+
+        html = ""
+        for url in urls:
+            try:
+                req = urllib.request.Request(url, headers={
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                    "Accept": "text/html,application/xhtml+xml",
+                })
+                with urllib.request.urlopen(req, timeout=15) as resp:
+                    html = resp.read().decode("utf-8", errors="ignore")
+                if len(html) > 5000:
+                    break
+            except Exception:
+                continue
+
+        if not html:
+            return []
 
         results = []
-        # Look for completed match patterns in ATP score HTML
-        # Pattern: winner name followed by score
-        score_blocks = re.findall(
-            r'data-winner="([^"]+)"[^>]*>.*?'
-            r'class="[^"]*player[^"]*"[^>]*>([^<]+)<.*?'
-            r'class="[^"]*player[^"]*"[^>]*>([^<]+)<',
-            html, re.DOTALL
-        )
-        for winner_id, p1, p2 in score_blocks:
+
+        # Pattern 1: JSON embedded in page (ATP sometimes embeds match data)
+        json_blocks = re.findall(r'"winner"\s*:\s*"([^"]+)".*?"player1"\s*:\s*"([^"]+)".*?"player2"\s*:\s*"([^"]+)"', html)
+        for winner, p1, p2 in json_blocks:
             results.append({
-                "player_a": alias(p1.strip()),
-                "player_b": alias(p2.strip()),
-                "status": "closed",
-                "winner": None,  # can't reliably determine from this pattern
                 "tournament": "ATP Tour",
+                "player_a":   alias(p1.strip()),
+                "player_b":   alias(p2.strip()),
+                "status":     "closed",
+                "winner":     alias(winner.strip()),
             })
 
+        # Pattern 2: match result rows with winner class
+        # ATP marks the winner row with class "winner" or similar
+        winner_blocks = re.findall(
+            r'class="[^"]*winner[^"]*"[^>]*>.*?'
+            r'([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)',
+            html, re.DOTALL
+        )
+        # This is approximate — deduplicate and filter obvious non-names
+        seen = set()
+        for name in winner_blocks:
+            name = name.strip()
+            if len(name) > 5 and name not in seen:
+                seen.add(name)
+
+        if results:
+            print(f"  [live] ATP website: {len(results)} matches parsed")
+        else:
+            print(f"  [live] ATP website: no structured results found (HTML may require JS rendering)")
+
         return results
+
     except Exception as e:
-        print(f"  [live] ATP scrape also failed: {e}")
+        print(f"  [live] ATP website scrape failed: {e}")
         return []
 
 

@@ -39,8 +39,6 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Fetch live scores and auto-score predictions
-        env:
-          SPORTRADAR_API_KEY: ${{ secrets.SPORTRADAR_API_KEY }}
         run: |
           python courtiq_engine.py live \
             ${{ github.event.inputs.tournament && format('--tournament {0}', github.event.inputs.tournament) || '' }} \
