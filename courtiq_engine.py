@@ -1568,7 +1568,7 @@ def cmd_site(args):
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(html)
-    print(f"\n  ✓ CourtIQ → {out}")
+    print(f"\n  OK CourtIQ -> {out}")
     print()
 
 
