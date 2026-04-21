@@ -1628,14 +1628,11 @@ def _slug_from_tourney_name(name: str) -> Optional[Tuple[str, int]]:
 def fetch_live_atp_scores() -> List[dict]:
     """
     Fetch completed ATP match results. No API key required.
-    Tries multiple sources in order — returns first successful result.
-
-    Sources tried:
-      1. scores.tennis-data.co.uk  (structured JSON, most reliable)
-      2. api.sofascore.com          (structured JSON, good coverage)
-      3. ATP website HTML scrape    (fallback, best-effort)
+    Uses TennisMyLife (stats.tennismylife.org) as primary source —
+    a free, live-updated ATP database with real-time tournament results.
+    Falls back to Sofascore if TennisMyLife is unreachable.
     """
-    results = _fetch_tennis_data_co_uk()
+    results = _fetch_tennismylife()
     if results:
         return results
 
@@ -1643,58 +1640,102 @@ def fetch_live_atp_scores() -> List[dict]:
     if results:
         return results
 
-    return _scrape_atp_website()
+    print("  [live] All sources failed — no results available")
+    return []
 
 
-def _fetch_tennis_data_co_uk() -> List[dict]:
+def _fetch_tennismylife() -> List[dict]:
     """
-    tennis-data.co.uk publishes free ATP results CSVs updated regularly.
-    We parse the current year's file for completed match results.
+    TennisMyLife (stats.tennismylife.org) provides free, live-updated ATP match CSVs.
+    Two sources:
+      1. ongoing_tourneys.csv — real-time results for current tournaments
+      2. 2026.csv             — full season completed matches (fallback)
+
+    Columns include: tourney_name, surface, tourney_level, round,
+                     winner_name, loser_name, score, tourney_date
+    License: MIT
     """
     try:
-        import urllib.request, csv
+        import urllib.request
         from io import StringIO
 
-        year = datetime.utcnow().year
-        url = f"http://www.tennis-data.co.uk/{year}/{year}.csv"
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            content = resp.read().decode("utf-8", errors="ignore")
+        HEADERS = {
+            "User-Agent": "CourtIQ/1.0 (tennis analytics; github.com/meliasean)",
+            "Accept": "text/csv,text/plain,*/*",
+        }
 
-        reader = csv.DictReader(StringIO(content))
+        # ATP 500+ tournament level codes in TennisMyLife data
+        ATP_500_PLUS = {"500", "M", "G", "F"}  # 500, Masters, Grand Slam, Finals
+
         results = []
-        for row in reader:
-            winner = alias(row.get("Winner", "").strip())
-            loser  = alias(row.get("Loser", "").strip())
-            tourney = row.get("Tournament", "").strip()
-            series  = row.get("Series", "").strip()
 
-            # Only ATP 500+ and Grand Slams
-            if not any(kw in series for kw in ["Masters", "Grand Slam", "ATP500", "500"]):
+        # Try ongoing tournaments first (real-time)
+        for url in [
+            "https://stats.tennismylife.org/data/ongoing_tourneys.csv",
+            f"https://stats.tennismylife.org/data/{datetime.utcnow().year}.csv",
+        ]:
+            try:
+                req = urllib.request.Request(url, headers=HEADERS)
+                with urllib.request.urlopen(req, timeout=20) as resp:
+                    content = resp.read().decode("utf-8", errors="ignore")
+
+                if not content.strip():
+                    continue
+
+                reader = __import__("csv").DictReader(StringIO(content))
+                batch = []
+                for row in reader:
+                    # TennisMyLife columns: winner_name, loser_name, tourney_name,
+                    # tourney_level, surface, round, tourney_date, score
+                    winner  = alias((row.get("winner_name") or row.get("Winner") or "").strip())
+                    loser   = alias((row.get("loser_name")  or row.get("Loser")  or "").strip())
+                    tourney = (row.get("tourney_name") or row.get("Tournament") or "").strip()
+                    level   = (row.get("tourney_level") or row.get("Series") or "").strip()
+                    surface = (row.get("surface") or row.get("Surface") or "").strip()
+                    rnd     = (row.get("round") or row.get("Round") or "").strip()
+                    score   = (row.get("score") or row.get("Comment") or "").strip()
+
+                    if not winner or not loser:
+                        continue
+
+                    # Filter to ATP 500, Masters 1000, Grand Slams only
+                    if level and not any(kw in level for kw in ATP_500_PLUS):
+                        continue
+
+                    # Skip retirements/walkovers if flagged
+                    if score.upper() in ("W/O", "DEF", "RET", "WALKOVER"):
+                        continue
+
+                    batch.append({
+                        "tournament": tourney,
+                        "surface":    surface,
+                        "round":      rnd,
+                        "player_a":   winner,
+                        "player_b":   loser,
+                        "status":     "closed",
+                        "winner":     winner,
+                    })
+
+                if batch:
+                    results.extend(batch)
+                    label = "ongoing" if "ongoing" in url else "2026 season"
+                    print(f"  [live] TennisMyLife ({label}): {len(batch)} ATP matches")
+                    break  # got results from first source, no need for fallback
+
+            except Exception as e:
+                print(f"  [live] TennisMyLife {url.split('/')[-1]} failed: {e}")
                 continue
-            if not winner or not loser:
-                continue
 
-            results.append({
-                "tournament": tourney,
-                "player_a":   winner,
-                "player_b":   loser,
-                "status":     "closed",
-                "winner":     winner,
-            })
-
-        if results:
-            print(f"  [live] tennis-data.co.uk: {len(results)} completed matches")
         return results
 
     except Exception as e:
-        print(f"  [live] tennis-data.co.uk failed: {e}")
+        print(f"  [live] TennisMyLife failed: {e}")
         return []
 
 
 def _fetch_sofascore() -> List[dict]:
     """
-    Sofascore has a public API for tennis results.
+    Sofascore fallback — public API for tennis results.
     Fetches today's and yesterday's completed ATP matches.
     """
     try:
@@ -1703,23 +1744,23 @@ def _fetch_sofascore() -> List[dict]:
         results = []
         today = datetime.utcnow()
 
-        for delta_days in (0, 1):
+        for delta_days in (0, 1, 2):
             d = today - timedelta(days=delta_days)
             date_str = d.strftime("%Y-%m-%d")
             url = f"https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/{date_str}"
             req = urllib.request.Request(url, headers={
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
                 "Accept": "application/json",
+                "Referer": "https://www.sofascore.com/",
             })
 
             try:
-                with urllib.request.urlopen(req, timeout=10) as resp:
+                with urllib.request.urlopen(req, timeout=15) as resp:
                     data = _json.loads(resp.read())
             except Exception:
                 continue
 
             for event in data.get("events", []):
-                # Filter to completed ATP matches
                 status = event.get("status", {}).get("type", "")
                 if status != "finished":
                     continue
@@ -1727,21 +1768,22 @@ def _fetch_sofascore() -> List[dict]:
                 category = event.get("tournament", {}).get("category", {}).get("name", "")
                 tourney_name = event.get("tournament", {}).get("name", "")
 
-                # ATP 500+ only
+                # ATP 500+ only — filter out Challenger, ITF, WTA, doubles
                 if "ATP" not in category and "Grand Slam" not in tourney_name:
                     continue
-                if any(kw in tourney_name.lower() for kw in ["challenger", "itf", "doubles", "wta"]):
+                if any(kw in tourney_name.lower() for kw in
+                       ["challenger", "itf", "doubles", "wta", "davis", "united"]):
                     continue
 
                 home = event.get("homeTeam", {}).get("name", "")
                 away = event.get("awayTeam", {}).get("name", "")
-                home_score = event.get("homeScore", {}).get("current", 0)
-                away_score = event.get("awayScore", {}).get("current", 0)
+                home_score = event.get("homeScore", {}).get("current", 0) or 0
+                away_score = event.get("awayScore", {}).get("current", 0) or 0
 
                 if not home or not away:
                     continue
 
-                winner = alias(home) if home_score > away_score else alias(away)
+                winner = alias(home) if int(home_score) > int(away_score) else alias(away)
                 loser  = alias(away) if winner == alias(home) else alias(home)
 
                 results.append({
@@ -1753,81 +1795,21 @@ def _fetch_sofascore() -> List[dict]:
                 })
 
         if results:
-            print(f"  [live] Sofascore: {len(results)} completed ATP matches")
+            # Deduplicate
+            seen = set()
+            deduped = []
+            for r in results:
+                key = f"{r['player_a']}|{r['player_b']}"
+                if key not in seen:
+                    seen.add(key)
+                    deduped.append(r)
+            print(f"  [live] Sofascore: {len(deduped)} completed ATP matches")
+            return deduped
+
         return results
 
     except Exception as e:
         print(f"  [live] Sofascore failed: {e}")
-        return []
-
-
-def _scrape_atp_website() -> List[dict]:
-    """
-    Last resort: scrape the ATP results page directly.
-    Parses completed match results from atptour.com.
-    """
-    try:
-        import urllib.request
-
-        # ATP results page lists recent completed matches with scores
-        urls = [
-            "https://www.atptour.com/en/scores/results-archive",
-            "https://www.atptour.com/en/scores/current",
-        ]
-
-        html = ""
-        for url in urls:
-            try:
-                req = urllib.request.Request(url, headers={
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-                    "Accept": "text/html,application/xhtml+xml",
-                })
-                with urllib.request.urlopen(req, timeout=15) as resp:
-                    html = resp.read().decode("utf-8", errors="ignore")
-                if len(html) > 5000:
-                    break
-            except Exception:
-                continue
-
-        if not html:
-            return []
-
-        results = []
-
-        # Pattern 1: JSON embedded in page (ATP sometimes embeds match data)
-        json_blocks = re.findall(r'"winner"\s*:\s*"([^"]+)".*?"player1"\s*:\s*"([^"]+)".*?"player2"\s*:\s*"([^"]+)"', html)
-        for winner, p1, p2 in json_blocks:
-            results.append({
-                "tournament": "ATP Tour",
-                "player_a":   alias(p1.strip()),
-                "player_b":   alias(p2.strip()),
-                "status":     "closed",
-                "winner":     alias(winner.strip()),
-            })
-
-        # Pattern 2: match result rows with winner class
-        # ATP marks the winner row with class "winner" or similar
-        winner_blocks = re.findall(
-            r'class="[^"]*winner[^"]*"[^>]*>.*?'
-            r'([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)',
-            html, re.DOTALL
-        )
-        # This is approximate — deduplicate and filter obvious non-names
-        seen = set()
-        for name in winner_blocks:
-            name = name.strip()
-            if len(name) > 5 and name not in seen:
-                seen.add(name)
-
-        if results:
-            print(f"  [live] ATP website: {len(results)} matches parsed")
-        else:
-            print(f"  [live] ATP website: no structured results found (HTML may require JS rendering)")
-
-        return results
-
-    except Exception as e:
-        print(f"  [live] ATP website scrape failed: {e}")
         return []
 
 
