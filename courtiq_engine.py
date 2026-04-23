@@ -1628,19 +1628,14 @@ def _slug_from_tourney_name(name: str) -> Optional[Tuple[str, int]]:
 def fetch_live_atp_scores() -> List[dict]:
     """
     Fetch completed ATP match results. No API key required.
-    Uses TennisMyLife (stats.tennismylife.org) as primary source —
-    a free, live-updated ATP database with real-time tournament results.
-    Falls back to Sofascore if TennisMyLife is unreachable.
+    Uses TennisMyLife (stats.tennismylife.org) — a free, live-updated
+    ATP database with real-time tournament results (MIT license).
     """
     results = _fetch_tennismylife()
     if results:
         return results
 
-    results = _fetch_sofascore()
-    if results:
-        return results
-
-    print("  [live] All sources failed — no results available")
+    print("  [live] TennisMyLife returned no results")
     return []
 
 
@@ -1733,85 +1728,6 @@ def _fetch_tennismylife() -> List[dict]:
         return []
 
 
-def _fetch_sofascore() -> List[dict]:
-    """
-    Sofascore fallback — public API for tennis results.
-    Fetches today's and yesterday's completed ATP matches.
-    """
-    try:
-        import urllib.request, json as _json
-
-        results = []
-        today = datetime.utcnow()
-
-        for delta_days in (0, 1, 2):
-            d = today - timedelta(days=delta_days)
-            date_str = d.strftime("%Y-%m-%d")
-            url = f"https://api.sofascore.com/api/v1/sport/tennis/scheduled-events/{date_str}"
-            req = urllib.request.Request(url, headers={
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-                "Accept": "application/json",
-                "Referer": "https://www.sofascore.com/",
-            })
-
-            try:
-                with urllib.request.urlopen(req, timeout=15) as resp:
-                    data = _json.loads(resp.read())
-            except Exception:
-                continue
-
-            for event in data.get("events", []):
-                status = event.get("status", {}).get("type", "")
-                if status != "finished":
-                    continue
-
-                category = event.get("tournament", {}).get("category", {}).get("name", "")
-                tourney_name = event.get("tournament", {}).get("name", "")
-
-                # ATP 500+ only — filter out Challenger, ITF, WTA, doubles
-                if "ATP" not in category and "Grand Slam" not in tourney_name:
-                    continue
-                if any(kw in tourney_name.lower() for kw in
-                       ["challenger", "itf", "doubles", "wta", "davis", "united"]):
-                    continue
-
-                home = event.get("homeTeam", {}).get("name", "")
-                away = event.get("awayTeam", {}).get("name", "")
-                home_score = event.get("homeScore", {}).get("current", 0) or 0
-                away_score = event.get("awayScore", {}).get("current", 0) or 0
-
-                if not home or not away:
-                    continue
-
-                winner = alias(home) if int(home_score) > int(away_score) else alias(away)
-                loser  = alias(away) if winner == alias(home) else alias(home)
-
-                results.append({
-                    "tournament": tourney_name,
-                    "player_a":   winner,
-                    "player_b":   loser,
-                    "status":     "closed",
-                    "winner":     winner,
-                })
-
-        if results:
-            # Deduplicate
-            seen = set()
-            deduped = []
-            for r in results:
-                key = f"{r['player_a']}|{r['player_b']}"
-                if key not in seen:
-                    seen.add(key)
-                    deduped.append(r)
-            print(f"  [live] Sofascore: {len(deduped)} completed ATP matches")
-            return deduped
-
-        return results
-
-    except Exception as e:
-        print(f"  [live] Sofascore failed: {e}")
-        return []
-
 
 def auto_score_from_live(live_results: List[dict]) -> int:
     """
@@ -1832,9 +1748,23 @@ def auto_score_from_live(live_results: List[dict]) -> int:
     if not result_lookup:
         return 0
 
-    # Scan all open (non-complete) prediction files
+    # Only auto-score Madrid 2026 onwards — never touch historical files
+    AUTOSCORE_TOURNAMENTS = {
+        "madrid2026", "rome2026", "rg2026", "halle2026", "queens2026",
+        "wimbledon2026", "hamburg2026", "washington2026", "canada2026",
+        "cincinnati2026", "usopen2026", "beijing2026", "tokyo2026",
+        "shanghai2026", "vienna2026", "basel2026", "paris2026",
+        "atpfinals2026",
+    }
+
+    # Scan only eligible prediction files
     for pred_file in sorted(REPORTS_DIR.glob("*_predictions.csv")):
         tourney_round = pred_file.stem.replace("_predictions", "")
+        tourney_slug  = tourney_round.split("_")[0]
+
+        if tourney_slug not in AUTOSCORE_TOURNAMENTS:
+            continue
+
         complete_file = REPORTS_DIR / f"{tourney_round}_predictions_complete.csv"
         cck_file      = REPORTS_DIR / f"{tourney_round}_predictions_cck.csv"
         cck_complete  = REPORTS_DIR / f"{tourney_round}_predictions_cck_complete.csv"
