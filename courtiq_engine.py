@@ -1567,19 +1567,564 @@ def cmd_site(args):
 
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(html)
-    print(f"\n  ✓ CourtIQ → {out}")
+    out.write_text(html, encoding='utf-8')
+    print(f"\n  OK CourtIQ -> {out}")
     print()
 
 
 def _build_html(js_data: str) -> str:
-    """Minimal HTML wrapper — use courtiq_template.html for the full version."""
+    """Generate the full CourtIQ dark-theme site with embedded data."""
     return f"""<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>CourtIQ — rebuild in progress</title></head>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CourtIQ — ATP Tennis Analytics</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+*{{box-sizing:border-box;margin:0;padding:0}}
+:root{{
+  --bg0:#0a0a0a;--bg1:#111;--bg2:#1a1a1a;--bg3:#242424;
+  --line:rgba(255,255,255,0.07);--line2:rgba(255,255,255,0.12);
+  --txt0:#f0f0f0;--txt1:#999;--txt2:#555;
+  --green:#22c47a;--green-dim:rgba(34,196,122,0.12);--green-mid:#0f6e56;
+  --clay:#e8622a;--clay-dim:rgba(232,98,42,0.12);
+  --blue:#4a9eff;--blue-dim:rgba(74,158,255,0.12);
+  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+}}
+body{{font-family:var(--sans);background:var(--bg0);color:var(--txt0);min-height:100vh}}
+.wrap{{max-width:1100px;margin:0 auto;padding:0 24px}}
+
+/* HEADER */
+.hdr{{display:flex;align-items:center;justify-content:space-between;padding:18px 0 16px;border-bottom:1px solid var(--line2)}}
+.logo{{font-family:var(--mono);font-size:16px;font-weight:500;letter-spacing:.12em;color:var(--txt0)}}
+.logo em{{color:var(--green);font-style:normal}}
+.nav{{display:flex}}
+.nav a{{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--txt2);text-decoration:none;padding:6px 14px;border:1px solid transparent;cursor:pointer}}
+.nav a.on,.nav a:hover{{color:var(--txt0);border-color:var(--line2);background:var(--bg2)}}
+
+/* STATS BAR */
+.stats{{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}}
+.st{{padding:20px 0;border-right:1px solid var(--line)}}
+.st:last-child{{border-right:none}}
+.st:not(:first-child){{padding-left:20px}}
+.st-k{{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--txt2);margin-bottom:8px}}
+.st-v{{font-family:var(--mono);font-size:26px;font-weight:500;line-height:1;margin-bottom:4px}}
+.st-v em{{font-size:14px;font-style:normal;color:var(--txt2);font-weight:400;margin-left:2px}}
+.st-s{{font-size:11px;color:var(--txt2)}}
+.g{{color:var(--green)}}.r{{color:var(--clay)}}.b{{color:var(--blue)}}
+
+/* LAYOUT */
+.cols{{display:grid;grid-template-columns:1.5fr 1fr;gap:0;border-bottom:1px solid var(--line)}}
+.col-l{{border-right:1px solid var(--line);padding:20px 24px 20px 0}}
+.col-r{{padding:20px 0 20px 24px}}
+.lbl{{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--txt2);margin-bottom:14px}}
+.lbl span{{color:var(--green);margin-left:8px}}
+
+/* MATCHES */
+.match{{display:grid;grid-template-columns:3px 1fr auto;gap:14px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}}
+.pill{{border-radius:2px;width:3px;min-height:36px}}
+.clay-p{{background:var(--clay)}}.hard-p{{background:var(--blue)}}.grass-p{{background:var(--green)}}
+.m-inner{{display:flex;flex-direction:column;gap:4px}}
+.m-row{{display:flex;justify-content:space-between;align-items:center}}
+.m-name{{font-size:13px;font-weight:400;color:var(--txt1)}}
+.m-name.w{{color:var(--txt0);font-weight:500}}
+.m-pct{{font-family:var(--mono);font-size:12px;color:var(--txt2)}}
+.m-pct.w{{color:var(--green)}}
+.bar{{height:2px;background:var(--bg3);border-radius:1px;margin-top:5px;overflow:hidden}}
+.bar-f{{height:2px;border-radius:1px;background:var(--green)}}
+.m-right{{text-align:right;min-width:52px}}
+.rnd{{font-family:var(--mono);font-size:10px;color:var(--txt2);letter-spacing:.05em}}
+.badge{{display:inline-block;margin-top:4px;font-family:var(--mono);font-size:9px;letter-spacing:.06em;padding:2px 6px}}
+.ok{{background:var(--green-dim);color:var(--green)}}.no{{background:var(--clay-dim);color:var(--clay)}}
+.pend{{background:var(--bg3);color:var(--txt2)}}
+.divider{{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--txt2);padding:14px 0 10px;border-top:1px solid var(--line);margin-top:4px}}
+.show-more{{font-family:var(--mono);font-size:10px;color:var(--txt2);padding:10px 0;cursor:pointer;text-align:center;border-top:1px solid var(--line)}}
+.show-more:hover{{color:var(--txt0)}}
+
+/* TOURNAMENT CARDS */
+.t-card{{border:1px solid var(--line);background:var(--bg1);margin-bottom:8px}}
+.t-head{{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:1px solid var(--line)}}
+.t-name{{font-size:13px;font-weight:500;color:var(--txt0);cursor:pointer}}
+.t-name:hover{{color:var(--green)}}
+.tag{{font-family:var(--mono);font-size:9px;letter-spacing:.08em;padding:3px 7px}}
+.t-live{{background:var(--clay-dim);color:var(--clay)}}
+.t-done{{background:var(--green-dim);color:var(--green)}}
+.t-pend{{background:var(--bg3);color:var(--txt2)}}
+.t-body{{padding:10px 14px;display:grid;grid-template-columns:1fr 1fr;gap:4px 0}}
+.t-k{{font-size:11px;color:var(--txt2);padding:2px 0}}
+.t-v{{font-family:var(--mono);font-size:11px;color:var(--txt0);text-align:right;padding:2px 0}}
+.t-v.g{{color:var(--green)}}.t-v.b{{color:var(--blue)}}
+.acc-row{{display:flex;gap:3px;margin:8px 14px 4px;height:3px}}
+.acc-m{{background:var(--green);border-radius:1px;flex-shrink:0}}
+.acc-b{{background:var(--blue);border-radius:1px;flex-shrink:0}}
+.acc-bg{{background:var(--bg3);border-radius:1px;flex:1}}
+.acc-leg{{display:flex;gap:12px;padding:0 14px 10px}}
+.acc-li{{font-family:var(--mono);font-size:9px;color:var(--txt2);display:flex;align-items:center;gap:5px}}
+.acc-dot{{width:6px;height:6px;border-radius:50%;flex-shrink:0}}
+
+/* ELO TABLE */
+.elo-row{{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}}
+.elo-n{{font-family:var(--mono);font-size:10px;color:var(--txt2);width:16px;text-align:right;flex-shrink:0}}
+.elo-name{{font-size:12px;color:var(--txt0);flex:1}}
+.elo-val{{font-family:var(--mono);font-size:12px;color:var(--txt1)}}
+.elo-d{{font-family:var(--mono);font-size:10px;width:34px;text-align:right;flex-shrink:0}}
+.elo-surface{{font-family:var(--mono);font-size:10px;color:var(--txt2);width:40px;text-align:right;flex-shrink:0}}
+
+/* PAGES */
+.page{{display:none}}.page.on{{display:block}}
+
+/* PLAYER TABLE */
+.tbl{{width:100%;border-collapse:collapse;margin-top:8px}}
+.tbl th{{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--txt2);text-align:left;padding:8px 0;border-bottom:1px solid var(--line2);font-weight:400}}
+.tbl th.r{{text-align:right}}
+.tbl td{{font-size:12px;color:var(--txt1);padding:8px 0;border-bottom:1px solid var(--line)}}
+.tbl td.r{{text-align:right;font-family:var(--mono);font-size:11px}}
+.tbl td.name{{color:var(--txt0);font-weight:400}}
+.tbl tr:hover td{{background:var(--bg1)}}
+.search-wrap{{padding:16px 0 8px}}
+.search{{background:var(--bg1);border:1px solid var(--line2);color:var(--txt0);font-family:var(--sans);font-size:13px;padding:8px 12px;width:300px;outline:none}}
+.search:focus{{border-color:var(--green)}}
+.search::placeholder{{color:var(--txt2)}}
+
+/* ACCURACY PAGE */
+.acc-chart{{padding:20px 0}}
+.acc-tourn-row{{display:flex;align-items:center;gap:12px;padding:8px 0;border-top:1px solid var(--line)}}
+.acc-tourn-name{{font-size:12px;color:var(--txt0);width:160px;flex-shrink:0}}
+.acc-bars{{flex:1;display:flex;flex-direction:column;gap:3px}}
+.acc-bar-row{{display:flex;align-items:center;gap:8px}}
+.acc-bar-track{{flex:1;height:6px;background:var(--bg3);border-radius:2px;overflow:hidden}}
+.acc-bar-fill{{height:6px;border-radius:2px}}
+.acc-bar-label{{font-family:var(--mono);font-size:10px;color:var(--txt2);width:38px;text-align:right;flex-shrink:0}}
+
+/* LIVE TICKER */
+.ticker{{background:var(--bg1);border-bottom:1px solid var(--line);padding:8px 0;overflow:hidden}}
+.ticker-inner{{display:flex;gap:24px;white-space:nowrap}}
+.tick-item{{font-family:var(--mono);font-size:11px;color:var(--txt2)}}
+.tick-item span{{color:var(--txt0)}}
+.tick-item .won{{color:var(--green)}}
+.live-dot{{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--clay);margin-right:6px;animation:blink 1.4s ease-in-out infinite}}
+@keyframes blink{{0%,100%{{opacity:1}}50%{{opacity:.2}}}}
+
+/* FOOTER */
+.foot{{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--line)}}
+.foot-l{{font-family:var(--mono);font-size:10px;color:var(--txt2);letter-spacing:.05em}}
+.foot-r{{font-family:var(--mono);font-size:10px;color:var(--txt2)}}
+
+/* SURFACE FILTER */
+.filter-row{{display:flex;gap:6px;margin-bottom:16px}}
+.filter-btn{{font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:4px 10px;background:var(--bg2);border:1px solid var(--line);color:var(--txt2);cursor:pointer}}
+.filter-btn.on{{background:var(--bg3);border-color:var(--line2);color:var(--txt0)}}
+
+@media(max-width:700px){{
+  .cols{{grid-template-columns:1fr}}
+  .col-l{{border-right:none;border-bottom:1px solid var(--line);padding-right:0}}
+  .col-r{{padding-left:0}}
+  .stats{{grid-template-columns:repeat(2,1fr)}}
+  .st:nth-child(2){{border-right:none}}
+}}
+</style>
+</head>
 <body>
-<p>Copy courtiq_template.html to this directory for the full site.</p>
-<script>{js_data}</script>
-</body></html>"""
+<div id="live-ticker" class="ticker" style="display:none">
+  <div class="wrap"><div class="ticker-inner" id="ticker-content"></div></div>
+</div>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="logo">COURT<em>IQ</em></div>
+  <nav class="nav">
+    <a class="on" onclick="showPage('predictions')">predictions</a>
+    <a onclick="showPage('players')">players</a>
+    <a onclick="showPage('tournaments')">tournaments</a>
+    <a onclick="showPage('accuracy')">accuracy</a>
+  </nav>
+</div>
+
+<div class="stats">
+  <div class="st">
+    <div class="st-k">MODEL ACC.</div>
+    <div class="st-v" id="s-model-acc">—</div>
+    <div class="st-s" id="s-matches">—</div>
+  </div>
+  <div class="st">
+    <div class="st-k">VS BOOK</div>
+    <div class="st-v" id="s-book-acc">—</div>
+    <div class="st-s" id="s-book-gap">—</div>
+  </div>
+  <div class="st">
+    <div class="st-k">PLAYERS</div>
+    <div class="st-v" id="s-players">—</div>
+    <div class="st-s">ELO tracked</div>
+  </div>
+  <div class="st">
+    <div class="st-k">TOURNAMENTS</div>
+    <div class="st-v" id="s-tourneys">—</div>
+    <div class="st-s" id="s-tourney-range">—</div>
+  </div>
+</div>
+
+<!-- PREDICTIONS PAGE -->
+<div id="page-predictions" class="page on">
+  <div class="cols">
+    <div class="col-l">
+      <div id="pred-matches-wrap"></div>
+    </div>
+    <div class="col-r">
+      <div class="lbl">TOURNAMENTS</div>
+      <div id="tourney-cards"></div>
+      <div class="lbl" style="margin-top:20px">ELO RANKINGS</div>
+      <div id="elo-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PLAYERS PAGE -->
+<div id="page-players" class="page">
+  <div style="padding:20px 0">
+    <div class="lbl">PLAYER PROFILES <span id="player-count"></span></div>
+    <div class="search-wrap">
+      <input class="search" type="text" placeholder="Search players..." id="player-search" oninput="filterPlayers()">
+    </div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>rank</th><th>player</th>
+          <th class="r">elo</th><th class="r">clay elo</th><th class="r">hard elo</th>
+          <th class="r">form 10</th><th class="r">streak</th><th class="r">last match</th>
+        </tr>
+      </thead>
+      <tbody id="player-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TOURNAMENTS PAGE -->
+<div id="page-tournaments" class="page">
+  <div style="padding:20px 0">
+    <div class="lbl">ALL TOURNAMENTS</div>
+    <div id="all-tourneys"></div>
+  </div>
+</div>
+
+<!-- ACCURACY PAGE -->
+<div id="page-accuracy" class="page">
+  <div style="padding:20px 0">
+    <div class="lbl">MODEL vs BOOK ACCURACY <span id="acc-overall"></span></div>
+    <div class="acc-chart" id="acc-chart"></div>
+  </div>
+</div>
+
+<div class="foot">
+  <div class="foot-l">COURTIQ · RF MODEL V1.0 · CCK CALIBRATION</div>
+  <div class="foot-r" id="foot-updated">—</div>
+</div>
+</div>
+
+<script>
+{js_data}
+
+// ── HELPERS ────────────────────────────────────────────────────
+function pct(v){{ return v != null ? (v*100).toFixed(1)+'%' : '—'; }}
+function elo(v){{ return v != null ? Math.round(v) : '—'; }}
+function surfClass(s){{
+  if(!s) return 'clay-p';
+  s = s.toLowerCase();
+  if(s.includes('clay')) return 'clay-p';
+  if(s.includes('grass')) return 'grass-p';
+  return 'hard-p';
+}}
+function surfFromSlug(slug){{
+  const clay = ['barcelona','montecarlo','rome','rg','madrid','hamburg'];
+  const grass = ['wimbledon','halle','queens'];
+  for(const t of clay) if(slug.includes(t)) return 'Clay';
+  for(const t of grass) if(slug.includes(t)) return 'Grass';
+  return 'Hard';
+}}
+function showPage(name){{
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav a').forEach(a=>a.classList.remove('on'));
+  document.getElementById('page-'+name).classList.add('on');
+  event.target.classList.add('on');
+}}
+
+// ── INIT ────────────────────────────────────────────────────────
+const D = SITE_DATA;
+const OA = D.overall_accuracy;
+const tourneys = D.tournaments;
+const players = D.players;
+
+// Stats bar
+function fmtAcc(v){{
+  if(v==null) return '<span style="color:var(--txt2)">—</span>';
+  const pv = (v*100).toFixed(1);
+  return pv+'<em>%</em>';
+}}
+document.getElementById('s-model-acc').innerHTML = fmtAcc(OA.model_accuracy);
+document.getElementById('s-book-acc').innerHTML  = fmtAcc(OA.book_accuracy);
+document.getElementById('s-matches').textContent = (OA.total_matches||0).toLocaleString()+' matches';
+document.getElementById('s-players').textContent = players.length;
+document.getElementById('s-tourneys').textContent = tourneys.length;
+if(OA.model_accuracy && OA.book_accuracy){{
+  const gap = ((OA.book_accuracy - OA.model_accuracy)*100).toFixed(1);
+  const el = document.getElementById('s-book-gap');
+  el.textContent = (gap>0?'-':'+') + Math.abs(gap)+'pp vs model';
+  el.className = 'st-s ' + (gap>0?'r':'g');
+}}
+if(tourneys.length>1){{
+  const first = tourneys[0].name.replace(/20\\d\\d/,'').trim();
+  const last  = tourneys[tourneys.length-1].name.replace(/20\\d\\d/,'').trim();
+  document.getElementById('s-tourney-range').textContent = first+' – '+last;
+}}
+document.getElementById('foot-updated').textContent = 'updated '+D.generated_at.slice(0,16).replace('T',' ')+' UTC';
+
+// ── PREDICTIONS PAGE ────────────────────────────────────────────
+function buildPredictions(){{
+  // Find most recent tournament and show its matches
+  const recent = [...tourneys].reverse();
+  let shown = 0;
+  let html = '';
+
+  for(const t of recent){{
+    if(shown >= 3) break;
+    const surface = surfFromSlug(t.slug);
+    const sc = surfClass(surface);
+    const rounds = [...t.rounds].reverse();
+
+    for(const r of rounds){{
+      if(shown >= 3) break;
+      if(!r.matches || r.matches.length===0) continue;
+
+      // Check if this round has unscored (pending) matches
+      const pending = r.matches.filter(m=>m.correct_prediction==null);
+      const scored  = r.matches.filter(m=>m.correct_prediction!=null);
+      const showMatches = pending.length > 0 ? pending : scored.slice(0,6);
+      if(showMatches.length===0) continue;
+
+      html += `<div class="divider">${{t.name.toUpperCase()}} — ${{r.round}}</div>`;
+      for(const m of showMatches.slice(0,8)){{
+        const prob = m.prob_player_a_win ?? 0.5;
+        const predA = m.pred_winner === m.player_a;
+        const isPending = m.correct_prediction == null;
+        const correct   = m.correct_prediction === 1;
+        const badge = isPending
+          ? '<span class="badge pend">pending</span>'
+          : correct ? '<span class="badge ok">correct</span>' : '<span class="badge no">wrong</span>';
+        const pA = predA ? prob : 1-prob;
+        const pB = 1 - pA;
+        html += `
+        <div class="match">
+          <div class="pill ${{sc}}"></div>
+          <div class="m-inner">
+            <div class="m-row">
+              <span class="m-name ${{predA?'w':''}}">${{m.player_a||'—'}}</span>
+              <span class="m-pct ${{predA?'w':''}}">${{(pA*100).toFixed(0)}}%</span>
+            </div>
+            <div class="m-row">
+              <span class="m-name ${{!predA?'w':''}}">${{m.player_b||'—'}}</span>
+              <span class="m-pct ${{!predA?'w':''}}">${{(pB*100).toFixed(0)}}%</span>
+            </div>
+            <div class="bar"><div class="bar-f" style="width:${{(pA*100).toFixed(0)}}%"></div></div>
+          </div>
+          <div class="m-right">
+            <div class="rnd">${{r.round}}</div>
+            ${{badge}}
+          </div>
+        </div>`;
+      }}
+      shown++;
+    }}
+  }}
+  document.getElementById('pred-matches-wrap').innerHTML = html || '<div style="color:var(--txt2);font-size:13px;padding:20px 0">No prediction data available yet.</div>';
+}}
+
+// ── TOURNAMENT CARDS ────────────────────────────────────────────
+function buildTourneyCards(){{
+  const recent = [...tourneys].reverse().slice(0, 5);
+  let html = '';
+  for(const t of recent){{
+    const s = t.summary;
+    const hasBk = t.has_book && s.book_accuracy != null;
+    const mPct = s.model_accuracy != null ? (s.model_accuracy*100).toFixed(1)+'%' : '—';
+    const bPct = hasBk ? (s.book_accuracy*100).toFixed(1)+'%' : '—';
+    const isPending = s.results_entered === 0 || (s.total_matches > 0 && s.results_entered < s.total_matches * 0.5);
+    const tagClass = isPending ? 't-pend' : 't-done';
+    const tagText  = isPending ? 'UPCOMING' : 'COMPLETE';
+    html += `
+    <div class="t-card">
+      <div class="t-head">
+        <span class="t-name" onclick="showPage('tournaments')">${{t.name}}</span>
+        <span class="tag ${{tagClass}}">${{tagText}}</span>
+      </div>
+      <div class="t-body">
+        <div class="t-k">surface</div><div class="t-v">${{surfFromSlug(t.slug).toLowerCase()}}</div>
+        <div class="t-k">matches</div><div class="t-v">${{s.total_matches}}</div>
+        <div class="t-k">model</div><div class="t-v g">${{mPct}}</div>
+        <div class="t-k">book</div><div class="t-v b">${{bPct}}</div>
+      </div>`;
+    if(hasBk){{
+      const mW = (s.model_accuracy*100).toFixed(0);
+      const bW = (s.book_accuracy*100).toFixed(0);
+      html += `
+      <div class="acc-row">
+        <div class="acc-m" style="width:calc(${{mW}}% - 3px)"></div>
+        <div class="acc-bg" style="width:3px"></div>
+        <div class="acc-b" style="width:calc(${{bW}}% - 3px)"></div>
+        <div class="acc-bg"></div>
+      </div>
+      <div class="acc-leg">
+        <div class="acc-li"><div class="acc-dot" style="background:var(--green)"></div>model ${{mPct}}</div>
+        <div class="acc-li"><div class="acc-dot" style="background:var(--blue)"></div>book ${{bPct}}</div>
+      </div>`;
+    }}
+    html += '</div>';
+  }}
+  document.getElementById('tourney-cards').innerHTML = html;
+}}
+
+// ── ELO LIST ────────────────────────────────────────────────────
+function buildEloList(){{
+  const top = players.slice(0,8);
+  let html = '';
+  top.forEach((p,i)=>{{
+    const e = Math.round(p.current_elo||1500);
+    const streak = p.streak||0;
+    const sc = streak>0?'g':streak<0?'r':'';
+    const sd = streak>0?'+'+streak:streak;
+    html += `
+    <div class="elo-row" style="${{i===0?'border-top:none':''}}">
+      <div class="elo-n">${{i+1}}</div>
+      <div class="elo-name">${{(p.name||'').split(' ').map((n,j)=>j===0?n[0]+'.':n).join(' ')}}</div>
+      <div class="elo-val">${{e}}</div>
+      <div class="elo-d ${{sc}}">${{sd!=0?sd:'—'}}</div>
+    </div>`;
+  }});
+  document.getElementById('elo-list').innerHTML = html;
+}}
+
+// ── PLAYERS PAGE ────────────────────────────────────────────────
+function buildPlayersPage(){{
+  document.getElementById('player-count').textContent = players.length+' active';
+  renderPlayers(players);
+}}
+function renderPlayers(list){{
+  let html = '';
+  list.slice(0,200).forEach((p,i)=>{{
+    const e  = Math.round(p.current_elo||1500);
+    const sc = Math.round(p.selo_Clay||1500);
+    const sh = Math.round(p.selo_Hard||1500);
+    const f  = p.form10_wr!=null?(p.form10_wr*100).toFixed(0)+'%':'—';
+    const st = p.streak||0;
+    const stc = st>0?'g':st<0?'r':'';
+    const ld = p.last_match_date?p.last_match_date.slice(0,10):'—';
+    html += `<tr>
+      <td class="r">${{i+1}}</td>
+      <td class="name">${{p.name||''}}</td>
+      <td class="r">${{e}}</td><td class="r">${{sc}}</td><td class="r">${{sh}}</td>
+      <td class="r">${{f}}</td>
+      <td class="r ${{stc}}">${{st>0?'+'+st:st}}</td>
+      <td class="r">${{ld}}</td>
+    </tr>`;
+  }});
+  document.getElementById('player-tbody').innerHTML = html;
+}}
+function filterPlayers(){{
+  const q = document.getElementById('player-search').value.toLowerCase();
+  const filtered = q ? players.filter(p=>(p.name||'').toLowerCase().includes(q)) : players;
+  renderPlayers(filtered);
+}}
+
+// ── TOURNAMENTS PAGE ────────────────────────────────────────────
+function buildTournamentsPage(){{
+  let html = '';
+  for(const t of [...tourneys].reverse()){{
+    const s = t.summary;
+    const surface = surfFromSlug(t.slug);
+    const sc = surfClass(surface);
+    const mPct = s.model_accuracy!=null?(s.model_accuracy*100).toFixed(1)+'%':'—';
+    const bPct = t.has_book&&s.book_accuracy!=null?(s.book_accuracy*100).toFixed(1)+'%':'—';
+    html += `
+    <div class="t-card" style="margin-bottom:12px">
+      <div class="t-head">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="pill ${{sc}}" style="min-height:18px;height:18px"></div>
+          <span class="t-name">${{t.name}}</span>
+        </div>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--txt2)">${{s.total_matches}} matches · model ${{mPct}} · book ${{bPct}}</span>
+      </div>
+      <div style="padding:8px 14px;display:flex;gap:16px;flex-wrap:wrap">`;
+    for(const r of t.rounds){{
+      const rs = r.summary;
+      const rAcc = rs.model_accuracy!=null?(rs.model_accuracy*100).toFixed(0)+'%':'—';
+      html += `<span style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${{r.round}} <span style="color:var(--txt0)">${{rAcc}}</span> (${{rs.results_entered}}/${{rs.total_matches}})</span>`;
+    }}
+    html += `</div></div>`;
+  }}
+  document.getElementById('all-tourneys').innerHTML = html;
+}}
+
+// ── ACCURACY PAGE ────────────────────────────────────────────────
+function buildAccuracyPage(){{
+  const mAcc = OA.model_accuracy!=null?(OA.model_accuracy*100).toFixed(1)+'%':'—';
+  const bAcc = OA.book_accuracy!=null?(OA.book_accuracy*100).toFixed(1)+'%':'—';
+  document.getElementById('acc-overall').textContent = 'overall: model '+mAcc+' · book '+bAcc;
+
+  let html = `
+  <div style="display:flex;gap:16px;margin-bottom:16px">
+    <div class="acc-li"><div class="acc-dot" style="background:var(--green);width:8px;height:8px"></div><span style="font-family:var(--mono);font-size:11px;color:var(--txt1)">Model accuracy</span></div>
+    <div class="acc-li"><div class="acc-dot" style="background:var(--blue);width:8px;height:8px"></div><span style="font-family:var(--mono);font-size:11px;color:var(--txt1)">Book accuracy</span></div>
+  </div>`;
+
+  for(const t of D.tourney_acc){{
+    if(t.model_acc==null) continue;
+    const mW = (t.model_acc*100).toFixed(1);
+    const bW = t.book_acc!=null?(t.book_acc*100).toFixed(1):null;
+    html += `
+    <div class="acc-tourn-row">
+      <div class="acc-tourn-name" style="font-size:12px">${{t.name}}</div>
+      <div class="acc-bars">
+        <div class="acc-bar-row">
+          <div class="acc-bar-track"><div class="acc-bar-fill" style="width:${{mW}}%;background:var(--green)"></div></div>
+          <div class="acc-bar-label g">${{mW}}%</div>
+        </div>
+        ${{bW?`<div class="acc-bar-row">
+          <div class="acc-bar-track"><div class="acc-bar-fill" style="width:${{bW}}%;background:var(--blue)"></div></div>
+          <div class="acc-bar-label b">${{bW}}%</div>
+        </div>`:''}}
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);width:50px;text-align:right;flex-shrink:0">${{t.matches}}m</div>
+    </div>`;
+  }}
+  document.getElementById('acc-chart').innerHTML = html;
+}}
+
+// ── LIVE TICKER ──────────────────────────────────────────────────
+function buildTicker(){{
+  try{{
+    const liveData = typeof LIVE_DATA !== 'undefined' ? LIVE_DATA : null;
+    if(!liveData || !liveData.matches || liveData.matches.length===0) return;
+    const ticker = document.getElementById('live-ticker');
+    const content = document.getElementById('ticker-content');
+    let html = '<span class="tick-item"><span class="live-dot"></span>LIVE</span>';
+    for(const m of liveData.matches.slice(0,10)){{
+      html += `<span class="tick-item">${{m.player_a}} vs ${{m.player_b}} <span>${{m.tournament||''}}</span></span>`;
+    }}
+    content.innerHTML = html;
+    ticker.style.display = 'block';
+  }}catch(e){{}}
+}}
+
+// ── BOOT ────────────────────────────────────────────────────────
+buildPredictions();
+buildTourneyCards();
+buildEloList();
+buildPlayersPage();
+buildTournamentsPage();
+buildAccuracyPage();
+buildTicker();
+</script>
+</body>
+</html>"""
 
 
 # ──────────────────────────────────────────────────────────────
