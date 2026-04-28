@@ -2170,7 +2170,10 @@ function buildMatchCard(m, roundCode, surface){{
   const ok = m.correct_prediction===1;
 
   // Favourite = smaller absolute odds value (more negative = bigger favourite)
-  const favA = oa!=null&&ob!=null&&Math.abs(oa)<=Math.abs(ob);
+  // Favourite = implied probability is higher = more negative odds (or lower positive)
+  // Convert to implied prob to determine favourite correctly
+  function toImplied(o){{ return o<0 ? (-o)/(-o+100) : 100/(o+100); }}
+  const favA = oa!=null&&ob!=null&&toImplied(oa)>=toImplied(ob);
   const favB = oa!=null&&ob!=null&&!favA;
 
   // Edge
