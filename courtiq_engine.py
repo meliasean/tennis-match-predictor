@@ -2219,76 +2219,82 @@ function renderLiveRound(t, r) {{
 
   let html = `
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-    <div style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${{r.round}} · ${{total}} matches · ${{scored}} scored · ${{pending}} pending</div>
-    ${{pending === 0 && total > 0 ? '<span class="tag t-done" style="font-size:9px;padding:3px 8px">ROUND COMPLETE</span>' : '<span class="tag t-live" style="font-size:9px;padding:3px 8px">IN PROGRESS</span>'}}
-  </div>`;
-
-  // Column headers
-  html += `
-  <div style="display:grid;grid-template-columns:3px 1fr 60px 60px 60px 60px 80px;gap:12px;padding:6px 0;border-bottom:1px solid var(--line2);margin-bottom:4px">
-    <div></div>
-    <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);letter-spacing:.06em">MATCH</div>
-    <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);text-align:right">PRED %</div>
-    <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);text-align:right">BOOK %</div>
-    <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);text-align:right">ELO %</div>
-    <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);text-align:right">ODDS</div>
-    <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);text-align:right">RESULT</div>
+    <div style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${{r.round}} &middot; ${{total}} matches &middot; ${{scored}} scored &middot; ${{pending}} pending</div>
+    ${{pending === 0 && total > 0
+      ? '<span class="tag t-done" style="font-size:9px;padding:3px 8px">ROUND COMPLETE</span>'
+      : '<span class="tag t-live" style="font-size:9px;padding:3px 8px">IN PROGRESS</span>'}}
   </div>`;
 
   for (const m of matches) {{
     if (m.player_a === 'TBD' || m.player_b === 'TBD') continue;
-    const prob   = m.prob_player_a_win ?? 0.5;
-    const probB  = m.prob_player_b_win ?? (1 - prob);
+
     const predA  = m.pred_winner === m.player_a;
-    const pA     = predA ? prob : probB;
-    const pB     = 1 - pA;
+    const pA     = m.prob_player_a_win ?? 0.5;
+    const pB     = m.prob_player_b_win ?? (1 - pA);
     const bkA    = m.book_fair_prob_a;
+    const bkB    = m.book_fair_prob_b;
     const eloA   = m.p_elo_a;
+    const eloB   = eloA != null ? 1 - eloA : null;
     const isPend = m.correct_prediction == null;
     const ok     = m.correct_prediction === 1;
-
     const badge  = isPend
       ? '<span class="badge pend">pending</span>'
       : ok ? '<span class="badge ok">correct</span>' : '<span class="badge no">wrong</span>';
 
-    const oddsA  = m.odds_player_a ? (m.odds_player_a > 0 ? '+'+m.odds_player_a : m.odds_player_a) : '—';
-    const oddsB  = m.odds_player_b ? (m.odds_player_b > 0 ? '+'+m.odds_player_b : m.odds_player_b) : '—';
+    const oddsA = m.odds_player_a != null
+      ? (m.odds_player_a > 0 ? '+' + m.odds_player_a : m.odds_player_a) : '—';
+    const oddsB = m.odds_player_b != null
+      ? (m.odds_player_b > 0 ? '+' + m.odds_player_b : m.odds_player_b) : '—';
+
+    // Highlight helpers — green for higher value, dim for lower
+    function hi(vA, vB, isA) {{
+      if (vA == null || vB == null) return 'var(--txt2)';
+      return (isA ? vA >= vB : vB > vA) ? 'var(--green)' : 'var(--txt2)';
+    }}
+    function hiOdds(vA, vB, isA) {{
+      // lower absolute odds = favourite = highlight
+      if (vA == null || vB == null) return 'var(--txt2)';
+      return (isA ? Math.abs(vA) <= Math.abs(vB) : Math.abs(vB) < Math.abs(vA))
+        ? 'var(--blue)' : 'var(--txt2)';
+    }}
 
     html += `
-    <div style="display:grid;grid-template-columns:3px 1fr 60px 60px 60px 80px 80px;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)">
-      <div class="pill ${{sc}}" style="min-height:40px;height:40px"></div>
+    <div style="border-top:1px solid var(--line);padding:12px 0;display:grid;grid-template-columns:3px 1fr;gap:14px;align-items:stretch">
+      <div class="pill ${{sc}}" style="min-height:100%;border-radius:2px"></div>
       <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px">
-          <span style="font-size:13px;font-weight:${{predA?500:400}};color:${{predA?'var(--txt0)':'var(--txt1)'}}">${{m.player_a||'—'}}</span>
+        <!-- Player rows -->
+        <div style="display:grid;grid-template-columns:1fr 52px 52px 52px 52px 60px;gap:8px;align-items:center;margin-bottom:6px">
+          <span style="font-size:13px;font-weight:${{predA?500:400}};color:${{predA?'var(--txt0)':'var(--txt1)'}}">${{m.player_a}}</span>
+          <span style="font-family:var(--mono);font-size:12px;text-align:right;color:${{hi(pA,pB,true)}}">${{(pA*100).toFixed(0)}}%</span>
+          <span style="font-family:var(--mono);font-size:12px;text-align:right;color:${{hi(bkA,bkB,true)}}">${{bkA!=null?(bkA*100).toFixed(0)+'%':'—'}}</span>
+          <span style="font-family:var(--mono);font-size:12px;text-align:right;color:${{hi(eloA,eloB,true)}}">${{eloA!=null?(eloA*100).toFixed(0)+'%':'—'}}</span>
+          <span style="font-family:var(--mono);font-size:11px;text-align:right;color:${{hiOdds(m.odds_player_a,m.odds_player_b,true)}}">${{oddsA}}</span>
+          <span style="text-align:right">${{badge}}</span>
         </div>
-        <div style="display:flex;justify-content:space-between">
-          <span style="font-size:13px;font-weight:${{!predA?500:400}};color:${{!predA?'var(--txt0)':'var(--txt1)'}}">${{m.player_b||'—'}}</span>
+        <div style="display:grid;grid-template-columns:1fr 52px 52px 52px 52px 60px;gap:8px;align-items:center;margin-bottom:6px">
+          <span style="font-size:13px;font-weight:${{!predA?500:400}};color:${{!predA?'var(--txt0)':'var(--txt1)'}}">${{m.player_b}}</span>
+          <span style="font-family:var(--mono);font-size:12px;text-align:right;color:${{hi(pB,pA,true)}}">${{(pB*100).toFixed(0)}}%</span>
+          <span style="font-family:var(--mono);font-size:12px;text-align:right;color:${{hi(bkB,bkA,true)}}">${{bkB!=null?(bkB*100).toFixed(0)+'%':'—'}}</span>
+          <span style="font-family:var(--mono);font-size:12px;text-align:right;color:${{hi(eloB,eloA,true)}}">${{eloB!=null?(eloB*100).toFixed(0)+'%':'—'}}</span>
+          <span style="font-family:var(--mono);font-size:11px;text-align:right;color:${{hiOdds(m.odds_player_b,m.odds_player_a,true)}}">${{oddsB}}</span>
+          <span></span>
         </div>
-        <div class="bar" style="margin-top:5px"><div class="bar-f" style="width:${{(pA*100).toFixed(0)}}%"></div></div>
+        <!-- Column labels below each match -->
+        <div style="display:grid;grid-template-columns:1fr 52px 52px 52px 52px 60px;gap:8px">
+          <span></span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--txt2);text-align:right;letter-spacing:.05em">PRED</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--txt2);text-align:right;letter-spacing:.05em">BOOK</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--txt2);text-align:right;letter-spacing:.05em">ELO</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--txt2);text-align:right;letter-spacing:.05em">ODDS</span>
+          <span></span>
+        </div>
+        <div class="bar" style="margin-top:8px"><div class="bar-f" style="width:${{(pA*100).toFixed(0)}}%"></div></div>
       </div>
-      <div style="text-align:right">
-        <div style="font-family:var(--mono);font-size:11px;color:var(--green)">${{(pA*100).toFixed(0)}}%</div>
-        <div style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${{(pB*100).toFixed(0)}}%</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-family:var(--mono);font-size:11px;color:var(--blue)">${{bkA != null ? (bkA*100).toFixed(0)+'%' : '—'}}</div>
-        <div style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${{bkA != null ? ((1-bkA)*100).toFixed(0)+'%' : '—'}}</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-family:var(--mono);font-size:11px;color:var(--txt1)">${{eloA != null ? (eloA*100).toFixed(0)+'%' : '—'}}</div>
-        <div style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${{eloA != null ? ((1-eloA)*100).toFixed(0)+'%' : '—'}}</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--txt2)">${{oddsA}}</div>
-        <div style="font-family:var(--mono);font-size:10px;color:var(--txt2)">${{oddsB}}</div>
-      </div>
-      <div style="text-align:right">${{badge}}</div>
     </div>`;
   }}
 
   document.getElementById('live-matches-wrap').innerHTML = html;
 }}
-
 // ── BOOT ────────────────────────────────────────────────────────
 buildPredictions();
 buildTourneyCards();
