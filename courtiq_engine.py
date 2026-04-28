@@ -2218,11 +2218,13 @@ function renderLiveRound(t, r) {{
   const pending = total - scored;
 
   let html = `
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-    <div style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${{r.round}} &middot; ${{total}} matches &middot; ${{scored}} scored &middot; ${{pending}} pending</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+    <div style="font-family:var(--mono);font-size:11px;color:var(--txt2);letter-spacing:.06em">
+      ${{r.round}} &nbsp;&middot;&nbsp; ${{total}} matches &nbsp;&middot;&nbsp; ${{scored}} scored &nbsp;&middot;&nbsp; ${{pending}} pending
+    </div>
     ${{pending === 0 && total > 0
-      ? '<span class="tag t-done" style="font-size:9px;padding:3px 8px">ROUND COMPLETE</span>'
-      : '<span class="tag t-live" style="font-size:9px;padding:3px 8px">IN PROGRESS</span>'}}
+      ? '<span class="tag t-done">COMPLETE</span>'
+      : '<span class="tag t-live">IN PROGRESS</span>'}}
   </div>`;
 
   for (const m of matches) {{
@@ -2232,64 +2234,109 @@ function renderLiveRound(t, r) {{
     const pA     = m.prob_player_a_win ?? 0.5;
     const pB     = m.prob_player_b_win ?? (1 - pA);
     const bkA    = m.book_fair_prob_a;
-    const bkB    = m.book_fair_prob_b;
+    const bkB    = m.book_fair_prob_b ?? (bkA != null ? 1 - bkA : null);
     const eloA   = m.p_elo_a;
     const eloB   = eloA != null ? 1 - eloA : null;
+    const oa     = m.odds_player_a;
+    const ob     = m.odds_player_b;
     const isPend = m.correct_prediction == null;
     const ok     = m.correct_prediction === 1;
-    const badge  = isPend
-      ? '<span class="badge pend">pending</span>'
-      : ok ? '<span class="badge ok">correct</span>' : '<span class="badge no">wrong</span>';
 
-    const oddsA = m.odds_player_a != null
-      ? (m.odds_player_a > 0 ? '+' + m.odds_player_a : m.odds_player_a) : '—';
-    const oddsB = m.odds_player_b != null
-      ? (m.odds_player_b > 0 ? '+' + m.odds_player_b : m.odds_player_b) : '—';
+    // Edge = model prob of predicted winner minus book fair prob of that same player
+    const edgePct = (bkA != null)
+      ? ((predA ? pA - bkA : pB - bkB) * 100)
+      : null;
+    const edgeStr = edgePct != null
+      ? (edgePct >= 0 ? '+' : '') + edgePct.toFixed(1) + '%'
+      : null;
+    const edgeCol = edgePct == null ? 'var(--txt2)'
+      : edgePct >= 5  ? 'var(--green)'
+      : edgePct >= 2  ? '#a8e6c8'
+      : edgePct >= -2 ? 'var(--txt2)'
+      : 'var(--clay)';
 
-    // Highlight helpers — green for higher value, dim for lower
-    function hi(vA, vB, isA) {{
-      if (vA == null || vB == null) return 'var(--txt2)';
-      return (isA ? vA >= vB : vB > vA) ? 'var(--green)' : 'var(--txt2)';
-    }}
-    function hiOdds(vA, vB, isA) {{
-      // lower absolute odds = favourite = highlight
-      if (vA == null || vB == null) return 'var(--txt2)';
-      return (isA ? Math.abs(vA) <= Math.abs(vB) : Math.abs(vB) < Math.abs(vA))
-        ? 'var(--blue)' : 'var(--txt2)';
-    }}
+    // Consensus: how many of model/ELO/book agree on same player
+    let agreeA = 0, agreeB = 0;
+    if (pA >= 0.5) agreeA++; else agreeB++;
+    if (eloA != null) {{ if (eloA >= 0.5) agreeA++; else agreeB++; }}
+    if (bkA != null)  {{ if (bkA >= 0.5)  agreeA++; else agreeB++; }}
+    const totalSignals = 2 + (eloA!=null?1:0) + (bkA!=null?1:0);
+    const maxAgree = Math.max(agreeA, agreeB);
+    const consensusLabel = maxAgree === totalSignals ? 'Full consensus'
+      : maxAgree === totalSignals - 1 ? 'Strong consensus'
+      : 'Split signals';
+    const consensusCol = maxAgree === totalSignals ? 'var(--green)'
+      : maxAgree === totalSignals - 1 ? '#a8e6c8'
+      : 'var(--clay)';
+
+    // Odds display + favourite highlighting
+    const fmtOdds = o => o != null ? (o > 0 ? '+'+o : String(o)) : '—';
+    const favA = oa != null && ob != null && Math.abs(oa) <= Math.abs(ob);
+    const favB = oa != null && ob != null && !favA;
+
+    // Result badge
+    const badge = isPend
+      ? `<span class="badge pend">pending</span>`
+      : ok ? `<span class="badge ok">&#10003; correct</span>`
+           : `<span class="badge no">&#10007; wrong</span>`;
+
+    // Percentage cell helper — green for higher, dim for lower
+    const pctCell = (v, vs, col) => v != null
+      ? `<div style="font-family:var(--mono);font-size:12px;color:${{v>=vs?col:'var(--txt2)'}}">` +
+        `${{(v*100).toFixed(0)}}%</div>`
+      : `<div style="font-family:var(--mono);font-size:12px;color:var(--txt2)">—</div>`;
 
     html += `
-    <div style="border-top:1px solid var(--line);padding:12px 0;display:grid;grid-template-columns:3px 1fr;gap:14px;align-items:stretch">
-      <div class="pill ${{sc}}" style="min-height:100%;border-radius:2px"></div>
-      <div>
-        <!-- Player rows -->
-        <div style="display:grid;grid-template-columns:1fr 52px 52px 52px 52px 60px;gap:8px;align-items:center;margin-bottom:6px">
-          <span style="font-size:13px;font-weight:${{predA?500:400}};color:${{predA?'var(--txt0)':'var(--txt1)'}}">${{m.player_a}}</span>
-          <span style="font-family:var(--mono);font-size:12px;text-align:right;color:${{hi(pA,pB,true)}}">${{(pA*100).toFixed(0)}}%</span>
-          <span style="font-family:var(--mono);font-size:12px;text-align:right;color:${{hi(bkA,bkB,true)}}">${{bkA!=null?(bkA*100).toFixed(0)+'%':'—'}}</span>
-          <span style="font-family:var(--mono);font-size:12px;text-align:right;color:${{hi(eloA,eloB,true)}}">${{eloA!=null?(eloA*100).toFixed(0)+'%':'—'}}</span>
-          <span style="font-family:var(--mono);font-size:11px;text-align:right;color:${{hiOdds(m.odds_player_a,m.odds_player_b,true)}}">${{oddsA}}</span>
-          <span style="text-align:right">${{badge}}</span>
+    <div style="border-top:1px solid var(--line);padding:14px 0">
+
+      <!-- Match header: surface pill + names + meta -->
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div class="pill ${{sc}}" style="width:3px;min-height:48px;flex-shrink:0;margin-top:2px"></div>
+
+        <div style="flex:1;min-width:0">
+          <!-- Player A row -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px">
+            <span style="font-size:13px;font-weight:${{predA?600:400}};color:${{predA?'var(--txt0)':'var(--txt1)'}};flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${{m.player_a}}</span>
+            <span style="font-family:var(--mono);font-size:12px;color:${{pA>=pB?'var(--green)':'var(--txt2)'}};width:38px;text-align:right;flex-shrink:0">${{(pA*100).toFixed(0)}}%</span>
+            <span style="font-family:var(--mono);font-size:12px;color:${{bkA!=null&&bkA>=0.5?'var(--blue)':'var(--txt2)'}};width:38px;text-align:right;flex-shrink:0">${{bkA!=null?(bkA*100).toFixed(0)+'%':'—'}}</span>
+            <span style="font-family:var(--mono);font-size:12px;color:${{eloA!=null&&eloA>=0.5?'#c084fc':'var(--txt2)'}};width:38px;text-align:right;flex-shrink:0">${{eloA!=null?(eloA*100).toFixed(0)+'%':'—'}}</span>
+            <span style="font-family:var(--mono);font-size:11px;color:${{favA?'var(--txt0)':'var(--txt2)'}};width:46px;text-align:right;flex-shrink:0;font-weight:${{favA?500:400}}">${{fmtOdds(oa)}}</span>
+          </div>
+
+          <!-- Player B row -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="font-size:13px;font-weight:${{!predA?600:400}};color:${{!predA?'var(--txt0)':'var(--txt1)'}};flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${{m.player_b}}</span>
+            <span style="font-family:var(--mono);font-size:12px;color:${{pB>pA?'var(--green)':'var(--txt2)'}};width:38px;text-align:right;flex-shrink:0">${{(pB*100).toFixed(0)}}%</span>
+            <span style="font-family:var(--mono);font-size:12px;color:${{bkB!=null&&bkB>0.5?'var(--blue)':'var(--txt2)'}};width:38px;text-align:right;flex-shrink:0">${{bkB!=null?(bkB*100).toFixed(0)+'%':'—'}}</span>
+            <span style="font-family:var(--mono);font-size:12px;color:${{eloB!=null&&eloB>0.5?'#c084fc':'var(--txt2)'}};width:38px;text-align:right;flex-shrink:0">${{eloB!=null?(eloB*100).toFixed(0)+'%':'—'}}</span>
+            <span style="font-family:var(--mono);font-size:11px;color:${{favB?'var(--txt0)':'var(--txt2)'}};width:46px;text-align:right;flex-shrink:0;font-weight:${{favB?500:400}}">${{fmtOdds(ob)}}</span>
+          </div>
+
+          <!-- Column labels row -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="flex:1"></span>
+            <span style="font-family:var(--mono);font-size:9px;color:var(--txt2);width:38px;text-align:right;flex-shrink:0;letter-spacing:.06em">PRED</span>
+            <span style="font-family:var(--mono);font-size:9px;color:var(--blue);width:38px;text-align:right;flex-shrink:0;letter-spacing:.06em;opacity:.7">BOOK</span>
+            <span style="font-family:var(--mono);font-size:9px;color:#c084fc;width:38px;text-align:right;flex-shrink:0;letter-spacing:.06em;opacity:.7">ELO</span>
+            <span style="font-family:var(--mono);font-size:9px;color:var(--txt2);width:46px;text-align:right;flex-shrink:0;letter-spacing:.06em">ODDS</span>
+          </div>
+
+          <!-- Probability bar -->
+          <div class="bar" style="margin-bottom:8px">
+            <div class="bar-f" style="width:${{(pA*100).toFixed(0)}}%"></div>
+          </div>
+
+          <!-- Edge + consensus + result row -->
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            ${{edgeStr ? `<span style="font-family:var(--mono);font-size:10px;color:${{edgeCol}};letter-spacing:.04em">
+              EDGE ${{edgeStr}}</span>` : ''}}
+            <span style="font-family:var(--mono);font-size:10px;color:${{consensusCol}};letter-spacing:.04em">${{consensusLabel}}</span>
+            <span style="flex:1"></span>
+            ${{badge}}
+          </div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 52px 52px 52px 52px 60px;gap:8px;align-items:center;margin-bottom:6px">
-          <span style="font-size:13px;font-weight:${{!predA?500:400}};color:${{!predA?'var(--txt0)':'var(--txt1)'}}">${{m.player_b}}</span>
-          <span style="font-family:var(--mono);font-size:12px;text-align:right;color:${{hi(pB,pA,true)}}">${{(pB*100).toFixed(0)}}%</span>
-          <span style="font-family:var(--mono);font-size:12px;text-align:right;color:${{hi(bkB,bkA,true)}}">${{bkB!=null?(bkB*100).toFixed(0)+'%':'—'}}</span>
-          <span style="font-family:var(--mono);font-size:12px;text-align:right;color:${{hi(eloB,eloA,true)}}">${{eloB!=null?(eloB*100).toFixed(0)+'%':'—'}}</span>
-          <span style="font-family:var(--mono);font-size:11px;text-align:right;color:${{hiOdds(m.odds_player_b,m.odds_player_a,true)}}">${{oddsB}}</span>
-          <span></span>
-        </div>
-        <!-- Column labels below each match -->
-        <div style="display:grid;grid-template-columns:1fr 52px 52px 52px 52px 60px;gap:8px">
-          <span></span>
-          <span style="font-family:var(--mono);font-size:9px;color:var(--txt2);text-align:right;letter-spacing:.05em">PRED</span>
-          <span style="font-family:var(--mono);font-size:9px;color:var(--txt2);text-align:right;letter-spacing:.05em">BOOK</span>
-          <span style="font-family:var(--mono);font-size:9px;color:var(--txt2);text-align:right;letter-spacing:.05em">ELO</span>
-          <span style="font-family:var(--mono);font-size:9px;color:var(--txt2);text-align:right;letter-spacing:.05em">ODDS</span>
-          <span></span>
-        </div>
-        <div class="bar" style="margin-top:8px"><div class="bar-f" style="width:${{(pA*100).toFixed(0)}}%"></div></div>
       </div>
+
     </div>`;
   }}
 
