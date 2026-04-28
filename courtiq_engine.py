@@ -1163,7 +1163,8 @@ def build_site_data() -> dict:
 
             match_keys = ["match_no", "player_a", "player_b", "odds_player_a", "odds_player_b",
                           "pred_winner", "correct_prediction", "correct_prediction_book",
-                          "confidence", "prob_player_a_win", "prob_player_b_win"]
+                          "confidence", "prob_player_a_win", "prob_player_b_win",
+                          "book_fair_prob_a", "book_fair_prob_b", "p_elo_a", "p_temp_a"]
             matches = json.loads(df[[c for c in match_keys if c in df.columns]].to_json(orient="records"))
 
             tourney_data[t_key]["rounds"].append({
@@ -1735,6 +1736,7 @@ body{{font-family:var(--sans);background:var(--bg0);color:var(--txt0);min-height
   <div class="logo">COURT<em>IQ</em></div>
   <nav class="nav">
     <a class="on" onclick="showPage('predictions')">predictions</a>
+    <a onclick="showPage('live')">current</a>
     <a onclick="showPage('players')">players</a>
     <a onclick="showPage('tournaments')">tournaments</a>
     <a onclick="showPage('accuracy')">accuracy</a>
@@ -1776,6 +1778,15 @@ body{{font-family:var(--sans);background:var(--bg0);color:var(--txt0);min-height
       <div class="lbl" style="margin-top:20px">ELO RANKINGS</div>
       <div id="elo-list"></div>
     </div>
+  </div>
+</div>
+
+<!-- CURRENT TOURNAMENTS PAGE -->
+<div id="page-live" class="page">
+  <div style="padding:20px 0">
+    <div class="lbl">CURRENT TOURNAMENT <span id="live-tourn-name"></span></div>
+    <div id="live-round-tabs" style="display:flex;gap:0;margin-bottom:20px;border-bottom:1px solid var(--line)"></div>
+    <div id="live-matches-wrap"></div>
   </div>
 </div>
 
@@ -2114,6 +2125,156 @@ function buildTicker(){{
   }}catch(e){{}}
 }}
 
+// ── CURRENT TOURNAMENT PAGE ──────────────────────────────────────
+function buildLivePage() {{
+  // Find the most recent tournament that has at least one incomplete round
+  // (correct_prediction still null) or is the most recent overall
+  const recent = [...tourneys].reverse();
+  let activeTourney = null;
+  let activeRound   = null;
+
+  for (const t of recent) {{
+    // Find the deepest round with any matches
+    const rounds = [...t.rounds];
+    for (let ri = rounds.length - 1; ri >= 0; ri--) {{
+      const r = rounds[ri];
+      if (!r.matches || r.matches.length === 0) continue;
+      const hasTBD = r.matches.some(m => m.player_a === 'TBD' || m.player_b === 'TBD');
+      if (hasTBD && ri > 0) continue; // skip blank TBD rounds unless only round
+      activeTourney = t;
+      // Show the most recent round with actual players
+      // If current round has pending results, show it
+      // If all scored, show it as complete and note next round
+      const pending = r.matches.filter(m => m.correct_prediction == null && m.player_a !== 'TBD');
+      const hasReal = r.matches.some(m => m.player_a !== 'TBD' && m.player_b !== 'TBD');
+      if (hasReal) {{ activeRound = r; }}
+      break;
+    }}
+    if (activeTourney) break;
+  }}
+
+  if (!activeTourney) {{
+    document.getElementById('live-matches-wrap').innerHTML =
+      '<div style="color:var(--txt2);padding:20px 0;font-size:13px">No active tournament data available.</div>';
+    return;
+  }}
+
+  document.getElementById('live-tourn-name').textContent = activeTourney.name;
+
+  // Build round tabs
+  const tabWrap = document.getElementById('live-round-tabs');
+  const realRounds = activeTourney.rounds.filter(r =>
+    r.matches && r.matches.length > 0 && r.matches.some(m => m.player_a !== 'TBD')
+  );
+
+  let tabHtml = '';
+  realRounds.forEach((r, i) => {{
+    const isActive = activeRound && r.round === activeRound.round;
+    tabHtml += `<span class="nav a ${{isActive ? 'on' : ''}}"
+      style="cursor:pointer;padding:6px 14px;border:1px solid ${{isActive ? 'var(--line2)' : 'transparent'}};background:${{isActive ? 'var(--bg2)' : 'transparent'}};font-family:var(--mono);font-size:11px;color:${{isActive ? 'var(--txt0)' : 'var(--txt2)'}};letter-spacing:.08em"
+      onclick="showLiveRound('${{activeTourney.slug}}','${{r.round}}')">${{r.round}}</span>`;
+  }});
+  tabWrap.innerHTML = tabHtml;
+
+  if (activeRound) renderLiveRound(activeTourney, activeRound);
+}}
+
+function showLiveRound(slug, roundCode) {{
+  const t = tourneys.find(t => t.slug === slug);
+  if (!t) return;
+  const r = t.rounds.find(r => r.round === roundCode);
+  if (!r) return;
+
+  // Update tab styles
+  document.querySelectorAll('#live-round-tabs span').forEach(el => {{
+    const isThis = el.textContent === roundCode;
+    el.style.color = isThis ? 'var(--txt0)' : 'var(--txt2)';
+    el.style.border = isThis ? '1px solid var(--line2)' : '1px solid transparent';
+    el.style.background = isThis ? 'var(--bg2)' : 'transparent';
+  }});
+  renderLiveRound(t, r);
+}}
+
+function renderLiveRound(t, r) {{
+  const surface = surfFromSlug(t.slug);
+  const sc = surfClass(surface);
+  const matches = r.matches || [];
+  const total   = matches.filter(m => m.player_a !== 'TBD').length;
+  const scored  = matches.filter(m => m.correct_prediction != null).length;
+  const pending = total - scored;
+
+  let html = `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <div style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${{r.round}} · ${{total}} matches · ${{scored}} scored · ${{pending}} pending</div>
+    ${{pending === 0 && total > 0 ? '<span class="tag t-done" style="font-size:9px;padding:3px 8px">ROUND COMPLETE</span>' : '<span class="tag t-live" style="font-size:9px;padding:3px 8px">IN PROGRESS</span>'}}
+  </div>`;
+
+  // Column headers
+  html += `
+  <div style="display:grid;grid-template-columns:3px 1fr 60px 60px 60px 60px 80px;gap:12px;padding:6px 0;border-bottom:1px solid var(--line2);margin-bottom:4px">
+    <div></div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);letter-spacing:.06em">MATCH</div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);text-align:right">PRED %</div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);text-align:right">BOOK %</div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);text-align:right">ELO %</div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);text-align:right">ODDS</div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);text-align:right">RESULT</div>
+  </div>`;
+
+  for (const m of matches) {{
+    if (m.player_a === 'TBD' || m.player_b === 'TBD') continue;
+    const prob   = m.prob_player_a_win ?? 0.5;
+    const probB  = m.prob_player_b_win ?? (1 - prob);
+    const predA  = m.pred_winner === m.player_a;
+    const pA     = predA ? prob : probB;
+    const pB     = 1 - pA;
+    const bkA    = m.book_fair_prob_a;
+    const eloA   = m.p_elo_a;
+    const isPend = m.correct_prediction == null;
+    const ok     = m.correct_prediction === 1;
+
+    const badge  = isPend
+      ? '<span class="badge pend">pending</span>'
+      : ok ? '<span class="badge ok">correct</span>' : '<span class="badge no">wrong</span>';
+
+    const oddsA  = m.odds_player_a ? (m.odds_player_a > 0 ? '+'+m.odds_player_a : m.odds_player_a) : '—';
+    const oddsB  = m.odds_player_b ? (m.odds_player_b > 0 ? '+'+m.odds_player_b : m.odds_player_b) : '—';
+
+    html += `
+    <div style="display:grid;grid-template-columns:3px 1fr 60px 60px 60px 80px 80px;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)">
+      <div class="pill ${{sc}}" style="min-height:40px;height:40px"></div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+          <span style="font-size:13px;font-weight:${{predA?500:400}};color:${{predA?'var(--txt0)':'var(--txt1)'}}">${{m.player_a||'—'}}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between">
+          <span style="font-size:13px;font-weight:${{!predA?500:400}};color:${{!predA?'var(--txt0)':'var(--txt1)'}}">${{m.player_b||'—'}}</span>
+        </div>
+        <div class="bar" style="margin-top:5px"><div class="bar-f" style="width:${{(pA*100).toFixed(0)}}%"></div></div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--green)">${{(pA*100).toFixed(0)}}%</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${{(pB*100).toFixed(0)}}%</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--blue)">${{bkA != null ? (bkA*100).toFixed(0)+'%' : '—'}}</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${{bkA != null ? ((1-bkA)*100).toFixed(0)+'%' : '—'}}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--txt1)">${{eloA != null ? (eloA*100).toFixed(0)+'%' : '—'}}</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${{eloA != null ? ((1-eloA)*100).toFixed(0)+'%' : '—'}}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--txt2)">${{oddsA}}</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--txt2)">${{oddsB}}</div>
+      </div>
+      <div style="text-align:right">${{badge}}</div>
+    </div>`;
+  }}
+
+  document.getElementById('live-matches-wrap').innerHTML = html;
+}}
+
 // ── BOOT ────────────────────────────────────────────────────────
 buildPredictions();
 buildTourneyCards();
@@ -2122,6 +2283,7 @@ buildPlayersPage();
 buildTournamentsPage();
 buildAccuracyPage();
 buildTicker();
+buildLivePage();
 </script>
 </body>
 </html>"""
