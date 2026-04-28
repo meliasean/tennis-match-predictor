@@ -881,6 +881,7 @@ def run_predictions(
     """
     pipe = model_bundle["pipeline"]
     feature_cols = model_bundle["feature_cols"]
+    calibrator = model_bundle.get("calibrator")
 
     surface  = cfg["surface"]
     level    = cfg["level"]
@@ -957,7 +958,8 @@ def run_predictions(
                 feats[c] = {"surface": surface, "tourney_level": level,
                             "round": round_code, "best_of": best_of}.get(c, 0.0)
 
-        p_a_std = float(pipe.predict_proba(feats[feature_cols])[:, 1][0])
+        p_a_raw = float(pipe.predict_proba(feats[feature_cols])[:, 1][0])
+        p_a_std = float(calibrator.predict([p_a_raw])[0]) if calibrator else p_a_raw
         pred_std = A if p_a_std >= 0.5 else B
         conf_std = max(p_a_std, 1.0 - p_a_std)
         ws, ls = (sa, sb) if pred_std == A else (sb, sa)
@@ -1285,6 +1287,11 @@ def cmd_predict(args):
         bundle = {"pipeline": bundle, "feature_cols": None}
         print("WARNING: Old-style model bundle. feature_cols not available.")
     print(f"  Model loaded: {MODEL_PATH}")
+    cal_path = MODELS_DIR / "prob_calibrator.joblib"
+    calibrator = load(str(cal_path)) if cal_path.exists() else None
+    if calibrator:
+        print("  [model] Calibrator loaded")
+    bundle["calibrator"] = calibrator
 
     # Get the draw
     matches = None
