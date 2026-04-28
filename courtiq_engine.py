@@ -1588,218 +1588,450 @@ def cmd_site(args):
 
 
 def _build_html(js_data: str) -> str:
-    """Generate the full CourtIQ dark-theme site with embedded data."""
+    """Generate the full CourtIQ site — redesigned for clarity and aesthetics."""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CourtIQ — ATP Tennis Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
 *{{box-sizing:border-box;margin:0;padding:0}}
 :root{{
-  --bg0:#0a0a0a;--bg1:#111;--bg2:#1a1a1a;--bg3:#242424;
-  --line:rgba(255,255,255,0.07);--line2:rgba(255,255,255,0.12);
-  --txt0:#f0f0f0;--txt1:#999;--txt2:#555;
-  --green:#22c47a;--green-dim:rgba(34,196,122,0.12);--green-mid:#0f6e56;
-  --clay:#e8622a;--clay-dim:rgba(232,98,42,0.12);
-  --blue:#4a9eff;--blue-dim:rgba(74,158,255,0.12);
-  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+  --bg0:#080c10;
+  --bg1:#0d1117;
+  --bg2:#161b22;
+  --bg3:#21262d;
+  --bg4:#30363d;
+  --line:rgba(255,255,255,0.06);
+  --line2:rgba(255,255,255,0.12);
+  --txt0:#e6edf3;
+  --txt1:#8b949e;
+  --txt2:#484f58;
+  --green:#3fb950;
+  --green-dim:rgba(63,185,80,0.1);
+  --green-bright:#56d364;
+  --clay:#f0883e;
+  --clay-dim:rgba(240,136,62,0.1);
+  --blue:#58a6ff;
+  --blue-dim:rgba(88,166,255,0.1);
+  --purple:#bc8cff;
+  --purple-dim:rgba(188,140,255,0.1);
+  --gold:#e3b341;
+  --mono:'DM Mono',monospace;
+  --display:'Syne',sans-serif;
+  --sans:'DM Sans',sans-serif;
+  --radius:6px;
+  --radius-lg:10px;
 }}
-body{{font-family:var(--sans);background:var(--bg0);color:var(--txt0);min-height:100vh}}
-.wrap{{max-width:1100px;margin:0 auto;padding:0 24px}}
+html{{scroll-behavior:smooth}}
+body{{
+  font-family:var(--sans);
+  background:var(--bg0);
+  color:var(--txt0);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}}
+.wrap{{max-width:1200px;margin:0 auto;padding:0 20px}}
 
-/* HEADER */
-.hdr{{display:flex;align-items:center;justify-content:space-between;padding:18px 0 16px;border-bottom:1px solid var(--line2)}}
-.logo{{font-family:var(--mono);font-size:16px;font-weight:500;letter-spacing:.12em;color:var(--txt0)}}
+/* ── HEADER ─────────────────────────────────────────────── */
+.hdr{{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 0;
+  border-bottom:1px solid var(--line2);
+  position:sticky;top:0;
+  background:rgba(8,12,16,0.92);
+  backdrop-filter:blur(12px);
+  z-index:100;
+}}
+.logo{{
+  font-family:var(--display);font-size:18px;font-weight:800;
+  letter-spacing:.02em;color:var(--txt0);
+  display:flex;align-items:center;gap:8px;
+}}
+.logo-dot{{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px var(--green);
+}}
 .logo em{{color:var(--green);font-style:normal}}
-.nav{{display:flex}}
-.nav a{{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--txt2);text-decoration:none;padding:6px 14px;border:1px solid transparent;cursor:pointer}}
-.nav a.on,.nav a:hover{{color:var(--txt0);border-color:var(--line2);background:var(--bg2)}}
+.nav{{display:flex;gap:2px}}
+.nav a{{
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  color:var(--txt2);text-decoration:none;
+  padding:6px 12px;border-radius:var(--radius);
+  cursor:pointer;transition:all .15s;
+  border:1px solid transparent;
+}}
+.nav a:hover{{color:var(--txt1);background:var(--bg2)}}
+.nav a.on{{
+  color:var(--txt0);background:var(--bg2);
+  border-color:var(--line2);
+}}
 
-/* STATS BAR */
-.stats{{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}}
-.st{{padding:20px 0;border-right:1px solid var(--line)}}
-.st:last-child{{border-right:none}}
-.st:not(:first-child){{padding-left:20px}}
-.st-k{{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--txt2);margin-bottom:8px}}
-.st-v{{font-family:var(--mono);font-size:26px;font-weight:500;line-height:1;margin-bottom:4px}}
-.st-v em{{font-size:14px;font-style:normal;color:var(--txt2);font-weight:400;margin-left:2px}}
-.st-s{{font-size:11px;color:var(--txt2)}}
-.g{{color:var(--green)}}.r{{color:var(--clay)}}.b{{color:var(--blue)}}
+/* ── HERO STATS ──────────────────────────────────────────── */
+.hero{{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--line);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  overflow:hidden;margin:20px 0;
+}}
+.hero-stat{{
+  background:var(--bg1);padding:18px 20px;
+  position:relative;overflow:hidden;
+}}
+.hero-stat::before{{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+}}
+.hero-stat:nth-child(1)::before{{background:var(--green)}}
+.hero-stat:nth-child(2)::before{{background:var(--clay)}}
+.hero-stat:nth-child(3)::before{{background:var(--blue)}}
+.hero-stat:nth-child(4)::before{{background:var(--purple)}}
+.hs-label{{
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  color:var(--txt2);margin-bottom:8px;text-transform:uppercase;
+}}
+.hs-val{{
+  font-family:var(--mono);font-size:28px;font-weight:500;
+  line-height:1;color:var(--txt0);margin-bottom:4px;
+}}
+.hs-val em{{font-size:15px;font-style:normal;color:var(--txt2)}}
+.hs-sub{{font-size:11px;color:var(--txt2)}}
+.hs-sub.up{{color:var(--green)}}
+.hs-sub.dn{{color:var(--clay)}}
 
-/* LAYOUT */
-.cols{{display:grid;grid-template-columns:1.5fr 1fr;gap:0;border-bottom:1px solid var(--line)}}
-.col-l{{border-right:1px solid var(--line);padding:20px 24px 20px 0}}
-.col-r{{padding:20px 0 20px 24px}}
-.lbl{{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--txt2);margin-bottom:14px}}
-.lbl span{{color:var(--green);margin-left:8px}}
+/* ── LAYOUT ──────────────────────────────────────────────── */
+.body-grid{{display:grid;grid-template-columns:1fr 320px;gap:20px;padding-bottom:40px}}
+.main-col{{min-width:0}}
+.side-col{{}}
 
-/* MATCHES */
-.match{{display:grid;grid-template-columns:3px 1fr auto;gap:14px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}}
-.pill{{border-radius:2px;width:3px;min-height:36px}}
-.clay-p{{background:var(--clay)}}.hard-p{{background:var(--blue)}}.grass-p{{background:var(--green)}}
-.m-inner{{display:flex;flex-direction:column;gap:4px}}
-.m-row{{display:flex;justify-content:space-between;align-items:center}}
-.m-name{{font-size:13px;font-weight:400;color:var(--txt1)}}
-.m-name.w{{color:var(--txt0);font-weight:500}}
-.m-pct{{font-family:var(--mono);font-size:12px;color:var(--txt2)}}
-.m-pct.w{{color:var(--green)}}
-.bar{{height:2px;background:var(--bg3);border-radius:1px;margin-top:5px;overflow:hidden}}
-.bar-f{{height:2px;border-radius:1px;background:var(--green)}}
-.m-right{{text-align:right;min-width:52px}}
-.rnd{{font-family:var(--mono);font-size:10px;color:var(--txt2);letter-spacing:.05em}}
-.badge{{display:inline-block;margin-top:4px;font-family:var(--mono);font-size:9px;letter-spacing:.06em;padding:2px 6px}}
-.ok{{background:var(--green-dim);color:var(--green)}}.no{{background:var(--clay-dim);color:var(--clay)}}
-.pend{{background:var(--bg3);color:var(--txt2)}}
-.divider{{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--txt2);padding:14px 0 10px;border-top:1px solid var(--line);margin-top:4px}}
-.show-more{{font-family:var(--mono);font-size:10px;color:var(--txt2);padding:10px 0;cursor:pointer;text-align:center;border-top:1px solid var(--line)}}
-.show-more:hover{{color:var(--txt0)}}
+/* ── SECTION HEADER ──────────────────────────────────────── */
+.sec-hdr{{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;
+}}
+.sec-title{{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  color:var(--txt2);text-transform:uppercase;
+}}
+.sec-title span{{color:var(--green);margin-left:8px}}
 
-/* TOURNAMENT CARDS */
-.t-card{{border:1px solid var(--line);background:var(--bg1);margin-bottom:8px}}
-.t-head{{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:1px solid var(--line)}}
-.t-name{{font-size:13px;font-weight:500;color:var(--txt0);cursor:pointer}}
-.t-name:hover{{color:var(--green)}}
-.tag{{font-family:var(--mono);font-size:9px;letter-spacing:.08em;padding:3px 7px}}
-.t-live{{background:var(--clay-dim);color:var(--clay)}}
-.t-done{{background:var(--green-dim);color:var(--green)}}
-.t-pend{{background:var(--bg3);color:var(--txt2)}}
-.t-body{{padding:10px 14px;display:grid;grid-template-columns:1fr 1fr;gap:4px 0}}
-.t-k{{font-size:11px;color:var(--txt2);padding:2px 0}}
-.t-v{{font-family:var(--mono);font-size:11px;color:var(--txt0);text-align:right;padding:2px 0}}
-.t-v.g{{color:var(--green)}}.t-v.b{{color:var(--blue)}}
-.acc-row{{display:flex;gap:3px;margin:8px 14px 4px;height:3px}}
-.acc-m{{background:var(--green);border-radius:1px;flex-shrink:0}}
-.acc-b{{background:var(--blue);border-radius:1px;flex-shrink:0}}
-.acc-bg{{background:var(--bg3);border-radius:1px;flex:1}}
-.acc-leg{{display:flex;gap:12px;padding:0 14px 10px}}
-.acc-li{{font-family:var(--mono);font-size:9px;color:var(--txt2);display:flex;align-items:center;gap:5px}}
-.acc-dot{{width:6px;height:6px;border-radius:50%;flex-shrink:0}}
+/* ── MATCH CARD ──────────────────────────────────────────── */
+.match-card{{
+  background:var(--bg1);border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  margin-bottom:8px;overflow:hidden;
+  transition:border-color .15s;
+}}
+.match-card:hover{{border-color:var(--line2)}}
+.match-inner{{padding:14px 16px}}
+.match-top{{display:flex;align-items:stretch;gap:14px}}
+.surf-bar{{
+  width:3px;border-radius:2px;flex-shrink:0;
+  align-self:stretch;min-height:50px;
+}}
+.clay-s{{background:var(--clay)}}
+.hard-s{{background:var(--blue)}}
+.grass-s{{background:var(--green)}}
 
-/* ELO TABLE */
-.elo-row{{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}}
-.elo-n{{font-family:var(--mono);font-size:10px;color:var(--txt2);width:16px;text-align:right;flex-shrink:0}}
-.elo-name{{font-size:12px;color:var(--txt0);flex:1}}
+.match-players{{flex:1;min-width:0}}
+.player-row{{
+  display:grid;
+  grid-template-columns:1fr 44px 44px 44px 50px;
+  gap:6px;align-items:center;
+  margin-bottom:3px;
+}}
+.player-row:last-of-type{{margin-bottom:0}}
+.p-name{{
+  font-size:13px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;
+}}
+.p-name.pred{{font-weight:600;color:var(--txt0)}}
+.p-name.unp{{font-weight:400;color:var(--txt1)}}
+.p-stat{{
+  font-family:var(--mono);font-size:11px;
+  text-align:right;
+}}
+.p-stat.hi-g{{color:var(--green-bright)}}
+.p-stat.hi-b{{color:var(--blue)}}
+.p-stat.hi-p{{color:var(--purple)}}
+.p-stat.hi-w{{color:var(--txt0);font-weight:500}}
+.p-stat.lo{{color:var(--txt2)}}
+
+.col-labels{{
+  display:grid;
+  grid-template-columns:1fr 44px 44px 44px 50px;
+  gap:6px;margin-top:5px;margin-bottom:8px;
+}}
+.col-lbl{{
+  font-family:var(--mono);font-size:9px;letter-spacing:.07em;
+  text-align:right;text-transform:uppercase;
+}}
+.cl-pred{{color:var(--txt2)}}
+.cl-book{{color:var(--blue);opacity:.7}}
+.cl-elo{{color:var(--purple);opacity:.7}}
+.cl-odds{{color:var(--txt2)}}
+
+.prob-bar{{height:2px;background:var(--bg3);border-radius:1px;margin-top:8px;overflow:hidden}}
+.prob-fill{{height:2px;background:var(--green);border-radius:1px;transition:width .3s}}
+
+.match-footer{{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 16px;
+  border-top:1px solid var(--line);
+  background:rgba(0,0,0,.2);
+  flex-wrap:wrap;
+}}
+.edge-chip{{
+  font-family:var(--mono);font-size:10px;letter-spacing:.04em;
+  padding:2px 8px;border-radius:3px;
+}}
+.edge-strong{{background:var(--green-dim);color:var(--green-bright)}}
+.edge-mod{{background:rgba(63,185,80,.06);color:var(--green)}}
+.edge-none{{background:var(--bg3);color:var(--txt2)}}
+.edge-neg{{background:var(--clay-dim);color:var(--clay)}}
+
+.cons-chip{{
+  font-family:var(--mono);font-size:10px;letter-spacing:.04em;
+  padding:2px 8px;border-radius:3px;
+}}
+.cons-full{{background:var(--green-dim);color:var(--green)}}
+.cons-strong{{background:rgba(63,185,80,.06);color:var(--txt1)}}
+.cons-split{{background:var(--clay-dim);color:var(--clay)}}
+
+.badge{{
+  font-family:var(--mono);font-size:9px;letter-spacing:.05em;
+  padding:2px 7px;border-radius:3px;
+}}
+.badge-ok{{background:var(--green-dim);color:var(--green-bright)}}
+.badge-no{{background:var(--clay-dim);color:var(--clay)}}
+.badge-pend{{background:var(--bg3);color:var(--txt2)}}
+.rnd-label{{font-family:var(--mono);font-size:10px;color:var(--txt2);margin-left:auto}}
+
+/* ── TOURNAMENT CARDS ────────────────────────────────────── */
+.tourn-card{{
+  background:var(--bg1);border:1px solid var(--line);
+  border-radius:var(--radius-lg);margin-bottom:8px;overflow:hidden;
+}}
+.tourn-head{{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 14px;border-bottom:1px solid var(--line);
+}}
+.tourn-name{{
+  font-size:13px;font-weight:500;color:var(--txt0);
+  cursor:pointer;transition:color .15s;
+}}
+.tourn-name:hover{{color:var(--green)}}
+.tag{{
+  font-family:var(--mono);font-size:9px;letter-spacing:.07em;
+  padding:3px 8px;border-radius:3px;
+}}
+.tag-live{{background:var(--clay-dim);color:var(--clay)}}
+.tag-done{{background:var(--green-dim);color:var(--green)}}
+.tag-pend{{background:var(--bg3);color:var(--txt2)}}
+.tourn-body{{padding:10px 14px;display:grid;grid-template-columns:1fr 1fr;gap:3px 0}}
+.tb-k{{font-size:11px;color:var(--txt2);padding:2px 0}}
+.tb-v{{
+  font-family:var(--mono);font-size:11px;color:var(--txt0);
+  text-align:right;padding:2px 0;
+}}
+.tb-v.g{{color:var(--green)}}.tb-v.b{{color:var(--blue)}}
+
+.acc-tracks{{padding:2px 14px 10px;display:flex;flex-direction:column;gap:4px}}
+.acc-track{{display:flex;align-items:center;gap:8px}}
+.acc-bar-wrap{{flex:1;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden}}
+.acc-bar-fill{{height:3px;border-radius:2px}}
+.acc-bar-lbl{{
+  font-family:var(--mono);font-size:9px;
+  width:34px;text-align:right;flex-shrink:0;
+}}
+
+/* ── ELO LIST ────────────────────────────────────────────── */
+.elo-row{{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 0;border-top:1px solid var(--line);
+}}
+.elo-rank{{
+  font-family:var(--mono);font-size:10px;color:var(--txt2);
+  width:18px;text-align:right;flex-shrink:0;
+}}
+.elo-name{{font-size:12px;color:var(--txt0);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 .elo-val{{font-family:var(--mono);font-size:12px;color:var(--txt1)}}
-.elo-d{{font-family:var(--mono);font-size:10px;width:34px;text-align:right;flex-shrink:0}}
-.elo-surface{{font-family:var(--mono);font-size:10px;color:var(--txt2);width:40px;text-align:right;flex-shrink:0}}
+.elo-delta{{font-family:var(--mono);font-size:10px;width:32px;text-align:right;flex-shrink:0}}
 
-/* PAGES */
+/* ── PAGES ───────────────────────────────────────────────── */
 .page{{display:none}}.page.on{{display:block}}
 
-/* PLAYER TABLE */
-.tbl{{width:100%;border-collapse:collapse;margin-top:8px}}
-.tbl th{{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--txt2);text-align:left;padding:8px 0;border-bottom:1px solid var(--line2);font-weight:400}}
-.tbl th.r{{text-align:right}}
-.tbl td{{font-size:12px;color:var(--txt1);padding:8px 0;border-bottom:1px solid var(--line)}}
-.tbl td.r{{text-align:right;font-family:var(--mono);font-size:11px}}
-.tbl td.name{{color:var(--txt0);font-weight:400}}
-.tbl tr:hover td{{background:var(--bg1)}}
-.search-wrap{{padding:16px 0 8px}}
-.search{{background:var(--bg1);border:1px solid var(--line2);color:var(--txt0);font-family:var(--sans);font-size:13px;padding:8px 12px;width:300px;outline:none}}
-.search:focus{{border-color:var(--green)}}
-.search::placeholder{{color:var(--txt2)}}
+/* ── PLAYER TABLE ────────────────────────────────────────── */
+.search-bar{{
+  background:var(--bg1);border:1px solid var(--line2);
+  color:var(--txt0);font-family:var(--sans);font-size:13px;
+  padding:8px 12px;border-radius:var(--radius);
+  width:280px;outline:none;margin-bottom:12px;
+}}
+.search-bar:focus{{border-color:var(--green)}}
+.search-bar::placeholder{{color:var(--txt2)}}
+.data-tbl{{width:100%;border-collapse:collapse}}
+.data-tbl th{{
+  font-family:var(--mono);font-size:9px;letter-spacing:.08em;
+  color:var(--txt2);text-align:left;padding:8px 6px;
+  border-bottom:1px solid var(--line2);font-weight:400;
+  text-transform:uppercase;
+}}
+.data-tbl th.r{{text-align:right}}
+.data-tbl td{{
+  font-size:12px;color:var(--txt1);
+  padding:8px 6px;border-bottom:1px solid var(--line);
+}}
+.data-tbl td.r{{text-align:right;font-family:var(--mono);font-size:11px}}
+.data-tbl td.name{{color:var(--txt0)}}
+.data-tbl tr:hover td{{background:var(--bg1)}}
 
-/* ACCURACY PAGE */
-.acc-chart{{padding:20px 0}}
-.acc-tourn-row{{display:flex;align-items:center;gap:12px;padding:8px 0;border-top:1px solid var(--line)}}
-.acc-tourn-name{{font-size:12px;color:var(--txt0);width:160px;flex-shrink:0}}
-.acc-bars{{flex:1;display:flex;flex-direction:column;gap:3px}}
-.acc-bar-row{{display:flex;align-items:center;gap:8px}}
-.acc-bar-track{{flex:1;height:6px;background:var(--bg3);border-radius:2px;overflow:hidden}}
-.acc-bar-fill{{height:6px;border-radius:2px}}
-.acc-bar-label{{font-family:var(--mono);font-size:10px;color:var(--txt2);width:38px;text-align:right;flex-shrink:0}}
+/* ── ACCURACY PAGE ───────────────────────────────────────── */
+.acc-row{{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 0;border-top:1px solid var(--line);
+}}
+.acc-tname{{font-size:12px;color:var(--txt0);width:160px;flex-shrink:0}}
+.acc-bars{{flex:1;display:flex;flex-direction:column;gap:4px}}
+.acc-bar-row2{{display:flex;align-items:center;gap:8px}}
+.acc-bar-track2{{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}}
+.acc-bar-fill2{{height:5px;border-radius:3px}}
+.acc-bar-lbl2{{
+  font-family:var(--mono);font-size:10px;
+  width:36px;text-align:right;flex-shrink:0;
+}}
 
-/* LIVE TICKER */
-.ticker{{background:var(--bg1);border-bottom:1px solid var(--line);padding:8px 0;overflow:hidden}}
-.ticker-inner{{display:flex;gap:24px;white-space:nowrap}}
-.tick-item{{font-family:var(--mono);font-size:11px;color:var(--txt2)}}
-.tick-item span{{color:var(--txt0)}}
-.tick-item .won{{color:var(--green)}}
-.live-dot{{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--clay);margin-right:6px;animation:blink 1.4s ease-in-out infinite}}
-@keyframes blink{{0%,100%{{opacity:1}}50%{{opacity:.2}}}}
+/* ── CURRENT TOURNAMENT PAGE ─────────────────────────────── */
+.live-tabs{{display:flex;gap:2px;margin-bottom:20px;flex-wrap:wrap}}
+.live-tab{{
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;
+  padding:5px 12px;border-radius:var(--radius);
+  border:1px solid transparent;color:var(--txt2);
+  cursor:pointer;transition:all .15s;
+}}
+.live-tab:hover{{color:var(--txt1);background:var(--bg2)}}
+.live-tab.on{{
+  color:var(--txt0);background:var(--bg2);
+  border-color:var(--line2);
+}}
+.round-status{{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 16px;background:var(--bg2);
+  border:1px solid var(--line);border-radius:var(--radius);
+  margin-bottom:16px;
+}}
+.rs-text{{font-family:var(--mono);font-size:11px;color:var(--txt2);letter-spacing:.04em}}
 
-/* FOOTER */
-.foot{{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--line)}}
-.foot-l{{font-family:var(--mono);font-size:10px;color:var(--txt2);letter-spacing:.05em}}
+/* ── FOOTER ──────────────────────────────────────────────── */
+.foot{{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 0;border-top:1px solid var(--line);
+  margin-top:20px;
+}}
+.foot-l{{font-family:var(--mono);font-size:10px;color:var(--txt2);letter-spacing:.06em}}
 .foot-r{{font-family:var(--mono);font-size:10px;color:var(--txt2)}}
 
-/* SURFACE FILTER */
-.filter-row{{display:flex;gap:6px;margin-bottom:16px}}
-.filter-btn{{font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:4px 10px;background:var(--bg2);border:1px solid var(--line);color:var(--txt2);cursor:pointer}}
-.filter-btn.on{{background:var(--bg3);border-color:var(--line2);color:var(--txt0)}}
+/* ── LIVE DOT ─────────────────────────────────────────────── */
+.live-dot{{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--clay);margin-right:5px;
+  animation:pulse 1.4s ease-in-out infinite;
+}}
+@keyframes pulse{{0%,100%{{opacity:1;transform:scale(1)}}50%{{opacity:.3;transform:scale(.8)}}}}
 
-@media(max-width:700px){{
-  .cols{{grid-template-columns:1fr}}
-  .col-l{{border-right:none;border-bottom:1px solid var(--line);padding-right:0}}
-  .col-r{{padding-left:0}}
-  .stats{{grid-template-columns:repeat(2,1fr)}}
-  .st:nth-child(2){{border-right:none}}
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media(max-width:768px){{
+  .body-grid{{grid-template-columns:1fr}}
+  .side-col{{order:-1}}
+  .hero{{grid-template-columns:repeat(2,1fr)}}
+  .player-row,.col-labels{{
+    grid-template-columns:1fr 44px 44px 50px;
+  }}
+  .player-row .p-stat:nth-child(3),
+  .col-labels .col-lbl:nth-child(3){{display:none}}
+}}
+@media(max-width:480px){{
+  .hero{{grid-template-columns:repeat(2,1fr)}}
+  .player-row,.col-labels{{
+    grid-template-columns:1fr 44px 50px;
+  }}
+  .player-row .p-stat:nth-child(2),
+  .player-row .p-stat:nth-child(3),
+  .col-labels .col-lbl:nth-child(2),
+  .col-labels .col-lbl:nth-child(3){{display:none}}
 }}
 </style>
 </head>
 <body>
-<div id="live-ticker" class="ticker" style="display:none">
-  <div class="wrap"><div class="ticker-inner" id="ticker-content"></div></div>
-</div>
-<div class="wrap">
 
+<div class="wrap">
 <div class="hdr">
-  <div class="logo">COURT<em>IQ</em></div>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    COURT<em>IQ</em>
+  </div>
   <nav class="nav">
-    <a class="on" onclick="showPage('predictions')">predictions</a>
-    <a onclick="showPage('live')">current</a>
-    <a onclick="showPage('players')">players</a>
-    <a onclick="showPage('tournaments')">tournaments</a>
-    <a onclick="showPage('accuracy')">accuracy</a>
+    <a class="on" onclick="showPage('predictions',this)">predictions</a>
+    <a onclick="showPage('live',this)">current</a>
+    <a onclick="showPage('players',this)">players</a>
+    <a onclick="showPage('tournaments',this)">tournaments</a>
+    <a onclick="showPage('accuracy',this)">accuracy</a>
   </nav>
 </div>
+</div>
 
-<div class="stats">
-  <div class="st">
-    <div class="st-k">MODEL ACC.</div>
-    <div class="st-v" id="s-model-acc">—</div>
-    <div class="st-s" id="s-matches">—</div>
+<div class="wrap">
+
+<!-- HERO STATS -->
+<div class="hero">
+  <div class="hero-stat">
+    <div class="hs-label">Model Accuracy</div>
+    <div class="hs-val" id="s-model">—</div>
+    <div class="hs-sub" id="s-matches">—</div>
   </div>
-  <div class="st">
-    <div class="st-k">VS BOOK</div>
-    <div class="st-v" id="s-book-acc">—</div>
-    <div class="st-s" id="s-book-gap">—</div>
+  <div class="hero-stat">
+    <div class="hs-label">vs Bookmakers</div>
+    <div class="hs-val" id="s-book">—</div>
+    <div class="hs-sub dn" id="s-gap">—</div>
   </div>
-  <div class="st">
-    <div class="st-k">PLAYERS</div>
-    <div class="st-v" id="s-players">—</div>
-    <div class="st-s">ELO tracked</div>
+  <div class="hero-stat">
+    <div class="hs-label">Active Players</div>
+    <div class="hs-val" id="s-players">—</div>
+    <div class="hs-sub">ELO tracked</div>
   </div>
-  <div class="st">
-    <div class="st-k">TOURNAMENTS</div>
-    <div class="st-v" id="s-tourneys">—</div>
-    <div class="st-s" id="s-tourney-range">—</div>
+  <div class="hero-stat">
+    <div class="hs-label">Tournaments</div>
+    <div class="hs-val" id="s-tourneys">—</div>
+    <div class="hs-sub" id="s-range">—</div>
   </div>
 </div>
 
 <!-- PREDICTIONS PAGE -->
 <div id="page-predictions" class="page on">
-  <div class="cols">
-    <div class="col-l">
-      <div id="pred-matches-wrap"></div>
+  <div class="body-grid">
+    <div class="main-col">
+      <div id="pred-wrap"></div>
     </div>
-    <div class="col-r">
-      <div class="lbl">TOURNAMENTS</div>
-      <div id="tourney-cards"></div>
-      <div class="lbl" style="margin-top:20px">ELO RANKINGS</div>
+    <div class="side-col">
+      <div class="sec-hdr"><div class="sec-title">Tournaments</div></div>
+      <div id="tourn-cards"></div>
+      <div class="sec-hdr" style="margin-top:20px"><div class="sec-title">ELO Rankings</div></div>
       <div id="elo-list"></div>
     </div>
   </div>
 </div>
 
-<!-- CURRENT TOURNAMENTS PAGE -->
+<!-- CURRENT TOURNAMENT PAGE -->
 <div id="page-live" class="page">
   <div style="padding:20px 0">
-    <div class="lbl">CURRENT TOURNAMENT <span id="live-tourn-name"></span></div>
-    <div id="live-round-tabs" style="display:flex;gap:0;margin-bottom:20px;border-bottom:1px solid var(--line)"></div>
+    <div class="sec-hdr">
+      <div class="sec-title">Current Tournament <span id="live-tourn-name"></span></div>
+    </div>
+    <div class="live-tabs" id="live-round-tabs"></div>
     <div id="live-matches-wrap"></div>
   </div>
 </div>
@@ -1807,16 +2039,16 @@ body{{font-family:var(--sans);background:var(--bg0);color:var(--txt0);min-height
 <!-- PLAYERS PAGE -->
 <div id="page-players" class="page">
   <div style="padding:20px 0">
-    <div class="lbl">PLAYER PROFILES <span id="player-count"></span></div>
-    <div class="search-wrap">
-      <input class="search" type="text" placeholder="Search players..." id="player-search" oninput="filterPlayers()">
+    <div class="sec-hdr">
+      <div class="sec-title">Player Profiles <span id="player-count"></span></div>
     </div>
-    <table class="tbl">
+    <input class="search-bar" type="text" placeholder="Search players..." id="player-search" oninput="filterPlayers()">
+    <table class="data-tbl">
       <thead>
         <tr>
-          <th>rank</th><th>player</th>
-          <th class="r">elo</th><th class="r">clay elo</th><th class="r">hard elo</th>
-          <th class="r">form 10</th><th class="r">streak</th><th class="r">last match</th>
+          <th>#</th><th>Player</th>
+          <th class="r">ELO</th><th class="r">Clay</th><th class="r">Hard</th>
+          <th class="r">Form</th><th class="r">Streak</th><th class="r">Last Match</th>
         </tr>
       </thead>
       <tbody id="player-tbody"></tbody>
@@ -1827,7 +2059,7 @@ body{{font-family:var(--sans);background:var(--bg0);color:var(--txt0);min-height
 <!-- TOURNAMENTS PAGE -->
 <div id="page-tournaments" class="page">
   <div style="padding:20px 0">
-    <div class="lbl">ALL TOURNAMENTS</div>
+    <div class="sec-hdr"><div class="sec-title">All Tournaments</div></div>
     <div id="all-tourneys"></div>
   </div>
 </div>
@@ -1835,525 +2067,422 @@ body{{font-family:var(--sans);background:var(--bg0);color:var(--txt0);min-height
 <!-- ACCURACY PAGE -->
 <div id="page-accuracy" class="page">
   <div style="padding:20px 0">
-    <div class="lbl">MODEL vs BOOK ACCURACY <span id="acc-overall"></span></div>
-    <div class="acc-chart" id="acc-chart"></div>
+    <div class="sec-hdr">
+      <div class="sec-title">Model vs Book Accuracy <span id="acc-overall"></span></div>
+    </div>
+    <div style="display:flex;gap:16px;margin-bottom:16px;padding:12px 16px;background:var(--bg1);border:1px solid var(--line);border-radius:var(--radius)">
+      <span style="font-family:var(--mono);font-size:10px;color:var(--txt2);display:flex;align-items:center;gap:6px">
+        <span style="width:10px;height:3px;background:var(--green);display:inline-block;border-radius:2px"></span>Model
+      </span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--txt2);display:flex;align-items:center;gap:6px">
+        <span style="width:10px;height:3px;background:var(--blue);display:inline-block;border-radius:2px"></span>Book
+      </span>
+    </div>
+    <div id="acc-chart"></div>
   </div>
 </div>
 
 <div class="foot">
-  <div class="foot-l">COURTIQ · RF MODEL V1.0 · CCK CALIBRATION</div>
+  <div class="foot-l">COURTIQ &middot; RF V1.0 &middot; CCK</div>
   <div class="foot-r" id="foot-updated">—</div>
 </div>
-</div>
+
+</div><!-- /wrap -->
 
 <script>
 {js_data}
 
-// ── HELPERS ────────────────────────────────────────────────────
-function pct(v){{ return v != null ? (v*100).toFixed(1)+'%' : '—'; }}
-function elo(v){{ return v != null ? Math.round(v) : '—'; }}
-function surfClass(s){{
-  if(!s) return 'clay-p';
-  s = s.toLowerCase();
-  if(s.includes('clay')) return 'clay-p';
-  if(s.includes('grass')) return 'grass-p';
-  return 'hard-p';
+// ── HELPERS ────────────────────────────────────────────────
+const D = SITE_DATA;
+const OA = D.overall_accuracy;
+const tourneys = D.tournaments || [];
+const players  = D.players || [];
+
+function surfCls(s){{
+  if(!s) return 'clay-s';
+  s=s.toLowerCase();
+  if(s.includes('clay'))  return 'clay-s';
+  if(s.includes('grass')) return 'grass-s';
+  return 'hard-s';
 }}
 function surfFromSlug(slug){{
-  const clay = ['barcelona','montecarlo','rome','rg','madrid','hamburg'];
-  const grass = ['wimbledon','halle','queens'];
-  for(const t of clay) if(slug.includes(t)) return 'Clay';
+  const clay=['barcelona','montecarlo','rome','rg','madrid','hamburg'];
+  const grass=['wimbledon','halle','queens'];
+  for(const t of clay)  if(slug.includes(t)) return 'Clay';
   for(const t of grass) if(slug.includes(t)) return 'Grass';
   return 'Hard';
 }}
-function showPage(name){{
+function showPage(name, el){{
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.nav a').forEach(a=>a.classList.remove('on'));
   document.getElementById('page-'+name).classList.add('on');
-  event.target.classList.add('on');
+  if(el) el.classList.add('on');
+}}
+function fmtOdds(o){{
+  if(o==null) return '—';
+  return o>0?'+'+o:String(o);
+}}
+function edgeLabel(e){{
+  if(e==null) return null;
+  const s=(e>=0?'+':'')+e.toFixed(1)+'%';
+  if(e>=5)  return ['EDGE '+s,'edge-chip edge-strong'];
+  if(e>=2)  return ['EDGE '+s,'edge-chip edge-mod'];
+  if(e>=-2) return ['EDGE '+s,'edge-chip edge-none'];
+  return ['EDGE '+s,'edge-chip edge-neg'];
 }}
 
-// ── INIT ────────────────────────────────────────────────────────
-const D = SITE_DATA;
-const OA = D.overall_accuracy;
-const tourneys = D.tournaments;
-const players = D.players;
-
-// Stats bar
+// ── INIT STATS ─────────────────────────────────────────────
 function fmtAcc(v){{
   if(v==null) return '<span style="color:var(--txt2)">—</span>';
-  const pv = (v*100).toFixed(1);
-  return pv+'<em>%</em>';
+  return (v*100).toFixed(1)+'<em style="font-size:14px;color:var(--txt2)">%</em>';
 }}
-document.getElementById('s-model-acc').innerHTML = fmtAcc(OA.model_accuracy);
-document.getElementById('s-book-acc').innerHTML  = fmtAcc(OA.book_accuracy);
-document.getElementById('s-matches').textContent = (OA.total_matches||0).toLocaleString()+' matches';
-document.getElementById('s-players').textContent = players.length;
-document.getElementById('s-tourneys').textContent = tourneys.length;
-if(OA.model_accuracy && OA.book_accuracy){{
-  const gap = ((OA.book_accuracy - OA.model_accuracy)*100).toFixed(1);
-  const el = document.getElementById('s-book-gap');
-  el.textContent = (gap>0?'-':'+') + Math.abs(gap)+'pp vs model';
-  el.className = 'st-s ' + (gap>0?'r':'g');
+document.getElementById('s-model').innerHTML    = fmtAcc(OA.model_accuracy);
+document.getElementById('s-book').innerHTML     = fmtAcc(OA.book_accuracy);
+document.getElementById('s-matches').textContent= (OA.total_matches||0).toLocaleString()+' matches';
+document.getElementById('s-players').innerHTML  = players.length+'<em style="font-size:15px;color:var(--txt2)"></em>';
+document.getElementById('s-tourneys').innerHTML = tourneys.length+'<em style="font-size:15px;color:var(--txt2)"></em>';
+if(OA.model_accuracy&&OA.book_accuracy){{
+  const gap=((OA.book_accuracy-OA.model_accuracy)*100).toFixed(1);
+  const el=document.getElementById('s-gap');
+  el.textContent=(gap>0?'−':'+')+(Math.abs(gap))+'pp vs book';
+  el.className='hs-sub '+(gap>0?'dn':'up');
 }}
 if(tourneys.length>1){{
-  const first = tourneys[0].name.replace(/20\\d\\d/,'').trim();
-  const last  = tourneys[tourneys.length-1].name.replace(/20\\d\\d/,'').trim();
-  document.getElementById('s-tourney-range').textContent = first+' – '+last;
+  document.getElementById('s-range').textContent=
+    tourneys[0].name.split(' 20')[0]+' – '+tourneys[tourneys.length-1].name.split(' 20')[0];
+    tourneys[0].name.split(' 20')[0]+' – '+tourneys[tourneys.length-1].name.split(' 20')[0];
 }}
-document.getElementById('foot-updated').textContent = 'updated '+D.generated_at.slice(0,16).replace('T',' ')+' UTC';
+document.getElementById('foot-updated').textContent='Updated '+D.generated_at.slice(0,16).replace('T',' ')+' UTC';
 
-// ── PREDICTIONS PAGE ────────────────────────────────────────────
+// ── MATCH CARD BUILDER ─────────────────────────────────────
+function buildMatchCard(m, roundCode, surface){{
+  const sc = surfCls(surface);
+  const predA = m.pred_winner===m.player_a;
+  const pA = m.prob_player_a_win??0.5;
+  const pB = m.prob_player_b_win??(1-pA);
+  const bkA = m.book_fair_prob_a;
+  const bkB = m.book_fair_prob_b??(bkA!=null?1-bkA:null);
+  const eloA = m.p_elo_a;
+  const eloB = eloA!=null?1-eloA:null;
+  const oa = m.odds_player_a;
+  const ob = m.odds_player_b;
+  const isPend = m.correct_prediction==null;
+  const ok = m.correct_prediction===1;
+
+  // Favourite = smaller absolute odds value (more negative = bigger favourite)
+  const favA = oa!=null&&ob!=null&&Math.abs(oa)<=Math.abs(ob);
+  const favB = oa!=null&&ob!=null&&!favA;
+
+  // Edge
+  const edgePct = bkA!=null ? (predA?pA-bkA:pB-bkB)*100 : null;
+  const [edgeStr,edgeCls] = edgeLabel(edgePct)||['','edge-chip edge-none'];
+
+  // Consensus
+  let agA=0,agB=0;
+  if(pA>=.5) agA++; else agB++;
+  if(eloA!=null){{if(eloA>=.5) agA++; else agB++;}}
+  if(bkA!=null){{if(bkA>=.5) agA++; else agB++;}}
+  const tot=2+(eloA!=null?1:0)+(bkA!=null?1:0);
+  const mx=Math.max(agA,agB);
+  const [consStr,consCls]=mx===tot?['Full consensus','cons-chip cons-full']:
+    mx===tot-1?['Strong consensus','cons-chip cons-strong']:
+    ['Split signals','cons-chip cons-split'];
+
+  const badge=isPend?'<span class="badge badge-pend">pending</span>':
+    ok?'<span class="badge badge-ok">&#10003; correct</span>':
+       '<span class="badge badge-no">&#10007; wrong</span>';
+
+  return `<div class="match-card">
+  <div class="match-inner">
+    <div class="match-top">
+      <div class="surf-bar ${{sc}}"></div>
+      <div class="match-players">
+        <div class="player-row">
+          <span class="p-name ${{predA?'pred':'unp'}}">${{m.player_a||'—'}}</span>
+          <span class="p-stat ${{pA>=pB?'hi-g':'lo'}}">${{(pA*100).toFixed(0)}}%</span>
+          <span class="p-stat ${{bkA!=null&&bkA>=.5?'hi-b':'lo'}}">${{bkA!=null?(bkA*100).toFixed(0)+'%':'—'}}</span>
+          <span class="p-stat ${{eloA!=null&&eloA>=.5?'hi-p':'lo'}}">${{eloA!=null?(eloA*100).toFixed(0)+'%':'—'}}</span>
+          <span class="p-stat ${{favA?'hi-w':'lo'}}">${{fmtOdds(oa)}}</span>
+        </div>
+        <div class="player-row">
+          <span class="p-name ${{!predA?'pred':'unp'}}">${{m.player_b||'—'}}</span>
+          <span class="p-stat ${{pB>pA?'hi-g':'lo'}}">${{(pB*100).toFixed(0)}}%</span>
+          <span class="p-stat ${{bkB!=null&&bkB>.5?'hi-b':'lo'}}">${{bkB!=null?(bkB*100).toFixed(0)+'%':'—'}}</span>
+          <span class="p-stat ${{eloB!=null&&eloB>.5?'hi-p':'lo'}}">${{eloB!=null?(eloB*100).toFixed(0)+'%':'—'}}</span>
+          <span class="p-stat ${{favB?'hi-w':'lo'}}">${{fmtOdds(ob)}}</span>
+        </div>
+        <div class="col-labels">
+          <span></span>
+          <span class="col-lbl cl-pred">PRED</span>
+          <span class="col-lbl cl-book">BOOK</span>
+          <span class="col-lbl cl-elo">ELO</span>
+          <span class="col-lbl cl-odds">ODDS</span>
+        </div>
+        <div class="prob-bar"><div class="prob-fill" style="width:${{(pA*100).toFixed(0)}}%"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="match-footer">
+    ${{edgeStr?`<span class="${{edgeCls}}">${{edgeStr}}</span>`:''}}
+    <span class="${{consCls}}">${{consStr}}</span>
+    <span class="rnd-label">${{roundCode}}</span>
+    ${{badge}}
+  </div>
+</div>`;
+}}
+
+// ── PREDICTIONS PAGE ───────────────────────────────────────
 function buildPredictions(){{
-  // Find most recent tournament and show its matches
-  const recent = [...tourneys].reverse();
-  let shown = 0;
-  let html = '';
-
+  const recent=[...tourneys].reverse();
+  let html=''; let shown=0;
   for(const t of recent){{
-    if(shown >= 3) break;
-    const surface = surfFromSlug(t.slug);
-    const sc = surfClass(surface);
-    const rounds = [...t.rounds].reverse();
-
-    for(const r of rounds){{
-      if(shown >= 3) break;
-      if(!r.matches || r.matches.length===0) continue;
-
-      // Check if this round has unscored (pending) matches
-      const pending = r.matches.filter(m=>m.correct_prediction==null);
-      const scored  = r.matches.filter(m=>m.correct_prediction!=null);
-      const showMatches = pending.length > 0 ? pending : scored.slice(0,6);
-      if(showMatches.length===0) continue;
-
-      html += `<div class="divider">${{t.name.toUpperCase()}} — ${{r.round}}</div>`;
-      for(const m of showMatches.slice(0,8)){{
-        const prob = m.prob_player_a_win ?? 0.5;
-        const predA = m.pred_winner === m.player_a;
-        const isPending = m.correct_prediction == null;
-        const correct   = m.correct_prediction === 1;
-        const badge = isPending
-          ? '<span class="badge pend">pending</span>'
-          : correct ? '<span class="badge ok">correct</span>' : '<span class="badge no">wrong</span>';
-        const pA = predA ? prob : 1-prob;
-        const pB = 1 - pA;
-        html += `
-        <div class="match">
-          <div class="pill ${{sc}}"></div>
-          <div class="m-inner">
-            <div class="m-row">
-              <span class="m-name ${{predA?'w':''}}">${{m.player_a||'—'}}</span>
-              <span class="m-pct ${{predA?'w':''}}">${{(pA*100).toFixed(0)}}%</span>
-            </div>
-            <div class="m-row">
-              <span class="m-name ${{!predA?'w':''}}">${{m.player_b||'—'}}</span>
-              <span class="m-pct ${{!predA?'w':''}}">${{(pB*100).toFixed(0)}}%</span>
-            </div>
-            <div class="bar"><div class="bar-f" style="width:${{(pA*100).toFixed(0)}}%"></div></div>
-          </div>
-          <div class="m-right">
-            <div class="rnd">${{r.round}}</div>
-            ${{badge}}
-          </div>
-        </div>`;
-      }}
+    if(shown>=3) break;
+    const surface=surfFromSlug(t.slug);
+    for(const r of [...t.rounds].reverse()){{
+      if(shown>=3) break;
+      if(!r.matches||r.matches.length===0) continue;
+      const real=r.matches.filter(m=>m.player_a!=='TBD'&&m.player_b!=='TBD');
+      if(!real.length) continue;
+      const pending=real.filter(m=>m.correct_prediction==null);
+      const show=pending.length>0?pending:real.slice(0,6);
+      if(!show.length) continue;
+      html+=`<div class="sec-hdr" style="margin-top:${{shown?'20px':'0'}}">
+        <div class="sec-title">${{t.name.toUpperCase()}} <span>${{r.round}}</span></div>
+      </div>`;
+      for(const m of show.slice(0,8))
+        html+=buildMatchCard(m,r.round,surface);
       shown++;
     }}
   }}
-  document.getElementById('pred-matches-wrap').innerHTML = html || '<div style="color:var(--txt2);font-size:13px;padding:20px 0">No prediction data available yet.</div>';
+  document.getElementById('pred-wrap').innerHTML=html||
+    '<div style="color:var(--txt2);padding:20px 0;font-size:13px">No prediction data yet.</div>';
 }}
 
-// ── TOURNAMENT CARDS ────────────────────────────────────────────
+// ── TOURNAMENT CARDS ───────────────────────────────────────
 function buildTourneyCards(){{
-  const recent = [...tourneys].reverse().slice(0, 5);
-  let html = '';
+  const recent=[...tourneys].reverse().slice(0,5);
+  let html='';
   for(const t of recent){{
-    const s = t.summary;
-    const hasBk = t.has_book && s.book_accuracy != null;
-    const mPct = s.model_accuracy != null ? (s.model_accuracy*100).toFixed(1)+'%' : '—';
-    const bPct = hasBk ? (s.book_accuracy*100).toFixed(1)+'%' : '—';
-    const isPending = s.results_entered === 0 || (s.total_matches > 0 && s.results_entered < s.total_matches * 0.5);
-    const tagClass = isPending ? 't-pend' : 't-done';
-    const tagText  = isPending ? 'UPCOMING' : 'COMPLETE';
-    html += `
-    <div class="t-card">
-      <div class="t-head">
-        <span class="t-name" onclick="showPage('tournaments')">${{t.name}}</span>
-        <span class="tag ${{tagClass}}">${{tagText}}</span>
+    const s=t.summary;
+    const mPct=s.model_accuracy!=null?(s.model_accuracy*100).toFixed(1)+'%':'—';
+    const bPct=t.has_book&&s.book_accuracy!=null?(s.book_accuracy*100).toFixed(1)+'%':'—';
+    const isDone=s.results_entered>0&&s.total_matches>0&&
+      s.results_entered>=s.total_matches*0.9;
+    const tagCls=isDone?'tag tag-done':'tag tag-pend';
+    const tagTxt=isDone?'COMPLETE':'IN PROGRESS';
+    html+=`<div class="tourn-card">
+      <div class="tourn-head">
+        <span class="tourn-name" onclick="showPage('tournaments',null)">${{t.name}}</span>
+        <span class="${{tagCls}}">${{tagTxt}}</span>
       </div>
-      <div class="t-body">
-        <div class="t-k">surface</div><div class="t-v">${{surfFromSlug(t.slug).toLowerCase()}}</div>
-        <div class="t-k">matches</div><div class="t-v">${{s.total_matches}}</div>
-        <div class="t-k">model</div><div class="t-v g">${{mPct}}</div>
-        <div class="t-k">book</div><div class="t-v b">${{bPct}}</div>
-      </div>`;
-    if(hasBk){{
-      const mW = (s.model_accuracy*100).toFixed(0);
-      const bW = (s.book_accuracy*100).toFixed(0);
-      html += `
-      <div class="acc-row">
-        <div class="acc-m" style="width:calc(${{mW}}% - 3px)"></div>
-        <div class="acc-bg" style="width:3px"></div>
-        <div class="acc-b" style="width:calc(${{bW}}% - 3px)"></div>
-        <div class="acc-bg"></div>
+      <div class="tourn-body">
+        <div class="tb-k">Matches</div><div class="tb-v">${{s.total_matches}}</div>
+        <div class="tb-k">Model</div><div class="tb-v g">${{mPct}}</div>
+        <div class="tb-k">Book</div><div class="tb-v b">${{bPct}}</div>
       </div>
-      <div class="acc-leg">
-        <div class="acc-li"><div class="acc-dot" style="background:var(--green)"></div>model ${{mPct}}</div>
-        <div class="acc-li"><div class="acc-dot" style="background:var(--blue)"></div>book ${{bPct}}</div>
-      </div>`;
-    }}
-    html += '</div>';
+      ${{t.has_book&&s.model_accuracy!=null&&s.book_accuracy!=null?`
+      <div class="acc-tracks">
+        <div class="acc-track">
+          <div class="acc-bar-wrap"><div class="acc-bar-fill" style="width:${{(s.model_accuracy*100).toFixed(0)}}%;background:var(--green)"></div></div>
+          <div class="acc-bar-lbl g" style="color:var(--green)">${{mPct}}</div>
+        </div>
+        <div class="acc-track">
+          <div class="acc-bar-wrap"><div class="acc-bar-fill" style="width:${{(s.book_accuracy*100).toFixed(0)}}%;background:var(--blue)"></div></div>
+          <div class="acc-bar-lbl b" style="color:var(--blue)">${{bPct}}</div>
+        </div>
+      </div>`:''}}</div>`;
   }}
-  document.getElementById('tourney-cards').innerHTML = html;
+  document.getElementById('tourn-cards').innerHTML=html;
 }}
 
-// ── ELO LIST ────────────────────────────────────────────────────
+// ── ELO LIST ───────────────────────────────────────────────
 function buildEloList(){{
-  const top = players.slice(0,8);
-  let html = '';
-  top.forEach((p,i)=>{{
-    const e = Math.round(p.current_elo||1500);
-    const streak = p.streak||0;
-    const sc = streak>0?'g':streak<0?'r':'';
-    const sd = streak>0?'+'+streak:streak;
-    html += `
-    <div class="elo-row" style="${{i===0?'border-top:none':''}}">
-      <div class="elo-n">${{i+1}}</div>
+  let html='';
+  players.slice(0,8).forEach((p,i)=>{{
+    const e=Math.round(p.current_elo||1500);
+    const st=p.streak||0;
+    const sc=st>0?'style="color:var(--green)"':st<0?'style="color:var(--clay)"':'style="color:var(--txt2)"';
+    const sd=st>0?'+'+st:st;
+    html+=`<div class="elo-row" style="${{i===0?'border-top:none':''}}">
+      <div class="elo-rank">${{i+1}}</div>
       <div class="elo-name">${{(p.name||'').split(' ').map((n,j)=>j===0?n[0]+'.':n).join(' ')}}</div>
       <div class="elo-val">${{e}}</div>
-      <div class="elo-d ${{sc}}">${{sd!=0?sd:'—'}}</div>
+      <div class="elo-delta" ${{sc}}>${{sd!=0?sd:'—'}}</div>
     </div>`;
   }});
-  document.getElementById('elo-list').innerHTML = html;
+  document.getElementById('elo-list').innerHTML=html;
 }}
 
-// ── PLAYERS PAGE ────────────────────────────────────────────────
+// ── CURRENT TOURNAMENT PAGE ────────────────────────────────
+function buildLivePage(){{
+  const recent=[...tourneys].reverse();
+  let activeTourney=null, activeRound=null;
+  for(const t of recent){{
+    for(let ri=t.rounds.length-1;ri>=0;ri--){{
+      const r=t.rounds[ri];
+      if(!r.matches||!r.matches.length) continue;
+      const hasReal=r.matches.some(m=>m.player_a!=='TBD'&&m.player_b!=='TBD');
+      if(!hasReal) continue;
+      activeTourney=t; activeRound=r; break;
+    }}
+    if(activeTourney) break;
+  }}
+  if(!activeTourney){{
+    document.getElementById('live-matches-wrap').innerHTML=
+      '<div style="color:var(--txt2);padding:20px 0">No active tournament data.</div>';
+    return;
+  }}
+  document.getElementById('live-tourn-name').textContent=activeTourney.name;
+  const realRounds=activeTourney.rounds.filter(r=>
+    r.matches&&r.matches.some(m=>m.player_a!=='TBD'));
+  const tabs=document.getElementById('live-round-tabs');
+  tabs.innerHTML=realRounds.map(r=>`
+    <span class="live-tab${{activeRound&&r.round===activeRound.round?' on':''}}"
+      onclick="showLiveRound('${{activeTourney.slug}}','${{r.round}}')">${{r.round}}</span>
+  `).join('');
+  if(activeRound) renderLiveRound(activeTourney,activeRound);
+}}
+
+function showLiveRound(slug,roundCode){{
+  const t=tourneys.find(t=>t.slug===slug);
+  if(!t) return;
+  const r=t.rounds.find(r=>r.round===roundCode);
+  if(!r) return;
+  document.querySelectorAll('.live-tab').forEach(el=>{{
+    el.classList.toggle('on',el.textContent.trim()===roundCode);
+  }});
+  renderLiveRound(t,r);
+}}
+
+function renderLiveRound(t, r){{
+  const surface=surfFromSlug(t.slug);
+  const matches=r.matches||[];
+  const total=matches.filter(m=>m.player_a!=='TBD').length;
+  const scored=matches.filter(m=>m.correct_prediction!=null).length;
+  const pending=total-scored;
+  let html=`<div class="round-status">
+    <div class="rs-text">${{r.round}} &nbsp;&middot;&nbsp; ${{total}} matches &nbsp;&middot;&nbsp; ${{scored}} scored &nbsp;&middot;&nbsp; ${{pending}} pending</div>
+    ${{pending===0&&total>0
+      ?'<span class="tag tag-done">COMPLETE</span>'
+      :'<span class="tag tag-live"><span class="live-dot"></span>IN PROGRESS</span>'}}
+  </div>`;
+  for(const m of matches){{
+    if(m.player_a==='TBD'||m.player_b==='TBD') continue;
+    html+=buildMatchCard(m,r.round,surface);
+  }}
+  document.getElementById('live-matches-wrap').innerHTML=html;
+}}
+
+// ── PLAYERS PAGE ───────────────────────────────────────────
 function buildPlayersPage(){{
-  document.getElementById('player-count').textContent = players.length+' active';
+  document.getElementById('player-count').textContent=players.length+' active';
   renderPlayers(players);
 }}
 function renderPlayers(list){{
-  let html = '';
+  let html='';
   list.slice(0,200).forEach((p,i)=>{{
-    const e  = Math.round(p.current_elo||1500);
-    const sc = Math.round(p.selo_Clay||1500);
-    const sh = Math.round(p.selo_Hard||1500);
-    const f  = p.form10_wr!=null?(p.form10_wr*100).toFixed(0)+'%':'—';
-    const st = p.streak||0;
-    const stc = st>0?'g':st<0?'r':'';
-    const ld = p.last_match_date?p.last_match_date.slice(0,10):'—';
-    html += `<tr>
+    const e=Math.round(p.current_elo||1500);
+    const sc=Math.round(p.selo_Clay||1500);
+    const sh=Math.round(p.selo_Hard||1500);
+    const f=p.form10_wr!=null?(p.form10_wr*100).toFixed(0)+'%':'—';
+    const st=p.streak||0;
+    const stc=st>0?'style="color:var(--green)"':st<0?'style="color:var(--clay)"':'';
+    const ld=p.last_match_date?p.last_match_date.slice(0,10):'—';
+    html+=`<tr>
       <td class="r">${{i+1}}</td>
       <td class="name">${{p.name||''}}</td>
       <td class="r">${{e}}</td><td class="r">${{sc}}</td><td class="r">${{sh}}</td>
       <td class="r">${{f}}</td>
-      <td class="r ${{stc}}">${{st>0?'+'+st:st}}</td>
+      <td class="r" ${{stc}}>${{st>0?'+'+st:st}}</td>
       <td class="r">${{ld}}</td>
     </tr>`;
   }});
-  document.getElementById('player-tbody').innerHTML = html;
+  document.getElementById('player-tbody').innerHTML=html;
 }}
 function filterPlayers(){{
-  const q = document.getElementById('player-search').value.toLowerCase();
-  const filtered = q ? players.filter(p=>(p.name||'').toLowerCase().includes(q)) : players;
-  renderPlayers(filtered);
+  const q=document.getElementById('player-search').value.toLowerCase();
+  renderPlayers(q?players.filter(p=>(p.name||'').toLowerCase().includes(q)):players);
 }}
 
-// ── TOURNAMENTS PAGE ────────────────────────────────────────────
+// ── TOURNAMENTS PAGE ───────────────────────────────────────
 function buildTournamentsPage(){{
-  let html = '';
+  let html='';
   for(const t of [...tourneys].reverse()){{
-    const s = t.summary;
-    const surface = surfFromSlug(t.slug);
-    const sc = surfClass(surface);
-    const mPct = s.model_accuracy!=null?(s.model_accuracy*100).toFixed(1)+'%':'—';
-    const bPct = t.has_book&&s.book_accuracy!=null?(s.book_accuracy*100).toFixed(1)+'%':'—';
-    html += `
-    <div class="t-card" style="margin-bottom:12px">
-      <div class="t-head">
+    const s=t.summary;
+    const surface=surfFromSlug(t.slug);
+    const sc=surfCls(surface);
+    const mPct=s.model_accuracy!=null?(s.model_accuracy*100).toFixed(1)+'%':'—';
+    const bPct=t.has_book&&s.book_accuracy!=null?(s.book_accuracy*100).toFixed(1)+'%':'—';
+    html+=`<div class="tourn-card" style="margin-bottom:10px">
+      <div class="tourn-head">
         <div style="display:flex;align-items:center;gap:10px">
-          <div class="pill ${{sc}}" style="min-height:18px;height:18px"></div>
-          <span class="t-name">${{t.name}}</span>
+          <div class="surf-bar ${{sc}}" style="width:3px;height:16px;border-radius:2px;flex-shrink:0"></div>
+          <span class="tourn-name">${{t.name}}</span>
         </div>
-        <span style="font-family:var(--mono);font-size:10px;color:var(--txt2)">${{s.total_matches}} matches · model ${{mPct}} · book ${{bPct}}</span>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--txt2)">
+          ${{s.total_matches}}m &middot; ${{mPct}} model &middot; ${{bPct}} book
+        </span>
       </div>
-      <div style="padding:8px 14px;display:flex;gap:16px;flex-wrap:wrap">`;
-    for(const r of t.rounds){{
-      const rs = r.summary;
-      const rAcc = rs.model_accuracy!=null?(rs.model_accuracy*100).toFixed(0)+'%':'—';
-      html += `<span style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${{r.round}} <span style="color:var(--txt0)">${{rAcc}}</span> (${{rs.results_entered}}/${{rs.total_matches}})</span>`;
-    }}
-    html += `</div></div>`;
+      <div style="padding:8px 14px;display:flex;gap:12px;flex-wrap:wrap">
+        ${{t.rounds.map(r=>{{
+          const rs=r.summary;
+          const ra=rs.model_accuracy!=null?(rs.model_accuracy*100).toFixed(0)+'%':'—';
+          return `<span style="font-family:var(--mono);font-size:10px;color:var(--txt2)">
+            ${{r.round}} <span style="color:var(--txt0)">${{ra}}</span> (${{rs.results_entered}}/${{rs.total_matches}})
+          </span>`;
+        }}).join('')}}
+      </div>
+    </div>`;
   }}
-  document.getElementById('all-tourneys').innerHTML = html;
+  document.getElementById('all-tourneys').innerHTML=html;
 }}
 
-// ── ACCURACY PAGE ────────────────────────────────────────────────
+// ── ACCURACY PAGE ──────────────────────────────────────────
 function buildAccuracyPage(){{
-  const mAcc = OA.model_accuracy!=null?(OA.model_accuracy*100).toFixed(1)+'%':'—';
-  const bAcc = OA.book_accuracy!=null?(OA.book_accuracy*100).toFixed(1)+'%':'—';
-  document.getElementById('acc-overall').textContent = 'overall: model '+mAcc+' · book '+bAcc;
-
-  let html = `
-  <div style="display:flex;gap:16px;margin-bottom:16px">
-    <div class="acc-li"><div class="acc-dot" style="background:var(--green);width:8px;height:8px"></div><span style="font-family:var(--mono);font-size:11px;color:var(--txt1)">Model accuracy</span></div>
-    <div class="acc-li"><div class="acc-dot" style="background:var(--blue);width:8px;height:8px"></div><span style="font-family:var(--mono);font-size:11px;color:var(--txt1)">Book accuracy</span></div>
-  </div>`;
-
-  for(const t of D.tourney_acc){{
+  const mAcc=OA.model_accuracy!=null?(OA.model_accuracy*100).toFixed(1)+'%':'—';
+  const bAcc=OA.book_accuracy!=null?(OA.book_accuracy*100).toFixed(1)+'%':'—';
+  document.getElementById('acc-overall').textContent=mAcc+' model · '+bAcc+' book';
+  let html='';
+  for(const t of D.tourney_acc||[]){{
     if(t.model_acc==null) continue;
-    const mW = (t.model_acc*100).toFixed(1);
-    const bW = t.book_acc!=null?(t.book_acc*100).toFixed(1):null;
-    html += `
-    <div class="acc-tourn-row">
-      <div class="acc-tourn-name" style="font-size:12px">${{t.name}}</div>
+    const mW=(t.model_acc*100).toFixed(1);
+    const bW=t.book_acc!=null?(t.book_acc*100).toFixed(1):null;
+    html+=`<div class="acc-row">
+      <div class="acc-tname">${{t.name}}</div>
       <div class="acc-bars">
-        <div class="acc-bar-row">
-          <div class="acc-bar-track"><div class="acc-bar-fill" style="width:${{mW}}%;background:var(--green)"></div></div>
-          <div class="acc-bar-label g">${{mW}}%</div>
+        <div class="acc-bar-row2">
+          <div class="acc-bar-track2"><div class="acc-bar-fill2" style="width:${{mW}}%;background:var(--green)"></div></div>
+          <div class="acc-bar-lbl2" style="color:var(--green)">${{mW}}%</div>
         </div>
-        ${{bW?`<div class="acc-bar-row">
-          <div class="acc-bar-track"><div class="acc-bar-fill" style="width:${{bW}}%;background:var(--blue)"></div></div>
-          <div class="acc-bar-label b">${{bW}}%</div>
+        ${{bW?`<div class="acc-bar-row2">
+          <div class="acc-bar-track2"><div class="acc-bar-fill2" style="width:${{bW}}%;background:var(--blue)"></div></div>
+          <div class="acc-bar-lbl2" style="color:var(--blue)">${{bW}}%</div>
         </div>`:''}}
       </div>
-      <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);width:50px;text-align:right;flex-shrink:0">${{t.matches}}m</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--txt2);width:40px;text-align:right;flex-shrink:0">${{t.matches}}m</div>
     </div>`;
   }}
-  document.getElementById('acc-chart').innerHTML = html;
+  document.getElementById('acc-chart').innerHTML=html;
 }}
 
-// ── LIVE TICKER ──────────────────────────────────────────────────
-function buildTicker(){{
-  try{{
-    const liveData = typeof LIVE_DATA !== 'undefined' ? LIVE_DATA : null;
-    if(!liveData || !liveData.matches || liveData.matches.length===0) return;
-    const ticker = document.getElementById('live-ticker');
-    const content = document.getElementById('ticker-content');
-    let html = '<span class="tick-item"><span class="live-dot"></span>LIVE</span>';
-    for(const m of liveData.matches.slice(0,10)){{
-      html += `<span class="tick-item">${{m.player_a}} vs ${{m.player_b}} <span>${{m.tournament||''}}</span></span>`;
-    }}
-    content.innerHTML = html;
-    ticker.style.display = 'block';
-  }}catch(e){{}}
-}}
-
-// ── CURRENT TOURNAMENT PAGE ──────────────────────────────────────
-function buildLivePage() {{
-  // Find the most recent tournament that has at least one incomplete round
-  // (correct_prediction still null) or is the most recent overall
-  const recent = [...tourneys].reverse();
-  let activeTourney = null;
-  let activeRound   = null;
-
-  for (const t of recent) {{
-    // Find the deepest round with any matches
-    const rounds = [...t.rounds];
-    for (let ri = rounds.length - 1; ri >= 0; ri--) {{
-      const r = rounds[ri];
-      if (!r.matches || r.matches.length === 0) continue;
-      const hasTBD = r.matches.some(m => m.player_a === 'TBD' || m.player_b === 'TBD');
-      if (hasTBD && ri > 0) continue; // skip blank TBD rounds unless only round
-      activeTourney = t;
-      // Show the most recent round with actual players
-      // If current round has pending results, show it
-      // If all scored, show it as complete and note next round
-      const pending = r.matches.filter(m => m.correct_prediction == null && m.player_a !== 'TBD');
-      const hasReal = r.matches.some(m => m.player_a !== 'TBD' && m.player_b !== 'TBD');
-      if (hasReal) {{ activeRound = r; }}
-      break;
-    }}
-    if (activeTourney) break;
-  }}
-
-  if (!activeTourney) {{
-    document.getElementById('live-matches-wrap').innerHTML =
-      '<div style="color:var(--txt2);padding:20px 0;font-size:13px">No active tournament data available.</div>';
-    return;
-  }}
-
-  document.getElementById('live-tourn-name').textContent = activeTourney.name;
-
-  // Build round tabs
-  const tabWrap = document.getElementById('live-round-tabs');
-  const realRounds = activeTourney.rounds.filter(r =>
-    r.matches && r.matches.length > 0 && r.matches.some(m => m.player_a !== 'TBD')
-  );
-
-  let tabHtml = '';
-  realRounds.forEach((r, i) => {{
-    const isActive = activeRound && r.round === activeRound.round;
-    tabHtml += `<span class="nav a ${{isActive ? 'on' : ''}}"
-      style="cursor:pointer;padding:6px 14px;border:1px solid ${{isActive ? 'var(--line2)' : 'transparent'}};background:${{isActive ? 'var(--bg2)' : 'transparent'}};font-family:var(--mono);font-size:11px;color:${{isActive ? 'var(--txt0)' : 'var(--txt2)'}};letter-spacing:.08em"
-      onclick="showLiveRound('${{activeTourney.slug}}','${{r.round}}')">${{r.round}}</span>`;
-  }});
-  tabWrap.innerHTML = tabHtml;
-
-  if (activeRound) renderLiveRound(activeTourney, activeRound);
-}}
-
-function showLiveRound(slug, roundCode) {{
-  const t = tourneys.find(t => t.slug === slug);
-  if (!t) return;
-  const r = t.rounds.find(r => r.round === roundCode);
-  if (!r) return;
-
-  // Update tab styles
-  document.querySelectorAll('#live-round-tabs span').forEach(el => {{
-    const isThis = el.textContent === roundCode;
-    el.style.color = isThis ? 'var(--txt0)' : 'var(--txt2)';
-    el.style.border = isThis ? '1px solid var(--line2)' : '1px solid transparent';
-    el.style.background = isThis ? 'var(--bg2)' : 'transparent';
-  }});
-  renderLiveRound(t, r);
-}}
-
-function renderLiveRound(t, r) {{
-  const surface = surfFromSlug(t.slug);
-  const sc = surfClass(surface);
-  const matches = r.matches || [];
-  const total   = matches.filter(m => m.player_a !== 'TBD').length;
-  const scored  = matches.filter(m => m.correct_prediction != null).length;
-  const pending = total - scored;
-
-  let html = `
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-    <div style="font-family:var(--mono);font-size:11px;color:var(--txt2);letter-spacing:.06em">
-      ${{r.round}} &nbsp;&middot;&nbsp; ${{total}} matches &nbsp;&middot;&nbsp; ${{scored}} scored &nbsp;&middot;&nbsp; ${{pending}} pending
-    </div>
-    ${{pending === 0 && total > 0
-      ? '<span class="tag t-done">COMPLETE</span>'
-      : '<span class="tag t-live">IN PROGRESS</span>'}}
-  </div>`;
-
-  for (const m of matches) {{
-    if (m.player_a === 'TBD' || m.player_b === 'TBD') continue;
-
-    const predA  = m.pred_winner === m.player_a;
-    const pA     = m.prob_player_a_win ?? 0.5;
-    const pB     = m.prob_player_b_win ?? (1 - pA);
-    const bkA    = m.book_fair_prob_a;
-    const bkB    = m.book_fair_prob_b ?? (bkA != null ? 1 - bkA : null);
-    const eloA   = m.p_elo_a;
-    const eloB   = eloA != null ? 1 - eloA : null;
-    const oa     = m.odds_player_a;
-    const ob     = m.odds_player_b;
-    const isPend = m.correct_prediction == null;
-    const ok     = m.correct_prediction === 1;
-
-    // Edge = model prob of predicted winner minus book fair prob of that same player
-    const edgePct = (bkA != null)
-      ? ((predA ? pA - bkA : pB - bkB) * 100)
-      : null;
-    const edgeStr = edgePct != null
-      ? (edgePct >= 0 ? '+' : '') + edgePct.toFixed(1) + '%'
-      : null;
-    const edgeCol = edgePct == null ? 'var(--txt2)'
-      : edgePct >= 5  ? 'var(--green)'
-      : edgePct >= 2  ? '#a8e6c8'
-      : edgePct >= -2 ? 'var(--txt2)'
-      : 'var(--clay)';
-
-    // Consensus: how many of model/ELO/book agree on same player
-    let agreeA = 0, agreeB = 0;
-    if (pA >= 0.5) agreeA++; else agreeB++;
-    if (eloA != null) {{ if (eloA >= 0.5) agreeA++; else agreeB++; }}
-    if (bkA != null)  {{ if (bkA >= 0.5)  agreeA++; else agreeB++; }}
-    const totalSignals = 2 + (eloA!=null?1:0) + (bkA!=null?1:0);
-    const maxAgree = Math.max(agreeA, agreeB);
-    const consensusLabel = maxAgree === totalSignals ? 'Full consensus'
-      : maxAgree === totalSignals - 1 ? 'Strong consensus'
-      : 'Split signals';
-    const consensusCol = maxAgree === totalSignals ? 'var(--green)'
-      : maxAgree === totalSignals - 1 ? '#a8e6c8'
-      : 'var(--clay)';
-
-    // Odds display + favourite highlighting
-    const fmtOdds = o => o != null ? (o > 0 ? '+'+o : String(o)) : '—';
-    const favA = oa != null && ob != null && Math.abs(oa) <= Math.abs(ob);
-    const favB = oa != null && ob != null && !favA;
-
-    // Result badge
-    const badge = isPend
-      ? `<span class="badge pend">pending</span>`
-      : ok ? `<span class="badge ok">&#10003; correct</span>`
-           : `<span class="badge no">&#10007; wrong</span>`;
-
-    // Percentage cell helper — green for higher, dim for lower
-    const pctCell = (v, vs, col) => v != null
-      ? `<div style="font-family:var(--mono);font-size:12px;color:${{v>=vs?col:'var(--txt2)'}}">` +
-        `${{(v*100).toFixed(0)}}%</div>`
-      : `<div style="font-family:var(--mono);font-size:12px;color:var(--txt2)">—</div>`;
-
-    html += `
-    <div style="border-top:1px solid var(--line);padding:14px 0">
-
-      <!-- Match header: surface pill + names + meta -->
-      <div style="display:flex;align-items:flex-start;gap:12px">
-        <div class="pill ${{sc}}" style="width:3px;min-height:48px;flex-shrink:0;margin-top:2px"></div>
-
-        <div style="flex:1;min-width:0">
-          <!-- Player A row -->
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px">
-            <span style="font-size:13px;font-weight:${{predA?600:400}};color:${{predA?'var(--txt0)':'var(--txt1)'}};flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${{m.player_a}}</span>
-            <span style="font-family:var(--mono);font-size:12px;color:${{pA>=pB?'var(--green)':'var(--txt2)'}};width:38px;text-align:right;flex-shrink:0">${{(pA*100).toFixed(0)}}%</span>
-            <span style="font-family:var(--mono);font-size:12px;color:${{bkA!=null&&bkA>=0.5?'var(--blue)':'var(--txt2)'}};width:38px;text-align:right;flex-shrink:0">${{bkA!=null?(bkA*100).toFixed(0)+'%':'—'}}</span>
-            <span style="font-family:var(--mono);font-size:12px;color:${{eloA!=null&&eloA>=0.5?'#c084fc':'var(--txt2)'}};width:38px;text-align:right;flex-shrink:0">${{eloA!=null?(eloA*100).toFixed(0)+'%':'—'}}</span>
-            <span style="font-family:var(--mono);font-size:11px;color:${{favA?'var(--txt0)':'var(--txt2)'}};width:46px;text-align:right;flex-shrink:0;font-weight:${{favA?500:400}}">${{fmtOdds(oa)}}</span>
-          </div>
-
-          <!-- Player B row -->
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-            <span style="font-size:13px;font-weight:${{!predA?600:400}};color:${{!predA?'var(--txt0)':'var(--txt1)'}};flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${{m.player_b}}</span>
-            <span style="font-family:var(--mono);font-size:12px;color:${{pB>pA?'var(--green)':'var(--txt2)'}};width:38px;text-align:right;flex-shrink:0">${{(pB*100).toFixed(0)}}%</span>
-            <span style="font-family:var(--mono);font-size:12px;color:${{bkB!=null&&bkB>0.5?'var(--blue)':'var(--txt2)'}};width:38px;text-align:right;flex-shrink:0">${{bkB!=null?(bkB*100).toFixed(0)+'%':'—'}}</span>
-            <span style="font-family:var(--mono);font-size:12px;color:${{eloB!=null&&eloB>0.5?'#c084fc':'var(--txt2)'}};width:38px;text-align:right;flex-shrink:0">${{eloB!=null?(eloB*100).toFixed(0)+'%':'—'}}</span>
-            <span style="font-family:var(--mono);font-size:11px;color:${{favB?'var(--txt0)':'var(--txt2)'}};width:46px;text-align:right;flex-shrink:0;font-weight:${{favB?500:400}}">${{fmtOdds(ob)}}</span>
-          </div>
-
-          <!-- Column labels row -->
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-            <span style="flex:1"></span>
-            <span style="font-family:var(--mono);font-size:9px;color:var(--txt2);width:38px;text-align:right;flex-shrink:0;letter-spacing:.06em">PRED</span>
-            <span style="font-family:var(--mono);font-size:9px;color:var(--blue);width:38px;text-align:right;flex-shrink:0;letter-spacing:.06em;opacity:.7">BOOK</span>
-            <span style="font-family:var(--mono);font-size:9px;color:#c084fc;width:38px;text-align:right;flex-shrink:0;letter-spacing:.06em;opacity:.7">ELO</span>
-            <span style="font-family:var(--mono);font-size:9px;color:var(--txt2);width:46px;text-align:right;flex-shrink:0;letter-spacing:.06em">ODDS</span>
-          </div>
-
-          <!-- Probability bar -->
-          <div class="bar" style="margin-bottom:8px">
-            <div class="bar-f" style="width:${{(pA*100).toFixed(0)}}%"></div>
-          </div>
-
-          <!-- Edge + consensus + result row -->
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            ${{edgeStr ? `<span style="font-family:var(--mono);font-size:10px;color:${{edgeCol}};letter-spacing:.04em">
-              EDGE ${{edgeStr}}</span>` : ''}}
-            <span style="font-family:var(--mono);font-size:10px;color:${{consensusCol}};letter-spacing:.04em">${{consensusLabel}}</span>
-            <span style="flex:1"></span>
-            ${{badge}}
-          </div>
-        </div>
-      </div>
-
-    </div>`;
-  }}
-
-  document.getElementById('live-matches-wrap').innerHTML = html;
-}}
-// ── BOOT ────────────────────────────────────────────────────────
+// ── BOOT ───────────────────────────────────────────────────
 buildPredictions();
 buildTourneyCards();
 buildEloList();
 buildPlayersPage();
 buildTournamentsPage();
 buildAccuracyPage();
-buildTicker();
 buildLivePage();
+
+try{{
+  if(typeof LIVE_DATA!=='undefined'&&LIVE_DATA.matches&&LIVE_DATA.matches.length>0){{
+    // Live ticker could go here
+  }}
+}}catch(e){{}}
 </script>
 </body>
 </html>"""
+
 
 
 # ──────────────────────────────────────────────────────────────
