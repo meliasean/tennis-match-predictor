@@ -1100,6 +1100,10 @@ TOURNEY_ORDER = [
     "paris2025", "atpfinals2025",
     "doha2026", "dallas2026", "rotterdam2026", "rio2026", "dubai2026",
     "ao2026", "acapulco2026", "indianwells2026", "miami2026", "montecarlo2026",
+    "barcelona2026", "munich2026", "madrid2026", "rome2026", "rg2026",
+    "halle2026", "queens2026", "wimbledon2026", "hamburg2026", "washington2026",
+    "canada2026", "cincinnati2026", "usopen2026", "beijing2026", "tokyo2026",
+    "shanghai2026", "vienna2026", "basel2026", "paris2026", "atpfinals2026",
 ]
 
 TOURNEY_DISPLAY_NAMES = {
@@ -1113,7 +1117,17 @@ TOURNEY_DISPLAY_NAMES = {
     "rio2026": "Rio 2026", "dubai2026": "Dubai 2026",
     "ao2026": "Australian Open 2026", "acapulco2026": "Acapulco 2026",
     "indianwells2026": "Indian Wells 2026", "miami2026": "Miami Masters 2026",
-    "montecarlo2026": "Monte-Carlo 2026",
+    "montecarlo2026": "Monte-Carlo 2026", "barcelona2026": "Barcelona 2026",
+    "munich2026": "Munich 2026", "madrid2026": "Madrid Masters 2026",
+    "rome2026": "Rome Masters 2026", "rg2026": "Roland Garros 2026",
+    "halle2026": "Halle 2026", "queens2026": "Queen's Club 2026",
+    "wimbledon2026": "Wimbledon 2026", "hamburg2026": "Hamburg 2026",
+    "washington2026": "Washington 2026", "canada2026": "Canada Masters 2026",
+    "cincinnati2026": "Cincinnati 2026", "usopen2026": "US Open 2026",
+    "beijing2026": "Beijing 2026", "tokyo2026": "Tokyo 2026",
+    "shanghai2026": "Shanghai 2026", "vienna2026": "Vienna 2026",
+    "basel2026": "Basel 2026", "paris2026": "Paris Masters 2026",
+    "atpfinals2026": "ATP Finals 2026",
 }
 
 ROUND_ORDER = ["R128", "R64", "R32", "R16", "QF", "SF", "F", "RR1", "RR2", "RR3"]
