@@ -1,0 +1,2 @@
+﻿match_no,date,round,player_a,odds_player_a,player_b,odds_player_b,pred_winner,correct_prediction,correct_prediction_book,confidence,prob_player_a_win,prob_player_b_win,tourney_level,surface
+1,11/2/2025,F,Felix Auger Aliassime,720,Jannik Sinner,-1020,Jannik Sinner,1,1,0.7185012,0.2814988,0.7185012,M,Hard
