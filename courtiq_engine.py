@@ -881,7 +881,6 @@ def run_predictions(
     """
     pipe = model_bundle["pipeline"]
     feature_cols = model_bundle["feature_cols"]
-    calibrator = model_bundle.get("calibrator")
 
     surface  = cfg["surface"]
     level    = cfg["level"]
@@ -958,8 +957,7 @@ def run_predictions(
                 feats[c] = {"surface": surface, "tourney_level": level,
                             "round": round_code, "best_of": best_of}.get(c, 0.0)
 
-        p_a_raw = float(pipe.predict_proba(feats[feature_cols])[:, 1][0])
-        p_a_std = float(calibrator.predict([p_a_raw])[0]) if calibrator else p_a_raw
+        p_a_std = float(pipe.predict_proba(feats[feature_cols])[:, 1][0])
         pred_std = A if p_a_std >= 0.5 else B
         conf_std = max(p_a_std, 1.0 - p_a_std)
         ws, ls = (sa, sb) if pred_std == A else (sb, sa)
@@ -1287,11 +1285,6 @@ def cmd_predict(args):
         bundle = {"pipeline": bundle, "feature_cols": None}
         print("WARNING: Old-style model bundle. feature_cols not available.")
     print(f"  Model loaded: {MODEL_PATH}")
-    cal_path = MODELS_DIR / "prob_calibrator.joblib"
-    calibrator = load(str(cal_path)) if cal_path.exists() else None
-    if calibrator:
-        print("  [model] Calibrator loaded")
-    bundle["calibrator"] = calibrator
 
     # Get the draw
     matches = None
@@ -2228,7 +2221,14 @@ function buildMatchCard(m, roundCode, surface){{
           <span class="col-lbl cl-elo">ELO</span>
           <span class="col-lbl cl-odds">ODDS</span>
         </div>
-        <div class="prob-bar"><div class="prob-fill" style="width:${{(pA*100).toFixed(0)}}%"></div></div>
+        <div class="prob-bar" style="display:flex;height:4px;border-radius:2px;overflow:hidden;gap:2px;margin-top:8px">
+        <div style="width:${{(pA*100).toFixed(0)}}%;background:var(--green);border-radius:2px;transition:width .3s;min-width:${{pA>0.01?'2px':'0'}}"></div>
+        <div style="flex:1;background:var(--bg4);border-radius:2px"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:3px">
+        <span style="font-family:var(--mono);font-size:9px;color:var(--green)">${{(pA*100).toFixed(0)}}%</span>
+        <span style="font-family:var(--mono);font-size:9px;color:var(--txt2)">${{(pB*100).toFixed(0)}}%</span>
+      </div>
       </div>
     </div>
   </div>
