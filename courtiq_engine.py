@@ -205,9 +205,18 @@ def profiles_path(tourney_id: str) -> Path:
 
 @dataclass
 class EloParams:
-    base: float = 1500.0
-    k_overall: float = 24.0
-    k_surface: float = 18.0
+    base: float = 1200.0       # lowered from 1500 — more realistic for new players
+    k_overall: float = 40.0    # initial K (high for fast learning)
+    k_floor: float = 8.0       # K converges to this for established players
+    k_decay: float = 60.0      # matches until K decays significantly
+    k_surface: float = 28.0    # initial surface K
+    k_surf_floor: float = 6.0  # surface K floor
+
+    def k(self, n: int = 0) -> float:
+        return self.k_floor + (self.k_overall - self.k_floor) * (2.718281828 ** (-n / self.k_decay))
+
+    def k_surf(self, n: int = 0) -> float:
+        return self.k_surf_floor + (self.k_surface - self.k_surf_floor) * (2.718281828 ** (-n / self.k_decay))
 
 ELO = EloParams()
 
@@ -222,7 +231,8 @@ def build_player_log(matches: pd.DataFrame, params: EloParams = ELO) -> pd.DataF
 
     elo_overall: Dict[str, float] = {}
     elo_surface: Dict[Tuple[str, str], float] = {}
-    BASE, K, KS = params.base, params.k_overall, params.k_surface
+    BASE = params.base
+    match_count: Dict[str, int] = {}
     rows: List[Dict] = []
 
     for _, r in m.iterrows():
@@ -232,11 +242,19 @@ def build_player_log(matches: pd.DataFrame, params: EloParams = ELO) -> pd.DataF
         ew_w = elo_overall.get(w, BASE); ew_l = elo_overall.get(l, BASE)
         es_w = elo_surface.get((w, s), BASE); es_l = elo_surface.get((l, s), BASE)
 
+        kw = params.k(match_count.get(w, 0)); kl = params.k(match_count.get(l, 0))
+        k_avg = (kw + kl) / 2
+        ks_w = params.k_surf(match_count.get(w, 0)); ks_l = params.k_surf(match_count.get(l, 0))
+        ks_avg = (ks_w + ks_l) / 2
+
         exp_w   = 1.0 / (1.0 + 10 ** ((ew_l - ew_w) / 400))
         exp_w_s = 1.0 / (1.0 + 10 ** ((es_l - es_w) / 400))
 
-        new_ew_w = ew_w + K  * (1 - exp_w);   new_ew_l = ew_l - K  * (1 - exp_w)
-        new_es_w = es_w + KS * (1 - exp_w_s); new_es_l = es_l - KS * (1 - exp_w_s)
+        new_ew_w = ew_w + k_avg  * (1 - exp_w);   new_ew_l = ew_l - k_avg  * (1 - exp_w)
+        new_es_w = es_w + ks_avg * (1 - exp_w_s); new_es_l = es_l - ks_avg * (1 - exp_w_s)
+
+        match_count[w] = match_count.get(w, 0) + 1
+        match_count[l] = match_count.get(l, 0) + 1
 
         for player, opp, is_win, pre_e, pre_se, post_e, post_se, rk_col in [
             (w, l, 1, ew_w, es_w, new_ew_w, new_es_w, w_rank),
@@ -735,7 +753,8 @@ def apply_elo_seeded(raw: pd.DataFrame, seeds: pd.DataFrame, params: EloParams =
     """Apply ELO updates seeded from prior profiles (no full history replay)."""
     elo_overall: Dict[str, float] = {}
     elo_surface: Dict[Tuple[str, str], float] = {}
-    BASE, K, KS = params.base, params.k_overall, params.k_surface
+    BASE = params.base
+    match_count: Dict[str, int] = {}
     rows = []
 
     def _seed_player(name, surface):
@@ -764,11 +783,19 @@ def apply_elo_seeded(raw: pd.DataFrame, seeds: pd.DataFrame, params: EloParams =
         ew_w, ew_l = elo_overall[w], elo_overall[l]
         es_w, es_l = elo_surface[(w, s)], elo_surface[(l, s)]
 
+        kw = params.k(match_count.get(w, 0)); kl = params.k(match_count.get(l, 0))
+        k_avg = (kw + kl) / 2
+        ks_w = params.k_surf(match_count.get(w, 0)); ks_l = params.k_surf(match_count.get(l, 0))
+        ks_avg = (ks_w + ks_l) / 2
+
         exp_w   = 1.0 / (1.0 + 10 ** ((ew_l - ew_w) / 400))
         exp_w_s = 1.0 / (1.0 + 10 ** ((es_l - es_w) / 400))
 
-        new_ew_w = ew_w + K  * (1 - exp_w);   new_ew_l = ew_l - K  * (1 - exp_w)
-        new_es_w = es_w + KS * (1 - exp_w_s); new_es_l = es_l - KS * (1 - exp_w_s)
+        new_ew_w = ew_w + k_avg  * (1 - exp_w);   new_ew_l = ew_l - k_avg  * (1 - exp_w)
+        new_es_w = es_w + ks_avg * (1 - exp_w_s); new_es_l = es_l - ks_avg * (1 - exp_w_s)
+
+        match_count[w] = match_count.get(w, 0) + 1
+        match_count[l] = match_count.get(l, 0) + 1
 
         for player, opp, is_win, pre_e, pre_se, post_e, post_se in [
             (w, l, 1, ew_w, es_w, new_ew_w, new_es_w),
