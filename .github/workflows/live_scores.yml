@@ -1,8 +1,9 @@
 name: Live Scores & Auto-Score Predictions
 
 on:
-  schedule:
-    - cron: '*/10 6-23 * * *'
+  # schedule: disabled -- manual scoring only
+  # schedule:
+  #   - cron: '*/10 6-23 * * *'
   workflow_dispatch:
     inputs:
       tournament:
