@@ -656,12 +656,18 @@ def filter_active_players(profiles: pd.DataFrame) -> pd.DataFrame:
 # ──────────────────────────────────────────────────────────────
 
 def load_best_profiles() -> pd.DataFrame:
-    """Load the highest-quality player profiles available."""
-    candidates = sorted(REPORTS_DIR.glob("player_profiles_post_*.csv"), key=lambda p: p.stat().st_mtime, reverse=True)
-    candidates = [str(p) for p in candidates] + [str(PROFILES_LATEST)]
+    """Load the highest-quality player profiles available.
 
-    best_df = None
-    best_score = (-1, -1)
+    Always prefers player_profiles_latest.csv if it exists and is non-empty.
+    Falls back to the most-recently-modified player_profiles_post_*.csv.
+    """
+    # Prefer latest first, then post-tournament files sorted by mtime
+    candidates = [str(PROFILES_LATEST)] + [
+        str(p) for p in sorted(
+            REPORTS_DIR.glob("player_profiles_post_*.csv"),
+            key=lambda p: p.stat().st_mtime, reverse=True
+        )
+    ]
 
     for path in candidates:
         if not Path(path).exists():
@@ -669,22 +675,16 @@ def load_best_profiles() -> pd.DataFrame:
         try:
             df = pd.read_csv(path)
             df.columns = [str(c).strip() for c in df.columns]
-            if "name" not in df.columns:
+            if "name" not in df.columns or len(df) == 0:
                 continue
             df["name"] = df["name"].astype(str).apply(alias)
             df["last_match_date"] = pd.to_datetime(df["last_match_date"], errors="coerce")
             df = df.sort_values(["name", "last_match_date"], na_position="last").drop_duplicates("name", keep="last")
-            score = (int(df["last_match_date"].notna().sum()), len(df))
-            if score > best_score:
-                best_score = score
-                best_df = df
+            return df
         except Exception:
             continue
 
-    if best_df is None:
-        raise FileNotFoundError("No player profiles found in ./reports/")
-
-    return best_df
+    raise FileNotFoundError("No player profiles found in ./reports/")
 
 def load_best_dataset(tourney_id: str) -> Optional[pd.DataFrame]:
     """Load most recent match dataset, preferring post-tournament files."""
