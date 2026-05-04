@@ -1,9 +1,9 @@
 ﻿match_no,date,round,player_a,odds_player_a,player_b,odds_player_b,pred_winner,correct_prediction,correct_prediction_book,confidence,prob_player_a_win,prob_player_b_win,tourney_level,surface
-1,10/30/2025,R16,Cameron Norrie,117,Valentin Vacherot,-143,Cameron Norrie,0,1,0.547059,0.547059,0.452941,M,Hard
-2,10/30/2025,R16,Felix Auger Aliassime,-195,Daniel Altmaier,158,Felix Auger Aliassime,1,1,0.78125,0.78125,0.21875,M,Hard
-3,10/30/2025,R16,Taylor Fritz,-151,Alexander Bublik,123,Taylor Fritz,0,0,0.78125,0.78125,0.21875,M,Hard
-4,10/30/2025,R16,Karen Khachanov,135,Alex De Minaur,-166,Alex De Minaur,1,1,0.622642,0.377358,0.622642,M,Hard
-5,10/30/2025,R16,Lorenzo Sonego,319,Daniil Medvedev,-408,Daniil Medvedev,1,1,0.685185,0.314815,0.685185,M,Hard
-6,10/30/2025,R16,Alejandro Davidovich Fokina,183,Alexander Zverev,-228,Alexander Zverev,1,1,0.811321,0.188679,0.811321,M,Hard
-7,10/30/2025,R16,Ben Shelton,-140,Andrey Rublev,114,Ben Shelton,1,1,0.571429,0.571429,0.428571,M,Hard
-8,10/30/2025,R16,Francisco Cerundolo,1300,Jannik Sinner,-2100,Jannik Sinner,1,1,0.99,0.01,0.99,M,Hard
+1,10/30/2025,R16,Cameron Norrie,117,Valentin Vacherot,-143,Cameron Norrie,0,1,0.502809816,0.502809816,0.497190184,M,Hard
+2,10/30/2025,R16,Felix Auger Aliassime,-195,Daniel Altmaier,158,Felix Auger Aliassime,1,1,0.641453125,0.641453125,0.358546875,M,Hard
+3,10/30/2025,R16,Taylor Fritz,-151,Alexander Bublik,123,Taylor Fritz,0,0,0.647346222,0.647346222,0.352653778,M,Hard
+4,10/30/2025,R16,Karen Khachanov,135,Alex De Minaur,-166,Alex De Minaur,1,1,0.536207651,0.463792349,0.536207651,M,Hard
+5,10/30/2025,R16,Lorenzo Sonego,319,Daniil Medvedev,-408,Daniil Medvedev,1,1,0.586409932,0.413590068,0.586409932,M,Hard
+6,10/30/2025,R16,Alejandro Davidovich Fokina,183,Alexander Zverev,-228,Alexander Zverev,1,1,0.622937522,0.377062478,0.622937522,M,Hard
+7,10/30/2025,R16,Ben Shelton,-140,Andrey Rublev,114,Ben Shelton,1,1,0.539452119,0.539452119,0.460547881,M,Hard
+8,10/30/2025,R16,Francisco Cerundolo,1300,Jannik Sinner,-2100,Jannik Sinner,1,1,0.767672773,0.232327227,0.767672773,M,Hard

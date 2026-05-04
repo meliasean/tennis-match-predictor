@@ -1,5 +1,5 @@
 ﻿match_no,date,round,player_a,odds_player_a,player_b,odds_player_b,pred_winner,correct_prediction,correct_prediction_book,confidence,prob_player_a_win,prob_player_b_win,tourney_level,surface
-1,11/14/2025,RR3,Taylor Fritz,-270,Alex De Minaur,222,Taylor Fritz,0,0,0.99,0.99,0.01,YEC,Hard
-2,11/14/2025,RR3,Carlos Alcaraz,-769,Lorenzo Musetti,522,Carlos Alcaraz,1,1,0.99,0.99,0.01,YEC,Hard
-3,11/14/2025,RR3,Jannik Sinner,-1429,Ben Shelton,790,Jannik Sinner,1,1,0.99,0.99,0.01,YEC,Hard
-4,11/14/2025,RR3,Alexander Zverev,-189,Felix Auger Aliassime,154,Alexander Zverev,0,0,0.914894,0.914894,0.085106,YEC,Hard
+1,11/14/2025,RR3,Taylor Fritz,-270,Alex De Minaur,222,Taylor Fritz,0,0,0.701468452,0.701468452,0.298531548,YEC,Hard
+2,11/14/2025,RR3,Carlos Alcaraz,-769,Lorenzo Musetti,522,Carlos Alcaraz,1,1,0.846254012,0.846254012,0.153745988,YEC,Hard
+3,11/14/2025,RR3,Jannik Sinner,-1429,Ben Shelton,790,Jannik Sinner,1,1,0.892679914,0.892679914,0.107320086,YEC,Hard
+4,11/14/2025,RR3,Alexander Zverev,-189,Felix Auger Aliassime,154,Alexander Zverev,0,0,0.624216576,0.624216576,0.375783424,YEC,Hard

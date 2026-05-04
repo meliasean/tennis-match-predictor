@@ -1,25 +1,25 @@
 ﻿match_no,date,round,player_a,odds_player_a,player_b,odds_player_b,pred_winner,correct_prediction,correct_prediction_book,confidence,prob_player_a_win,prob_player_b_win,tourney_level,surface
-1,10/28/2025,R64,Cameron Norrie,-476,Sebastian Baez,329,Cameron Norrie,1,1,0.99,0.99,0.01,M,Hard
-2,10/28/2025,R64,Fabian Marozsan,118,Arthur Rinderknech,-152,Arthur Rinderknech,1,1,0.811321,0.188679,0.811321,M,Hard
-3,10/28/2025,R64,Valentin Vacherot,158,Jiri Lehecka,-208,Jiri Lehecka,0,0,0.99,0.01,0.99,M,Hard
-4,10/28/2025,R64,Felix Auger Aliassime,-417,Francisco Comesana,291,Felix Auger Aliassime,1,1,0.99,0.99,0.01,M,Hard
-5,10/28/2025,R64,Alexandre Muller,282,Brandon Nakashima,-400,Brandon Nakashima,0,0,0.811321,0.188679,0.811321,M,Hard
-6,10/28/2025,R64,Daniel Altmaier,145,Marcos Giron,-189,Marcos Giron,0,0,0.685185,0.314815,0.685185,M,Hard
-7,10/28/2025,R64,Aleksandar Vukic,-123,Terence Atmane,-104,Terence Atmane,0,1,0.622642,0.377358,0.622642,M,Hard
-8,10/28/2025,R64,Corentin Moutet,-196,Reilly Opelka,147,Reilly Opelka,0,1,0.685185,0.314815,0.685185,M,Hard
-9,10/28/2025,R64,Alexei Popyrin,194,Alexander Bublik,-256,Alexei Popyrin,0,1,0.850404,0.850404,0.149596,M,Hard
-10,10/28/2025,R64,Karen Khachanov,-256,Ethan Quinn,193,Karen Khachanov,1,1,0.99,0.99,0.01,M,Hard
-11,10/28/2025,R64,Denis Shapovalov,-101,Joao Fonseca,-128,Joao Fonseca,1,1,0.659091,0.340909,0.659091,M,Hard
-12,10/28/2025,R64,Tallon Griekspoor,-127,Gabriel Diallo,-102,Gabriel Diallo,1,0,0.622642,0.377358,0.622642,M,Hard
-13,10/28/2025,R64,Lorenzo Sonego,139,Sebastian Korda,-182,Sebastian Korda,0,0,0.99,0.01,0.99,M,Hard
-14,10/28/2025,R64,Giovanni Mpetshi Perricard,-156,Grigor Dimitrov,122,Grigor Dimitrov,1,0,0.99,0.01,0.99,M,Hard
-15,10/28/2025,R64,Jaume Munar,236,Daniil Medvedev,-323,Daniil Medvedev,1,1,0.99,0.01,0.99,M,Hard
-16,10/28/2025,R64,Alejandro Davidovich Fokina,-227,Valentin Royer,167,Alejandro Davidovich Fokina,1,1,0.78125,0.78125,0.21875,M,Hard
-17,10/28/2025,R64,Luca Darderi,196,Arthur Cazaux,-256,Luca Darderi,0,1,0.547059,0.547059,0.452941,M,Hard
-18,10/28/2025,R64,Tomas Martin Etcheverry,-667,Camilo Ugo Carabelli,413,Tomas Martin Etcheverry,0,0,0.914894,0.914894,0.085106,M,Hard
-19,10/28/2025,R64,Flavio Cobolli,-139,Tomas Machac,108,Flavio Cobolli,1,1,0.547059,0.547059,0.452941,M,Hard
-20,10/28/2025,R64,Learner Tien,-182,Nuno Borges,138,Learner Tien,1,1,0.78125,0.78125,0.21875,M,Hard
-21,10/28/2025,R64,Jacob Fearnley,129,Andrey Rublev,-167,Andrey Rublev,1,1,0.99,0.01,0.99,M,Hard
-22,10/28/2025,R64,Francisco Cerundolo,-227,Damir Dzumhur,171,Francisco Cerundolo,1,1,0.99,0.99,0.01,M,Hard
-23,10/28/2025,R64,Aleksandar Kovacevic,137,Miomir Kecmanovic,-179,Miomir Kecmanovic,1,1,0.811321,0.188679,0.811321,M,Hard
-24,10/28/2025,R64,Alex Michelsen,-101,Zizou Bergs,-127,Zizou Bergs,1,1,0.52381,0.47619,0.52381,M,Hard
+1,10/28/2025,R64,Cameron Norrie,-476,Sebastian Baez,329,Cameron Norrie,1,1,0.831187151,0.831187151,0.168812849,M,Hard
+2,10/28/2025,R64,Fabian Marozsan,118,Arthur Rinderknech,-152,Arthur Rinderknech,1,1,0.678803216,0.321196784,0.678803216,M,Hard
+3,10/28/2025,R64,Valentin Vacherot,158,Jiri Lehecka,-208,Jiri Lehecka,0,0,0.758360104,0.241639896,0.758360104,M,Hard
+4,10/28/2025,R64,Felix Auger Aliassime,-417,Francisco Comesana,291,Felix Auger Aliassime,1,1,0.819068974,0.819068974,0.180931026,M,Hard
+5,10/28/2025,R64,Alexandre Muller,282,Brandon Nakashima,-400,Brandon Nakashima,0,0,0.705379918,0.294620082,0.705379918,M,Hard
+6,10/28/2025,R64,Daniel Altmaier,145,Marcos Giron,-189,Marcos Giron,0,0,0.58647195,0.41352805,0.58647195,M,Hard
+7,10/28/2025,R64,Aleksandar Vukic,-123,Terence Atmane,-104,Terence Atmane,0,1,0.542508946,0.457491054,0.542508946,M,Hard
+8,10/28/2025,R64,Corentin Moutet,-196,Reilly Opelka,147,Reilly Opelka,0,1,0.597043339,0.402956661,0.597043339,M,Hard
+9,10/28/2025,R64,Alexei Popyrin,194,Alexander Bublik,-256,Alexei Popyrin,0,1,0.652526218,0.652526218,0.347473782,M,Hard
+10,10/28/2025,R64,Karen Khachanov,-256,Ethan Quinn,193,Karen Khachanov,1,1,0.883384393,0.883384393,0.116615607,M,Hard
+11,10/28/2025,R64,Denis Shapovalov,-101,Joao Fonseca,-128,Joao Fonseca,1,1,0.55826185,0.44173815,0.55826185,M,Hard
+12,10/28/2025,R64,Tallon Griekspoor,-127,Gabriel Diallo,-102,Gabriel Diallo,1,0,0.543885526,0.456114474,0.543885526,M,Hard
+13,10/28/2025,R64,Lorenzo Sonego,139,Sebastian Korda,-182,Sebastian Korda,0,0,0.784083291,0.215916709,0.784083291,M,Hard
+14,10/28/2025,R64,Giovanni Mpetshi Perricard,-156,Grigor Dimitrov,122,Grigor Dimitrov,1,0,0.857041017,0.142958983,0.857041017,M,Hard
+15,10/28/2025,R64,Jaume Munar,236,Daniil Medvedev,-323,Daniil Medvedev,1,1,0.848935389,0.151064611,0.848935389,M,Hard
+16,10/28/2025,R64,Alejandro Davidovich Fokina,-227,Valentin Royer,167,Alejandro Davidovich Fokina,1,1,0.60151888,0.60151888,0.39848112,M,Hard
+17,10/28/2025,R64,Luca Darderi,196,Arthur Cazaux,-256,Luca Darderi,0,1,0.500626642,0.500626642,0.499373358,M,Hard
+18,10/28/2025,R64,Tomas Martin Etcheverry,-667,Camilo Ugo Carabelli,413,Tomas Martin Etcheverry,0,0,0.711885357,0.711885357,0.288114643,M,Hard
+19,10/28/2025,R64,Flavio Cobolli,-139,Tomas Machac,108,Flavio Cobolli,1,1,0.53132792,0.53132792,0.46867208,M,Hard
+20,10/28/2025,R64,Learner Tien,-182,Nuno Borges,138,Learner Tien,1,1,0.628092023,0.628092023,0.371907977,M,Hard
+21,10/28/2025,R64,Jacob Fearnley,129,Andrey Rublev,-167,Andrey Rublev,1,1,0.791659184,0.208340816,0.791659184,M,Hard
+22,10/28/2025,R64,Francisco Cerundolo,-227,Damir Dzumhur,171,Francisco Cerundolo,1,1,0.812635743,0.812635743,0.187364257,M,Hard
+23,10/28/2025,R64,Aleksandar Kovacevic,137,Miomir Kecmanovic,-179,Miomir Kecmanovic,1,1,0.663411564,0.336588436,0.663411564,M,Hard
+24,10/28/2025,R64,Alex Michelsen,-101,Zizou Bergs,-127,Zizou Bergs,1,1,0.522793157,0.477206843,0.522793157,M,Hard
