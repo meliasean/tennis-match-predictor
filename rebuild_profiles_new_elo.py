@@ -54,7 +54,14 @@ class EloConfig:
     def k_surf(self, n: int) -> float:
         return self.k_surf_floor + (self.k_surf_start - self.k_surf_floor) * np.exp(-n / self.k_decay)
 
-CFG = EloConfig()
+CFG = EloConfig(
+    base=1500.0,
+    k_start=24.0,
+    k_floor=24.0,
+    k_decay=999.0,
+    k_surf_start=18.0,
+    k_surf_floor=18.0,
+)
 
 # -- ALIASES ----------------------------------------------------
 ALIASES = {
